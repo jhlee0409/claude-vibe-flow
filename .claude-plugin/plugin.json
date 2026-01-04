@@ -1,0 +1,40 @@
+{
+  "name": "claude-vibe-flow",
+  "version": "1.1.0",
+  "description": "Claude Code를 활용한 풀 바이브 코딩을 위한 범용 에이전트 및 명령어 모음",
+  "author": {
+    "name": "inner-lens",
+    "email": "contact@inner-lens.dev"
+  },
+  "repository": "https://github.com/your-org/claude-vibe-flow",
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "vibe-coding",
+    "agents",
+    "workflow",
+    "productivity",
+    "intent-routing"
+  ],
+  "commands": [
+    "./commands/new-feature.md",
+    "./commands/check-setup.md"
+  ],
+  "agents": [
+    "./agents/agent-manager.md",
+    "./agents/architect.md",
+    "./agents/code-reviewer.md",
+    "./agents/context-optimizer.md",
+    "./agents/docs-sync.md",
+    "./agents/git-guardian.md",
+    "./agents/issue-fixer.md",
+    "./agents/planner.md",
+    "./agents/pm-orchestrator.md",
+    "./agents/readme-sync.md",
+    "./agents/spec-validator.md",
+    "./agents/task-manager.md",
+    "./agents/test-generator.md",
+    "./agents/test-quality-validator.md",
+    "./agents/vibe-implementer.md"
+  ]
+}
