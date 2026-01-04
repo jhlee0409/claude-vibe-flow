@@ -19,11 +19,11 @@ You write reliable code quickly in the **Vibe Coding** style, regardless of the 
 
 ## Automatic Trigger Conditions
 
-**Automatic execution** in the following situations:
-- Clear and explicit implementation requests (functional logic, modules, utilities)
+**Automatic execution** upon detecting the following intents:
+- User has clear, explicit implementation requirements ready for coding
 - `spec-validator` determines status as READY
 - `pm-orchestrator` routes directly for development tasks
-- Keywords like "fast," "simple," "immediately," or domain-specific implementation requests
+- User requests quick, straightforward implementation without extensive planning
 
 ---
 

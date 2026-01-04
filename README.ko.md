@@ -45,9 +45,7 @@ cp -r claude-vibe-flow/commands/ your-project/.claude/commands/
 claude-vibe-flow/
 ├── .claude-plugin/
 │   └── plugin.json           # 플러그인 메타데이터 (필수)
-├── config/
-│   └── intent-routing.md     # 의도-에이전트 매핑 규칙
-├── agents/                   # 서브에이전트 (15개)
+├── agents/                   # 서브에이전트 (16개)
 │   ├── git-guardian.md
 │   ├── issue-fixer.md
 │   ├── code-reviewer.md
@@ -56,39 +54,44 @@ claude-vibe-flow/
 ├── commands/                 # 슬래시 명령어
 │   ├── new-feature.md
 │   └── check-setup.md
+├── skills/                   # 스킬
+│   └── research.md
+├── outputStyles/             # 출력 품질 스타일
 └── README.md
 ```
 
 ---
 
-## 의도 기반 라우팅
+## Description 기반 자동 라우팅
 
-`config/intent-routing.md`에서 **동사 + 컨텍스트** 조합으로 에이전트를 자동 선택합니다.
+Claude Code가 에이전트의 **description** 필드를 기반으로 자동 선택합니다 (공식 패턴).
 
-### 주요 동사 패턴
+### 동작 방식
 
-| 동사 | 컨텍스트 | 에이전트 |
-|------|----------|----------|
-| **검토해** | 코드, PR | `code-reviewer` |
-| **검증해** | 테스트, 품질 | `test-quality-validator` |
-| **검증해** | 타입, 동기화 | `type-sync-checker` |
-| **검증해** | 보안, 마스킹 | `security-validator` |
-| **확인해** | 에이전트 상태 | `agent-manager` |
-| **확인해** | 코드 존재 | 직접 Grep/Read |
-| **만들어줘** | 기능, 컴포넌트 | `pm-orchestrator` → 판단 |
-| **고쳐줘** | 버그, 에러 | `issue-fixer` |
+```
+사용자 요청 → Claude가 에이전트 description 분석 → 적합한 에이전트 자동 선택
+```
+
+### 주요 패턴
+
+| 의도 | 에이전트 | Description 키워드 |
+|------|----------|-------------------|
+| 코드 리뷰 | `code-reviewer` | PROACTIVELY executes after code changes |
+| 버그 수정 | `issue-fixer` | AUTOMATICALLY executes on errors |
+| 기능 생성 | `vibe-implementer` | AUTOMATICALLY executes for clear requests |
+| 테스트 생성 | `test-generator` | AUTOMATICALLY writes tests |
+| 복잡한 작업 | `pm-orchestrator` | AUTOMATICALLY routes after analysis |
 
 ### 예시
 
 ```bash
-"코드 검토해줘"     → code-reviewer
-"타입 검증해줘"     → type-sync-checker
-"보안 검증해줘"     → security-validator
-"에이전트 확인해줘" → agent-manager
-"이 함수 확인해줘"  → 직접 Grep (에이전트 불필요)
+"코드 검토해줘"     → code-reviewer (description 매칭)
+"버그 고쳐줘"       → issue-fixer (description 매칭)
+"버튼 만들어줘"     → vibe-implementer (description 매칭)
+"테스트 추가해줘"   → test-generator (description 매칭)
 ```
 
-> 상세 규칙은 `config/intent-routing.md` 참조
+> Claude Code의 네이티브 의미론적 매칭으로 에이전트 description 기반 라우팅
 
 ---
 

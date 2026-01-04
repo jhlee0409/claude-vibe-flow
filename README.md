@@ -47,9 +47,7 @@ cp -r claude-vibe-flow/commands/ your-project/.claude/commands/
 claude-vibe-flow/
 ├── .claude-plugin/
 │   └── plugin.json           # Plugin metadata (Required)
-├── config/
-│   └── intent-routing.md     # Intent-to-Agent mapping rules
-├── agents/                   # Sub-agents (15+)
+├── agents/                   # Sub-agents (16)
 │   ├── git-guardian.md
 │   ├── issue-fixer.md
 │   ├── code-reviewer.md
@@ -58,39 +56,44 @@ claude-vibe-flow/
 ├── commands/                 # Slash commands
 │   ├── new-feature.md
 │   └── check-setup.md
+├── skills/                   # Skills
+│   └── research.md
+├── outputStyles/             # Output quality styles
 └── README.md
 ```
 
 ---
 
-## Intent-Based Routing
+## Description-Based Auto Routing
 
-Automatically selects agents based on **Verb + Context** combinations in `config/intent-routing.md`.
+Claude Code automatically selects agents based on their **description** field (official pattern).
 
-### Key Verb Patterns
+### How It Works
 
-| Verb | Context | Agent |
-|------|----------|----------|
-| **Review** | Code, PR | `code-reviewer` |
-| **Validate** | Test, Quality | `test-quality-validator` |
-| **Validate** | Types, Sync | `type-sync-checker` |
-| **Validate** | Security, Masking | `security-validator` |
-| **Check** | Agent Status | `agent-manager` |
-| **Check** | Code Existence | Direct Grep/Read |
-| **Create** | Feature, Component | `pm-orchestrator` → Decision |
-| **Fix** | Bug, Error | `issue-fixer` |
+```
+User Request → Claude analyzes agent descriptions → Auto-selects matching agent
+```
+
+### Key Patterns
+
+| Intent | Agent | Description Keywords |
+|--------|-------|---------------------|
+| Code review | `code-reviewer` | PROACTIVELY executes after code changes |
+| Bug fix | `issue-fixer` | AUTOMATICALLY executes on errors |
+| Feature creation | `vibe-implementer` | AUTOMATICALLY executes for clear requests |
+| Test generation | `test-generator` | AUTOMATICALLY writes tests |
+| Complex tasks | `pm-orchestrator` | AUTOMATICALLY routes after analysis |
 
 ### Examples
 
 ```bash
-"Review the code"     → code-reviewer
-"Validate types"      → type-sync-checker
-"Validate security"   → security-validator
-"Check agents"        → agent-manager
-"Check this function" → Direct Grep (No agent needed)
+"Review the code"     → code-reviewer (description match)
+"Fix this bug"        → issue-fixer (description match)
+"Create a button"     → vibe-implementer (description match)
+"Add tests"           → test-generator (description match)
 ```
 
-> See `config/intent-routing.md` for detailed rules.
+> Routing is handled by Claude Code's native semantic matching on agent descriptions.
 
 ---
 

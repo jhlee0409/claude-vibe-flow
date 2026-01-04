@@ -1,7 +1,7 @@
 ---
 name: new-feature
 description: Workflow for implementing a new feature
-allowed-tools: Task, Read, Write, Edit, Grep, Glob, Bash
+tools: Task, Read, Write, Edit, Grep, Glob, Bash
 ---
 
 # New Feature Implementation

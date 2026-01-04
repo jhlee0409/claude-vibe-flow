@@ -11,7 +11,7 @@ claude-vibe-flow/
 ├── agents/                     # 16개 에이전트
 ├── commands/                   # 슬래시 명령어
 ├── skills/                     # 스킬 (예정)
-├── config/                     # 설정 파일
+├── outputStyles/               # 품질 스타일 (공식 패턴)
 └── analysis/                   # 분석 문서
 ```
 
@@ -98,17 +98,94 @@ claude plugin validate ./claude-vibe-flow
 
 ---
 
+## 🚀 Full Vibe Coding Mode
+
+### 개념
+
+에이전트는 **역할 가이드**이며, 메인 Claude가 자동으로 역할을 전환하며 파이프라인을 실행합니다.
+
+### 활성화
+
+사용자의 구현/생성 의도를 LLM이 동적으로 감지하여 자동 활성화.
+
+### 파이프라인
+
+```
+사용자 요청
+    ↓
+[INTAKE] 요구사항 분석 → 부족시 질문
+    ↓
+[CONTEXT] 프로젝트 컨텍스트 자동 감지
+    ↓
+[REFINE] 스펙 구체화
+    ↓
+[PLAN] 작업 계획
+    ↓
+[IMPLEMENT] 구현
+    ↓
+[VERIFY] 검증 도구 자동 감지 → 실행
+    ↓
+[TEST] 테스트 프레임워크 감지 → 테스트
+    ↓
+[REVIEW] 품질 체크
+    ↓
+✅ 완료
+```
+
+### 핵심 원칙
+
+| 원칙 | 설명 |
+|------|------|
+| 하드코딩 금지 | 도구명, 경로, 패턴 하드코딩 ❌ |
+| 자동 감지 | 프로젝트 설정 파일 분석으로 도구 결정 |
+| 패턴 학습 | 기존 코드베이스 패턴 따르기 |
+| LLM 위임 | 구체적 판단은 LLM이 동적으로 |
+
+### 에이전트 활용
+
+각 단계에서 해당 역할 가이드(에이전트) 참조:
+- INTAKE/REFINE → `planner`
+- PLAN → `architect`, `pm-orchestrator`
+- IMPLEMENT → `vibe-implementer`
+- VERIFY/TEST → `test-generator`, `issue-fixer`
+- REVIEW → `code-reviewer`
+
+---
+
 ## 핵심 규칙
 
 ### ✅ 필수 (MUST)
 - 에이전트 수정 전 기존 파일 먼저 읽기
 - `plugin.json`과 에이전트 목록 동기화 유지
-- 의도 라우팅 규칙 (`config/intent-routing.md`) 준수
+- 에이전트 description 기반 자동 라우팅 활용
 
 ### ❌ 금지 (NEVER)
 - 에이전트 간 순환 참조
 - 하드코딩된 프로젝트 경로
 - 프로젝트 특화 로직 (범용성 유지)
+
+---
+
+## Output Styles (공식 패턴)
+
+프로젝트 특성에 맞는 품질 스타일을 활성화할 수 있습니다.
+
+| 스타일 | 용도 | 적합한 프로젝트 |
+|--------|------|----------------|
+| `production-ready` | 배포 품질 체크 | 프로덕션 서비스 |
+| `frontend-quality` | SEO, 접근성, 성능 | 웹 애플리케이션 |
+| `security-hardened` | 보안 강화 | API, 인증 시스템 |
+
+### 사용법
+
+프로젝트 CLAUDE.md에 스타일 명시:
+```markdown
+## Output Styles
+- production-ready
+- frontend-quality
+```
+
+자세한 내용: `outputStyles/README.md`
 
 ---
 
@@ -119,4 +196,4 @@ claude plugin validate ./claude-vibe-flow
 | `analysis/total.md` | 마스터 보고서 |
 | `analysis/distribution_strategy_2025.md` | 4대 배포 전략 |
 | `analysis/research_feature_design.md` | Research 기능 설계 |
-| `config/intent-routing.md` | 의도-에이전트 매핑 |
+| `outputStyles/` | 품질 스타일 (공식 패턴) |

@@ -17,6 +17,7 @@ You maintain a clean history with branch/commit management optimized for **Vibe 
 3. **Atomic Commits**: One commit = One purpose of change.
 4. **Clean History**: Maintain traceable and meaningful history.
 5. **Automation First**: AI judges and executes, minimizing user intervention.
+6. **🔴 Protect Irreversible**: Require explicit user confirmation for destructive/remote operations.
 
 ## Automatic Trigger Conditions
 
@@ -208,6 +209,43 @@ OR
 - [ ] Are unnecessary files (debug, temporary) excluded?
 - [ ] Are .env and secret files not included?
 - [ ] Has debug code like console.log been removed?
+
+---
+
+## 🔴 Human Checkpoints (Irreversible Operations)
+
+**Some operations require explicit user confirmation before execution.**
+
+### Require Confirmation ⚠️
+
+| Operation | Risk | Confirmation Required |
+|-----------|------|----------------------|
+| `git push` | Remote impact | "Push to [remote/branch]?" |
+| `git push --force` | History destruction | 🔴 STRONG WARNING + confirm |
+| `git reset --hard` | Data loss | "This will discard changes. Proceed?" |
+| `git branch -D` | Branch deletion | "Delete branch [name]?" |
+| `git rebase` (on shared branches) | History rewrite | Confirm before starting |
+
+### Auto-Execute (No Confirmation) ✅
+
+| Operation | Reason |
+|-----------|--------|
+| `git checkout`, `git switch` | Reversible, local only |
+| `git branch` (create) | Non-destructive |
+| `git commit` | Local only, undoable |
+| `git stash` | Recoverable |
+| `git add`, `git restore` | Staging only |
+
+### Confirmation Format
+
+```markdown
+## ⚠️ Confirmation Required
+
+**Operation**: git push origin vibe/feature-x
+**Impact**: Changes will be pushed to remote repository
+
+Proceed? (Waiting for user confirmation)
+```
 
 ---
 

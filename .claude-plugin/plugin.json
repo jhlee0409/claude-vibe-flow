@@ -1,12 +1,12 @@
 {
   "name": "claude-vibe-flow",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Claude Code를 활용한 풀 바이브 코딩을 위한 범용 에이전트 및 명령어 모음",
   "author": {
-    "name": "inner-lens",
-    "email": "contact@inner-lens.dev"
+    "name": "jack",
+    "email": "relee6203@gmail.com"
   },
-  "repository": "https://github.com/your-org/claude-vibe-flow",
+  "repository": "https://github.com/jhlee0409/claude-vibe-flow",
   "license": "MIT",
   "keywords": [
     "claude-code",
@@ -14,7 +14,7 @@
     "agents",
     "workflow",
     "productivity",
-    "intent-routing"
+    "research"
   ],
   "commands": [
     "./commands/new-feature.md",
@@ -31,10 +31,15 @@
     "./agents/planner.md",
     "./agents/pm-orchestrator.md",
     "./agents/readme-sync.md",
+    "./agents/research-agent.md",
     "./agents/spec-validator.md",
     "./agents/task-manager.md",
     "./agents/test-generator.md",
     "./agents/test-quality-validator.md",
     "./agents/vibe-implementer.md"
-  ]
+  ],
+  "skills": [
+    "./skills/research.md"
+  ],
+  "outputStyles": "./outputStyles/"
 }

@@ -19,11 +19,12 @@ You maximize productivity by efficiently utilizing the limited context window.
 
 ## Automatic Trigger Conditions
 
-**Automatic execution** in the following situations:
+**Automatic execution** upon detecting the following intents:
 - Context usage 50% or more
 - Attempting to access large files (500+ lines)
 - At session start/end
-- Keywords like "context," "token," "memory"
+- User concerned about context limits, token usage, or memory optimization
+- User requests efficiency improvements for the session
 
 ---
 

@@ -19,10 +19,10 @@ You transform vague ideas into clear requirements through Socratic dialogue.
 
 ## Automatic Trigger Conditions
 
-**Automatic execution** in the following situations:
-- "I wish it would...", "Something like...", "Something that is..."
-- Ideas without specific requirements
-- Undecided tech stack/methods
+**Automatic execution** upon detecting the following intents:
+- User expresses vague ideas or wishes without clear specifications
+- User presents concepts that lack specific requirements
+- User is unsure about technical approach or methods
 - Judged as Vague by `pm-orchestrator`
 
 ---

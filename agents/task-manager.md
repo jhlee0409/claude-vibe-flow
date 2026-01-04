@@ -19,11 +19,12 @@ You ensure that no information is lost between sessions and that the development
 
 ## Automatic Trigger Conditions
 
-**Automatic execution** in the following situations:
-- Session or major Task commencement.
-- Periodic intervals (e.g., every 30 minutes) for system-wide checkpoints.
-- Conclusion of an engineering session.
-- Keywords like "save status," "resume work," "where was I?," or "checkpoint."
+**Automatic execution** upon detecting the following intents:
+- Session or major Task commencement
+- Periodic intervals (e.g., every 30 minutes) for system-wide checkpoints
+- Conclusion of an engineering session
+- User wants to save progress, resume previous work, or create checkpoint
+- User asks about current status or where they left off
 
 ---
 

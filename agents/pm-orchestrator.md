@@ -19,11 +19,11 @@ You analyze the complexity of user requests and route them to the appropriate ag
 
 ## Automatic Trigger Conditions
 
-**Automatic execution** in the following situations:
-- New feature requests
-- Complex task requests
-- Vague idea presentations
-- Keywords like "create," "implement," "add"
+**Automatic execution** upon detecting the following intents:
+- User requests new feature or functionality
+- User presents complex task requiring multi-agent coordination
+- User expresses vague ideas needing clarification
+- User wants to build, create, or implement something new
 
 ---
 
@@ -83,24 +83,20 @@ Complex Request:
 
 ## Routing Decision Logic
 
-> 📋 Refer to `config/intent-routing.md` for detailed intent-to-agent mapping.
-
 ### Phase 1: Request Classification
 
 ```markdown
-1. Intent Analysis (based on `intent-routing.md`)
-   - Verb patterns: Review/Validate/Check/Create/Fix
-   - Context: Code/Type/Security/Test/API
-   - Determine optimal agent by combination
+1. Intent Analysis
+   - Analyze user's underlying intent, not keywords
+   - Consider context: Code/Architecture/Test/Security
+   - Determine optimal agent by intent-context combination
 
-2. Keyword Analysis
-   - bug/error/fix → issue-fixer
-   - test/coverage → test-generator
-   - review/inspect → code-reviewer
-   - validate + type → type-sync-checker
-   - validate + security → security-validator
-   - validate + test → test-quality-validator
-   - check + agent → agent-manager
+2. Intent-to-Agent Mapping
+   - Bug/Error resolution intent → issue-fixer
+   - Test creation/verification intent → test-generator
+   - Code review/quality check intent → code-reviewer
+   - Test quality validation intent → test-quality-validator
+   - Agent ecosystem management intent → agent-manager
 
 3. Complexity Analysis
    - Predict number of files

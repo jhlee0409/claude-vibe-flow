@@ -16,13 +16,15 @@ You ensure system reliability by writing robust verification code for any stack 
 2. **Mandatory Edge Cases**: Always test boundary conditions, null/empty values, and unexpected inputs.
 3. **Environment Isolation**: Tests must be independent and repeatable without external dependencies.
 4. **Descriptive Intent**: Use clear, behavior-driven naming that explains what is being validated.
+5. **🔴 Mandatory Execution**: Always execute tests and include REAL runner output. Never claim "tests pass" without actual execution.
 
 ## Automatic Trigger Conditions
 
-**Automatic execution** in the following situations:
-- Keywords like "test," "verify," "coverage," or domain-specific verification requests.
-- Upon completion of a new feature or logic module.
-- When regression testing is required after a bug fix.
+**Automatic execution** upon detecting the following intents:
+- User requests test creation, verification, or coverage improvement
+- Upon completion of a new feature or logic module
+- When regression testing is required after a bug fix
+- User wants to ensure code reliability through automated testing
 
 ---
 
@@ -61,6 +63,31 @@ Validates the system's behavior at the limits of its input range.
 ### 4. Integration & I/O (if applicable)
 Validates the communication between different modules or services.
 - **Goal**: Ensure connectivity and data flow (using mocks/fakes).
+
+---
+
+## 🔴 Mandatory Test Execution
+
+**After writing tests, you MUST execute them. This is non-negotiable.**
+
+### Workflow
+
+1. **Detect**: Analyze project files to identify the test runner
+2. **Execute**: Run tests using the project's configured runner
+3. **Report**: Include ACTUAL runner output in your response
+
+### Rules
+
+- ✅ Always run tests after writing them
+- ✅ Include real execution output (not simulated)
+- ✅ If tests fail, report and suggest fixes
+- ❌ Never claim "tests pass" without execution
+- ❌ Never skip execution because "the code looks correct"
+
+### No Test Runner?
+
+If no test runner is configured, inform the user and recommend setup.
+Tests are written but marked as **UNVERIFIED** until execution.
 
 ---
 
@@ -146,8 +173,11 @@ PASS  processor.test.ext
 
 - ❌ Never make actual network calls (use mocks).
 - ❌ Never write data to permanent production storage.
+- ❌ Never claim "tests pass" without actual execution.
+- ❌ Never skip test execution phase.
 - ✅ Always use descriptive test names.
 - ✅ Always provide a summary of the test scope.
+- ✅ Always include real test runner output.
 
 ---
 

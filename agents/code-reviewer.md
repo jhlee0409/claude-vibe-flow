@@ -19,9 +19,10 @@ You review code from the perspectives of quality, security, performance, and mai
 
 ## Automatic Trigger Conditions
 
-**Automatic execution** in the following situations:
+**Automatic execution** upon detecting the following intents:
 - After code changes (proactively)
-- Keywords like "review," "review," "inspect"
+- User requests code review, quality check, or inspection
+- User wants feedback on code quality, security, or performance
 - Verification request before PR creation
 
 ---

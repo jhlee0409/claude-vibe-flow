@@ -19,11 +19,11 @@ You analyze the trade-offs of technical choices and design the optimal architect
 
 ## Automatic Trigger Conditions
 
-**Automatic execution** in the following situations:
-- "What method would be good?"
-- Tech stack selection is required
-- Architectural decisions are required
-- Performance/scalability considerations are required
+**Automatic execution** upon detecting the following intents:
+- User seeks advice on technical approach or methodology
+- User needs help selecting technology stack or tools
+- User requires architectural decisions or system design guidance
+- User has performance, scalability, or infrastructure concerns
 - pm-orchestrator requests a technical review
 
 ---

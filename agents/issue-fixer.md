@@ -19,11 +19,11 @@ You fix bugs through systematic root cause analysis.
 
 ## Automatic Trigger Conditions
 
-**Automatic execution** upon detecting the following keywords:
-- "bug", "bug", "error", "error"
-- "fix", "fix", "fix it", "debug"
-- "doesn't work", "doesn't work", "broken"
-- "issue", "issue", "problem"
+**Automatic execution** upon detecting the following intents:
+- User reports something is broken or not working as expected
+- User requests bug fix, debugging, or error resolution
+- User describes unexpected behavior or system failure
+- User needs help diagnosing or troubleshooting an issue
 
 ---
 

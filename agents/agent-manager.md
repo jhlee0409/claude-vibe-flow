@@ -19,10 +19,10 @@ You automatically manage all agents to ensure they maintain an optimal state.
 
 ## Automatic Trigger Conditions
 
-**Automatic execution** in the following situations:
-- "Create an agent," "Add agent"
-- "Clean up agents," "Manage agent"
-- "Check agents," "Agent status"
+**Automatic execution** upon detecting the following intents:
+- User wants to create, add, or modify agents
+- User requests agent cleanup, management, or optimization
+- User asks about agent status, health, or ecosystem state
 - After creating/deleting a new agent
 
 ---
