@@ -28,58 +28,31 @@ You review code from the perspectives of quality, security, performance, and mai
 
 ## Review Checklist
 
-### 1. Type Safety (TypeScript)
+### 1. Robustness & Type Safety
 
 | Item | Criteria |
 |------|------|
-| `any` type usage | ❌ Forbidden |
-| Appropriate type guards | ✅ Required |
-| undefined/null handling | ✅ Use `??` or `?.` |
-| Type assertion (`as`) | ⚠️ Minimize |
-
-```typescript
-// ❌ Bad
-const value = data as any;
-const name = user.profile.name;
-
-// ✅ Good
-const value: UserData = data;
-const name = user?.profile?.name ?? 'Anonymous';
-```
+| Loose typing/Dynamic casting | ⚠️ Minimize; prefer strong definitions |
+| Null/Nil handling | ✅ Use safe navigation or explicit checks |
+| Resource management | ✅ Ensure proper closing/cleanup of handles |
+| Type/Schema assertions | ⚠️ Validate before assume |
 
 ### 2. Error Handling
 
 | Item | Criteria |
 |------|------|
-| Proper try/catch usage | ✅ Only where necessary |
-| Error message clarity | ✅ User-friendly |
-| Error logging | ✅ Debuggable |
-
-```typescript
-// ❌ Bad
-try {
-  doSomething();
-} catch (e) {
-  // Ignore
-}
-
-// ✅ Good
-try {
-  doSomething();
-} catch (error) {
-  console.error('Failed to do something:', error);
-  throw new Error('Operation failed. Please try again.');
-}
-```
+| Exception wrapping | ✅ Provide context with the error |
+| Recovery logic | ✅ Graceful failure vs. crash |
+| Logging levels | ✅ Appropriate use of Info/Warn/Error |
 
 ### 3. Performance
 
 | Item | Criteria |
 |------|------|
-| Unnecessary rerendering | ⚠️ Check React components |
-| Memory leaks | ⚠️ Clean up event listeners |
-| Asynchronous processing | ✅ Proper use of Promise/async |
-| Loop optimization | ⚠️ Beware of O(n²) or higher |
+| Resource leaks | ⚠️ Check for unclosed connections/streams |
+| Computational complexity | ⚠️ Beware of O(n²) or higher in critical paths |
+| Concurrency safety | ✅ Check for race conditions/deadlocks |
+| Memory usage | ✅ Avoid unnecessary allocations/buffering |
 
 ### 4. Security
 

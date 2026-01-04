@@ -75,13 +75,13 @@ Question areas:
 ### Feature Clarification
 
 ```markdown
-💡 "Add dark mode"
+💡 "Add logging to the processing unit"
 
 Questions:
-1. Where would be a good location for the dark mode toggle? (Header/Settings/Floating button)
-2. Is automatic system setting detection required?
-3. Is it necessary to save user-specific settings?
-4. Are there any existing components that require special attention?
+1. What level of detail is required? (Error-only/Full audit trail)
+2. Where should the logs be stored? (Local file/Remote aggregator/DB)
+3. Is structured logging (JSON) required for automated analysis?
+4. Are there any PII (Personally Identifiable Information) masking rules?
 ```
 
 ### Problem Solving

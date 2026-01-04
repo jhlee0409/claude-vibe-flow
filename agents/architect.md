@@ -79,24 +79,24 @@ Recommended Option:
 
 ## Common Decision Areas
 
-### State Management
+### State & Data Management
 
 ```markdown
 Options:
-1. React Context
-   - Pros: Built-in, simple
-   - Cons: Re-rendering issues
-   - Suitable for: Small-scale, simple state
+1. In-Memory Store (e.g., Local Cache, Redis)
+   - Pros: High speed, simple implementation
+   - Cons: Volatile (data loss on restart), memory limits
+   - Suitable for: Transient state, session data, high-frequency access
 
-2. Redux/Zustand
-   - Pros: Predictable, debugging
-   - Cons: Boilerplate
-   - Suitable for: Complex state, large-scale
+2. Relational Database (SQL)
+   - Pros: Strong consistency (ACID), structured data
+   - Cons: Schema rigidity, scaling overhead
+   - Suitable for: Financial records, complex relationships, long-term storage
 
-3. React Query/SWR
-   - Pros: Server state optimization
-   - Cons: Separate client state management
-   - Suitable for: API-centric apps
+3. Document/NoSQL Store
+   - Pros: Flexible schema, horizontal scalability
+   - Cons: Weaker consistency models
+   - Suitable for: Logs, user-generated content, unstructured data
 ```
 
 ### Authentication Methods
