@@ -17,9 +17,9 @@ The agent system you've built is provided in four forms depending on the user's 
 
 ---
 
-## 2. Integrated Management System (Single Source of Truth)
+## 2. Integrated Management System (Single Source, Multi-Publish)
 
-Efficiency is increased by managing all four forms in a **single repository** instead of separately.
+Efficiency is maximized by treating the **Claude Plugin** format as the "Master Source" and automatically deriving the other 3 forms via CI/CD pipelines. This ensures scalability without quadrupling the maintenance effort.
 
 ### 📂 Integrated Repository Structure
 ```text
@@ -39,11 +39,12 @@ Efficiency is increased by managing all four forms in a **single repository** in
 
 We propose specific technical workflows for simultaneously managing and distributing four forms from a single source.
 
-### 3.1 Core Configuration per Distribution Form (Config)
-*   **GitHub Template**: Enable the **'Template repository'** checkbox in GitHub project settings. (No additional work required)
-*   **Claude Plugin**: Maintain the **`plugin.json`** file in the root folder. Claude Code recognizes the repository address and loads the agents.
-*   **npx CLI (npm)**: Register the execution script (`bin/install.js`) in the `bin` section of `package.json`, then perform **`npm publish`**.
-*   **MCP Server**: Compile `project/src/mcp` logic to include in the package or register in a separate MCP registry.
+### 3.1 Scalable Core Configuration (Single Source)
+*   **The Master Repo**: Function as the "Plugin" source (Official runtime). All other forms are *derived* from this.
+*   **Automated Sync**:
+    *   **To NPM (CLI)**: A GitHub Action automatically packages the current state into `bin/install.js` and publishes to NPM on release.
+    *   **To Template**: A GitHub Action pushes the latest `agents/` and `config/` to a separate "clean" template repository.
+    *   **To MCP**: The MCP server code resides in `src/mcp` and is published as a package from the same repo.
 
 ### 3.2 Core Installation Logic (`bin/install.js`)
 The core mechanism used when recruiting agents to a user's existing project via npx.

@@ -37,7 +37,7 @@ This is an inevitable problem of AI that can occur no matter what template you u
 
 | Risk Factor | Origin | Possibility of Solution |
 | :--- | :--- | :--- |
-| **Management Fatigue** | **Template Structure (15 divisions)** | Resolvable through agent integration (Merge) |
+| **Management Fatigue** | **Template Structure (15 divisions)** | Resolvable through **Automated Orchestration** (Not Merging) |
 | **Question Fatigue** | **Template Prompt (Socratic)** | Resolvable through prompt style modification |
 | **Over-Engineering** | **Template Guide (Standard emphasis)** | Resolvable through lightweight design guide modification |
 | **Validation Bias** | **Fundamental Agent Limitation** | Complement through external tool (TestRunner, etc.) integration |
@@ -48,7 +48,7 @@ This is an inevitable problem of AI that can occur no matter what template you u
 The user's `claude-vibe-flow` is a **very excellent "expert group" model.** However, the problem is that this expert group is too 'stiff and bureaucratic' for toy projects.
 
 **Improvement Directions**:
-1.  **Agent Integration**: Combine 15 into 3-5 'multi-tasking agents.' (e.g., `planner` + `architect` → `concept-master`)
+1.  **Orchestration Optimization (No Merge)**: Maintain the specialization of 15 agents but improve `pm-orchestrator` to hide complexity from the user. (Keep Intelligence High, Reduce Interaction Cost)
 2.  **Change Prompt Tone and Manner**: Changing the philosophy of the prompt from "questions first" to **"execution first, questions only when ambiguous"** will make it a tool much more optimized for side projects.
 
 ---
