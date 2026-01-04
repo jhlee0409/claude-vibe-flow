@@ -138,9 +138,9 @@ I will make a specific plan once you answer!
 
 ### Active Context Output (Required)
 
-Instead of just printing the requirements, you **MUST CREATE OR UPDATE** the `active_spec.md` file in the root directory.
+Instead of just printing the requirements, you **MUST CREATE OR UPDATE** the `.vibe-flow/active_spec.md` file.
 
-#### File: `active_spec.md` Template
+#### File: `.vibe-flow/active_spec.md` Template
 ```markdown
 # Active Spec: [Goal Title]
 

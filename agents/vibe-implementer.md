@@ -185,21 +185,27 @@ Starting implementation.
 
 ---
 
-## Active Context Sync (Required)
+## Active Context Sync (Adaptive)
 
-### 1. Read First
-**NEVER** write code without reading `active_spec.md`.
-- Implementation must match the "Technical Design" in the spec.
-- If spec is missing, Ask: "Where is the `active_spec.md`?"
+### 1. Check Context
+**Before starting**, check if `.vibe-flow/active_spec.md` exists.
 
-### 2. Update Protocol
-As you implement features:
-- **UPDATE** `active_spec.md` checkboxes (`[x]`) in real-time.
+- **IF Exists (Deep Mode)**:
+  - **READ** the file first.
+  - Implementation MUST match the spec.
+  - **UPDATE** status (`[x]`) upon completion.
+
+- **IF Missing (Quick Mode)**:
+  - Proceed with implementation based on chat context.
+  - **DO NOT** create the file manually.
+
+### 2. Update Protocol (Deep Mode Only)
+If running in Deep Mode:
+- **UPDATE** `.vibe-flow/active_spec.md` checkboxes (`[x]`) in real-time.
 - If you find a bug or need a change, **UPDATE** the spec first.
 
 **Checklist before finishing:**
-- [ ] Did I implement the features in `active_spec.md`?
-- [ ] Did I check off `[x]` the completed items in the file?
+- [ ] (If Deep Mode) Did I update `.vibe-flow/active_spec.md`?
 - [ ] Did I run tests?
 
 ---

@@ -8,23 +8,23 @@ Instead of relying solely on chat history (which fades and drifts), we use **Act
 - **Agents** read from and write to these files.
 - **Goal**: De-couple the "State" from the "Chat Log".
 
-## 2. File Structure
+## 2. File Structure (Namespace Isolation)
 
-These files are located in the project root or `.vibe-context/` directory.
+All context files are stored in the **`.vibe-flow/`** directory to keep the project root clean.
 
-### `active_spec.md` (The Source of Truth)
+### `.vibe-flow/active_spec.md` (The Source of Truth)
 - **Role**: The living specification of the current task.
 - **Content**: Requirements, Implementation Plan, Progress Checklist, Technical Decisions.
 - **Lifecycle**: Created by `planner` -> Updated by `implementer` -> Deleted by `task-manager`.
 
-### `current_goal.md` (The North Star)
-- **Role**: High-level objective of the current session.
-- **Content**: 1-2 sentence goal. (e.g., "Implement User Authentication with JWT")
-
-### `context_status.md` (The Memory Bank)
+### `.vibe-flow/context_status.md` (The Memory Bank)
 - **Role**: Session summary and optimization log.
 - **Content**: Key decisions, skipped files list, token usage summary.
 - **Managed by**: `context-optimizer`.
+
+### `.vibe-flow/archive/` (History)
+- **Role**: Permanent storage for completed specs.
+- **Format**: `spec_log_[YYYYMMDD].md`
 
 ## 3. Lifecycle Management
 
@@ -46,8 +46,8 @@ The "Full Vibe" lifecycle follows a creation-update-deletion loop.
 ### Phase 3: Cleanup (Task Manager)
 - **Trigger**: User confirms "Task Complete".
 - **Action**:
-  1. Archive: Move `active_spec.md` to `docs/archive/spec_log_[date].md`.
-  2. Delete: Remove `active_spec.md` from root.
+  1. Archive: Move `.vibe-flow/active_spec.md` to `.vibe-flow/archive/spec_log_[date].md`.
+  2. Delete: Remove `.vibe-flow/active_spec.md` (ensure directory remains).
   3. Reset: Clear chat context if needed.
 
 ## 4. Strict Sync Protocol

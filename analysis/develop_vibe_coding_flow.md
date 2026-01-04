@@ -430,3 +430,40 @@
   2. `planner.md` 등의 에이전트 프롬프트에 "결과물은 파일로 저장하라"는 지침 추가
 
   어느 쪽으로 진행할까요?
+
+  ---
+  🛑 Final Critical Review: The "Bureaucracy" Trap (냉정한 현실 자각)
+
+  사용자 님의 "진짜야?"라는 질문은 정곡을 찌르는 것입니다.
+  우리가 만든 이 시스템(`active_spec.md` + Sync Protocol)은 **"이론적으로 완벽"하지만 "현실적으로 귀찮은" 시스템**일 수 있습니다.
+
+  **1. "Vibe"를 죽이는 "Process" (The Vibe Killer)**
+  - 바이브 코딩의 핵심은 **"속도감"**과 **"몰입"**입니다.
+  - 하지만 현재 설계는: `Planner(문서작성)` → `Architect(문서업데이트)` → `Implementer(체크박스)`...
+  - **비판**: "변수명 하나 바꾸는데 Spec 파일 업데이트해야 하나?" → 사용자가 시스템을 우회하게 됨 → **Context Drift 발생** → 시스템 붕괴.
+
+  **2. LLM의 "복종" 환상 (The Compliance Illusion)**
+  - 우리는 프롬프트에 "반드시 해라"라고 썼지만, LLM은 확률적 모델입니다.
+  - 사용자가 "아 됐고 그냥 코드 짜줘"라고 강하게 말하면, 에이전트는 **Protocol을 무시하고 코드를 뱉을 것**입니다.
+  - 이 순간 `active_spec.md`는 **쓰레기 데이터(Stale Data)**가 됩니다.
+
+  **3. 결론: "Adaptive Rigidity" (유연한 강제성) 필요**
+  - 모든 요청에 이 Full Process를 적용하면 실패합니다.
+  - **Solution**:
+    - **Quick Mode**: 단순 수정 → 채팅만으로 처리 (파일 건드리지 않음).
+    - **Deep Mode**: 복잡한 기능 → `active_spec.md` 사용 (현재 설계).
+  - 에이전트가 이 모드를 **스스로 판단**하게 하는 것이 마지막 퍼즐입니다. (`pm-orchestrator`의 역할 중요)
+
+  ### ✅ Resolution: Adaptive Sync Implementation (2026-01-05)
+
+  위 비판을 수용하여 **"Adaptive Sync" 프로토콜을 최종 구현**했습니다.
+
+  1.  **Orchestrator Level**:
+      - Simple Task → `vibe-implementer`에게 직행 (No Spec Creation).
+      - Complex Task → `planner`에게 위임 (Spec Creation Required).
+
+  2.  **Implementer Level (`vibe-implementer.md`)**:
+      - **Quick Mode**: `.vibe-flow/active_spec.md` 파일이 없으면, 문서를 요구하지 않고 즉시 구현. (속도 유지)
+      - **Deep Mode**: 파일이 있으면, 반드시 내용을 준수하고 상태를 업데이트함. (정합성 유지)
+
+  이로써 "변수명 하나 바꾸는데 문서 써야 하나?"라는 딜레마가 해결되었으며, **Vibe(속도)와 Stability(안전)의 균형**을 맞추게 되었습니다.

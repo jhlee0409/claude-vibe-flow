@@ -158,7 +158,7 @@ claude plugin validate ./claude-vibe-flow
 - 에이전트 수정 전 기존 파일 먼저 읽기
 - `plugin.json`과 에이전트 목록 동기화 유지
 - 에이전트 description 기반 자동 라우팅 활용
-- **[NEW] Active Context Sync**: 모든 에이전트는 `active_spec.md`를 최신 상태로 유지해야 함. (Strict Sync Protocol)
+- **[NEW] Active Context Sync**: 모든 에이전트는 `.vibe-flow/active_spec.md`를 최신 상태로 유지해야 함. (Strict Sync Protocol)
 
 ### ❌ 금지 (NEVER)
 - 에이전트 간 순환 참조
@@ -172,10 +172,10 @@ claude plugin validate ./claude-vibe-flow
 
 ```bash
 # 컨텍스트 파일 읽기 (Alias)
-claude context-read  # reads active_spec.md current_goal.md
+claude context-read  # reads .vibe-flow/active_spec.md
 
 # 작업 완료 및 정리
-claude finish        # archives active_spec.md and cleans up
+claude finish        # archives .vibe-flow/active_spec.md and cleans up
 ```
 
 
