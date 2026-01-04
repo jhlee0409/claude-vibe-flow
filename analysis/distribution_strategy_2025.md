@@ -1,129 +1,129 @@
-# ClaudeVibeFlow Comprehensive Guide to Distribution and Expansion Strategies (2025)
+# claude-vibe-flow Distribution Strategy (2025)
 
-This document outlines the four core forms for providing `claude-vibe-flow` to users and the **2025 AI Tool Distribution Strategy** for efficiently managing them in a single repository.
-
----
-
-## 1. 2025's 4 Core Integrated Distribution Models
-
-The agent system you've built is provided in four forms depending on the user's needs and proficiency.
-
-| Category | Form | Target Audience | Core Value (UX/DX) |
-| :--- | :--- | :--- | :--- |
-| **Intelligence (Brain)** | **GitHub Template** | 0 → 1 New Users | Provides a guide for the entire process from ideation to implementation |
-| **Intelligence (Brain)** | **npx CLI (Initializer)**| 1 → N Existing Users | Instantly transplant agents to existing projects with a single command |
-| **Intelligence (Brain)** | **Claude Plugin** | Practical/Enterprise Users | Stable management and security with standardized specifications (`plugin.json`) |
-| **Action (Hands)** | **MCP Server** | Advanced/Expert Users | Provides 'tools' for agents to communicate directly with external tools (GitHub/Jira/DB) |
+> Single Source, Multi-Publish
 
 ---
 
-## 2. Integrated Management System (Single Source, Multi-Publish)
+## 1. 4 Core Distribution Models
 
-Efficiency is maximized by treating the **Claude Plugin** format as the "Master Source" and automatically deriving the other 3 forms via CI/CD pipelines. This ensures scalability without quadrupling the maintenance effort.
+| Category | Form | Target | Value |
+|----------|------|--------|-------|
+| **Intelligence** | GitHub Template | New Users (0→1) | Clone and start |
+| **Intelligence** | npx CLI | Existing Projects (1→N) | Single command setup |
+| **Intelligence** | Claude Plugin | Teams/Enterprise | Standardized, secure |
+| **Action** | MCP Server | Advanced Users | External tool integration |
 
-### 📂 Integrated Repository Structure
-```text
-/claude-vibe-flow
-├── agents/             <-- [Common Core] Intelligence of 15 agents (Prompt source)
-├── commands/           <-- [Common Core] System control command set
-├── src/mcp/            <-- [Action] MCP Server logic (TypeScript/Node.js)
-├── bin/install.js      <-- [Distribution] File transplantation engine for npx installation
-├── plugin.json         <-- [Distribution] Official Claude Code plugin definition
-├── package.json        <-- [Distribution] npm publication and CLI command definition
-└── README.md           <-- [Guide] Guide for 4 core entry points per user situation
+---
+
+## 2. Current State
+
+**✅ Implemented**: Claude Plugin
+- `plugin.json` in repository root
+- 16 agents, 2 commands, 1 skill registered
+- Works with `claude --plugin-dir ./`
+
+**⏸️ Deferred**: CLI, Template, MCP
+- Plugin form is sufficient for current needs
+- Other forms can be added when demand grows
+
+---
+
+## 3. Repository Structure
+
+```
+claude-vibe-flow/
+├── .claude-plugin/
+│   └── plugin.json      # Plugin definition
+├── agents/              # 16 agent prompts
+├── commands/            # Slash commands
+├── skills/              # Skills
+├── outputStyles/        # Quality styles
+└── analysis/            # This directory
 ```
 
 ---
 
-## 3. Technical Guide for Single Repository Management and Distribution
+## 4. Distribution by Form
 
-We propose specific technical workflows for simultaneously managing and distributing four forms from a single source.
+### 🟠 Claude Plugin (Current)
 
-### 3.1 Scalable Core Configuration (Single Source)
-*   **The Master Repo**: Function as the "Plugin" source (Official runtime). All other forms are *derived* from this.
-*   **Automated Sync**:
-    *   **To NPM (CLI)**: A GitHub Action automatically packages the current state into `bin/install.js` and publishes to NPM on release.
-    *   **To Template**: A GitHub Action pushes the latest `agents/` and `config/` to a separate "clean" template repository.
-    *   **To MCP**: The MCP server code resides in `src/mcp` and is published as a package from the same repo.
+**Status**: Active, Primary
 
-### 3.2 Core Installation Logic (`bin/install.js`)
-The core mechanism used when recruiting agents to a user's existing project via npx.
-```javascript
-// Example of core mechanism
-const fs = require('fs-extra');
-const path = require('path');
+```bash
+# Local testing
+claude --plugin-dir ./claude-vibe-flow
 
-async function setupVibe() {
-  const targetPath = process.cwd(); // User's project folder
-  const sourcePath = path.join(__dirname, '../'); // Template's source folder
-
-  // 1. Copy core agents and command folders
-  await fs.copy(path.join(sourcePath, 'agents'), path.join(targetPath, '.claude-vibe/agents'));
-  await fs.copy(path.join(sourcePath, 'commands'), path.join(targetPath, '.claude-vibe/commands'));
-
-  // 2. Context Discovery and CLAUDE.md creation
-  const techStack = await autoDetectTechStack(targetPath); // Analysis by AI or script
-  await createCustomClaudeMd(targetPath, techStack);
-
-  console.log("Vibe agents successfully recruited! Run 'claude' to start your first conversation.");
-}
+# Validation
+claude plugin validate ./claude-vibe-flow
 ```
 
-### 3.3 Integrated Distribution Workflow (CI/CD)
-1.  **Work**: Developer modifies prompts in the `agents/` folder or source code in `src/mcp/`.
-2.  **Tag**: Tag the version with `git push origin v1.0.0`.
-3.  **Deploy**: `npm publish` is automatically performed through GitHub Actions, etc.
-4.  **Sync**: Template users (Fork), Plugin users (Auto-update), and CLI users (npx re-run) all receive the **latest prompt intelligence simultaneously**.
+**Update Flow**:
+- Push to `main` → Plugin is up-to-date
+- Users run `claude plugin update` to sync
+
+### 🟢 GitHub Template (Future)
+
+**Status**: Deferred
+
+When needed:
+1. Enable "Template repository" in settings
+2. Users click "Use this template"
+3. No separate maintenance required
+
+### 🔵 npx CLI (Future)
+
+**Status**: Deferred
+
+When needed:
+1. Create `bin/install.js`
+2. Add to `package.json` as bin
+3. Publish to npm
+
+### 🟣 MCP Server (Future)
+
+**Status**: Deferred
+
+When needed:
+1. Create `src/mcp/` TypeScript server
+2. Register tools for external API access
+3. Publish to Smithery/MCP Registry
 
 ---
 
-## 4. Implementation Specs for Agents
+## 5. Release Workflow
 
-Technical details are defined so that agents can immediately write logic when requested to "construct this distribution environment."
-
-### 4.1 Core Configuration File Templates (JSON Schema)
-
-#### `plugin.json` (for Claude Code)
-```json
-{
-  "name": "claude-vibe-flow",
-  "version": "1.0.0",
-  "description": "Autonomous Vibe Coding Agents for Professional Devs",
-  "entry": "agents/pm-orchestrator.md",
-  "commands": "commands/*.md",
-  "capabilities": ["filesystem", "terminal"]
-}
+```
+1. Modify agents/commands/skills
+2. Update plugin.json version
+3. git commit && git push
+4. (Optional) git tag v1.x.x
 ```
 
-#### `package.json` (for CLI & MCP)
-```json
-{
-  "name": "claude-vibe",
-  "version": "1.0.0",
-  "bin": { "vibe-init": "./bin/install.js" },
-  "dependencies": {
-    "fs-extra": "^11.0.0",
-    "chalk": "^5.0.0",
-    "@modelcontextprotocol/sdk": "^0.1.0"
-  }
-}
-```
+---
 
-### 4.2 Core Detection Logic of the Analysis Agent (`vibe-init`)
-Key items the AI must analyze when transplanting into an existing project:
-1.  **Tech Stack**: Identify framework (React, Next.js, Go, etc.) through `package.json` or folder structure.
-2.  **Test Environment**: Check for installation of `vitest`, `jest`, `playwright`, etc., and reflect in `test-generator`.
-3.  **Project Style**: Read 2-3 existing code samples to extract a 'Coding Style Guide' for `vibe-implementer` into `CLAUDE.md`.
+## 6. Quality Gates
+
+Before release, verify:
+
+| Gate | Check |
+|------|-------|
+| **Context Efficiency** | Agent prompts < 500 tokens each |
+| **Instruction Adherence** | Agents follow constraints |
+| **Cross-Agent Sync** | pm-orchestrator routes correctly |
 
 ---
 
-## 5. 2025 AI Tool UX/DX Core Principles (BP)
+## 7. Decision: Why Plugin-Only?
+
+| Form | Effort | Benefit | Decision |
+|------|--------|---------|----------|
+| Plugin | Low | Direct Claude Code integration | ✅ Now |
+| Template | Low | Users can clone instead | ⏸️ Later |
+| CLI | Medium | Manual copy works fine | ⏸️ Later |
+| MCP | High | Context7/WebSearch suffice | ⏸️ Later |
+
+**Principle**: Ship what works, expand when needed.
 
 ---
 
-## Summary: "An Ecosystem Where Ideas Become Services"
-
-Your system is based on **one powerful agent source (Core)** and functions as a template, a plugin, or a powerful automation engine (MCP) depending on the user's choice. Through the combination of these four strategies, `claude-vibe-flow` will evolve beyond a simple tool into an unrivaled AI development infrastructure.
-
----
-*Antigravity AI: 2025 Comprehensive Distribution and Expansion Strategy established*
+*Last updated: 2026-01-05*
