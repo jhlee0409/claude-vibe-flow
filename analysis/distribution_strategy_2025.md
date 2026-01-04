@@ -1,90 +1,88 @@
-# ClaudeVibeFlow 배포 및 확장 전략 종합 가이드 (2025)
+# ClaudeVibeFlow Comprehensive Guide to Distribution and Expansion Strategies (2025)
 
-본 문서는 `claude-vibe-flow`를 사용자에게 제공하는 4가지 핵심 형태와 이를 단일 레포지토리에서 효율적으로 관리하는 **2025년형 AI 도구 배포 전략**을 정리합니다.
+This document outlines the four core forms for providing `claude-vibe-flow` to users and the **2025 AI Tool Distribution Strategy** for efficiently managing them in a single repository.
 
 ---
 
-## 1. 2025년 4대 통합 배포 모델
+## 1. 2025's 4 Core Integrated Distribution Models
 
-사용자님이 구축하신 에이전트 시스템은 유저의 요구와 숙련도에 따라 4가지 형태로 제공됩니다.
+The agent system you've built is provided in four forms depending on the user's needs and proficiency.
 
-| 구분 | 형태 | 주 대상 | 핵심 가치 (UX/DX) |
+| Category | Form | Target Audience | Core Value (UX/DX) |
 | :--- | :--- | :--- | :--- |
-| **지능 (Brain)** | **GitHub Template** | 0 → 1 신규 유저 | 아이데이션부터 구현까지 전 과정 가이드 제공 |
-| **지능 (Brain)** | **npx CLI (Initializer)**| 1 → N 기존 유저 | 명령어 한 줄로 기존 프로젝트에 에이전트 즉시 이식 |
-| **지능 (Brain)** | **Claude Plugin** | 실무/기업 유저 | 표준화된 규격(`plugin.json`)으로 안정적 관리 및 보안 |
-| **행동 (Hands)** | **MCP Server** | 고도화/전문 유저 | 에이전트에게 외부 툴(GitHub/Jira/DB)과 직접 통신하는 '도구' 제공 |
+| **Intelligence (Brain)** | **GitHub Template** | 0 → 1 New Users | Provides a guide for the entire process from ideation to implementation |
+| **Intelligence (Brain)** | **npx CLI (Initializer)**| 1 → N Existing Users | Instantly transplant agents to existing projects with a single command |
+| **Intelligence (Brain)** | **Claude Plugin** | Practical/Enterprise Users | Stable management and security with standardized specifications (`plugin.json`) |
+| **Action (Hands)** | **MCP Server** | Advanced/Expert Users | Provides 'tools' for agents to communicate directly with external tools (GitHub/Jira/DB) |
 
 ---
 
-## 2. 단일 관리 체계 (Single Source of Truth)
+## 2. Integrated Management System (Single Source of Truth)
 
-4가지 형태를 각각 다른 곳에서 관리하지 않고, **하나의 레포지토리**에서 통합 관리하여 운영 효율을 높입니다.
+Efficiency is increased by managing all four forms in a **single repository** instead of separately.
 
-### 📂 통합 레포지토리 구조
+### 📂 Integrated Repository Structure
 ```text
 /claude-vibe-flow
-├── agents/             <-- [공통 핵심] 15개 에이전트의 '지능' (프롬프트 소스)
-├── commands/           <-- [공통 핵심] 시스템 컨트롤 명령어 세트
-├── src/mcp/            <-- [행동] MCP 서버 로직 (TypeScript/Node.js)
-├── bin/install.js      <-- [배포] npx 설치 시 실행되는 파일 이식 엔진
-├── plugin.json         <-- [배포] 클로드 코드 공식 플러그인 정의
-├── package.json        <-- [배포] npm 게시 및 CLI 명령어 정의
-└── README.md           <-- [가이드] 유저 상황별 4대 입구 안내
+├── agents/             <-- [Common Core] Intelligence of 15 agents (Prompt source)
+├── commands/           <-- [Common Core] System control command set
+├── src/mcp/            <-- [Action] MCP Server logic (TypeScript/Node.js)
+├── bin/install.js      <-- [Distribution] File transplantation engine for npx installation
+├── plugin.json         <-- [Distribution] Official Claude Code plugin definition
+├── package.json        <-- [Distribution] npm publication and CLI command definition
+└── README.md           <-- [Guide] Guide for 4 core entry points per user situation
 ```
 
 ---
 
-## 3. 단일 레포지토리 관리 및 배포 기술 가이드
+## 3. Technical Guide for Single Repository Management and Distribution
 
-하나의 소스(Single Source)에서 4가지 형태를 동시에 관리하고 배포하기 위한 구체적인 기술 워크플로우를 제안합니다.
+We propose specific technical workflows for simultaneously managing and distributing four forms from a single source.
 
-### 3.1 배포 형태별 핵심 설정 (Config)
-*   **GitHub Template**: GitHub 프로젝트 설정에서 **'Template repository'** 체크박스를 활성화합니다. (설정 외 추가 작업 없음)
-*   **Claude Plugin**: 루트 폴더에 **`plugin.json`** 파일을 유지합니다. 클로드 코드가 해당 레포지토리 주소를 직접 인식하여 에이전트들을 로드합니다.
-*   **npx CLI (npm)**: `package.json`의 `bin` 섹션에 실행 스크립트(`bin/install.js`)를 등록한 후, **`npm publish`**를 수행합니다. 
-*   **MCP Server**: `project/src/mcp` 로직을 컴파일하여 패키지에 포함하거나, 별도의 MCP 레지스트리에 등록합니다.
+### 3.1 Core Configuration per Distribution Form (Config)
+*   **GitHub Template**: Enable the **'Template repository'** checkbox in GitHub project settings. (No additional work required)
+*   **Claude Plugin**: Maintain the **`plugin.json`** file in the root folder. Claude Code recognizes the repository address and loads the agents.
+*   **npx CLI (npm)**: Register the execution script (`bin/install.js`) in the `bin` section of `package.json`, then perform **`npm publish`**.
+*   **MCP Server**: Compile `project/src/mcp` logic to include in the package or register in a separate MCP registry.
 
-### 3.2 핵심 설치 로직 (`bin/install.js`)
-npx를 통해 유저의 기존 프로젝트에 에이전트를 영입할 때 사용하는 핵심 메커니즘입니다.
+### 3.2 Core Installation Logic (`bin/install.js`)
+The core mechanism used when recruiting agents to a user's existing project via npx.
 ```javascript
-// 핵심 메커니즘 예시
+// Example of core mechanism
 const fs = require('fs-extra');
 const path = require('path');
 
 async function setupVibe() {
-  const targetPath = process.cwd(); // 유저의 프로젝트 폴더
-  const sourcePath = path.join(__dirname, '../'); // 템플릿의 소스 폴더
+  const targetPath = process.cwd(); // User's project folder
+  const sourcePath = path.join(__dirname, '../'); // Template's source folder
 
-  // 1. 핵심 에이션트 및 명령어 폴더 복사
+  // 1. Copy core agents and command folders
   await fs.copy(path.join(sourcePath, 'agents'), path.join(targetPath, '.claude-vibe/agents'));
   await fs.copy(path.join(sourcePath, 'commands'), path.join(targetPath, '.claude-vibe/commands'));
 
-  // 2. 프로젝트 상황 인식(Context Discovery) 및 CLAUDE.md 생성
-  const techStack = await autoDetectTechStack(targetPath); // AI 또는 스크립트가 분석
+  // 2. Context Discovery and CLAUDE.md creation
+  const techStack = await autoDetectTechStack(targetPath); // Analysis by AI or script
   await createCustomClaudeMd(targetPath, techStack);
 
-  console.log("Vibe 에이전트 영입 성공! 'claude'를 실행하여 첫 대화를 시작하세요.");
+  console.log("Vibe agents successfully recruited! Run 'claude' to start your first conversation.");
 }
 ```
 
-### 3.3 통합 배포 워크플로우 (CI/CD)
-1.  **Work**: 개발자가 `agents/` 폴더 내의 프롬프트나 `src/mcp/` 소스 코드를 수정합니다.
-2.  **Tag**: `git push origin v1.0.0` 으로 버전을 태깅합니다.
-3.  **Deploy**: GitHub Actions 등을 통해 자동으로 `npm publish`가 수행됩니다.
-4.  **Sync**: 템플릿 유저(Fork), 플러그인 유저(Auto-update), CLI 유저(npx 재실행) 모두가 **동시에 최신 프롬프트 지능**을 수혈받습니다.
+### 3.3 Integrated Distribution Workflow (CI/CD)
+1.  **Work**: Developer modifies prompts in the `agents/` folder or source code in `src/mcp/`.
+2.  **Tag**: Tag the version with `git push origin v1.0.0`.
+3.  **Deploy**: `npm publish` is automatically performed through GitHub Actions, etc.
+4.  **Sync**: Template users (Fork), Plugin users (Auto-update), and CLI users (npx re-run) all receive the **latest prompt intelligence simultaneously**.
 
 ---
 
----
+## 4. Implementation Specs for Agents
 
-## 4. 에이전트를 위한 실전 구현 명세 (Implementation Specs)
+Technical details are defined so that agents can immediately write logic when requested to "construct this distribution environment."
 
-에이전트에게 "이 배포 환경을 구축해줘(해줘)"라고 요청했을 때 즉각 로직을 짤 수 있도록 기술적 세부 정보를 정의합니다.
+### 4.1 Core Configuration File Templates (JSON Schema)
 
-### 4.1 핵심 설정 파일 템플릿 (JSON Schema)
-
-#### `plugin.json` (Claude Code용)
+#### `plugin.json` (for Claude Code)
 ```json
 {
   "name": "claude-vibe-flow",
@@ -96,7 +94,7 @@ async function setupVibe() {
 }
 ```
 
-#### `package.json` (CLI & MCP용)
+#### `package.json` (for CLI & MCP)
 ```json
 {
   "name": "claude-vibe",
@@ -110,20 +108,21 @@ async function setupVibe() {
 }
 ```
 
-### 4.2 분석 에이전트(`vibe-init`)의 3대 검출 로직
-AI가 기존 프로젝트를 이식할 때 분석해야 할 핵심 항목입니다.
-1.  **Tech Stack**: `package.json` 또는 폴더 구조를 통해 프레임워크(React, Next.js, Go 등) 파악.
-2.  **Test Environment**: `vitest`, `jest`, `playwright` 등 설치 여부 확인 후 `test-generator`에 반영.
-3.  **Project Style**: 기존 코드 샘플을 2~3개 읽어 `vibe-implementer`가 따를 '코딩 스타일 가이드'를 `CLAUDE.md`에 추출.
+### 4.2 Core Detection Logic of the Analysis Agent (`vibe-init`)
+Key items the AI must analyze when transplanting into an existing project:
+1.  **Tech Stack**: Identify framework (React, Next.js, Go, etc.) through `package.json` or folder structure.
+2.  **Test Environment**: Check for installation of `vitest`, `jest`, `playwright`, etc., and reflect in `test-generator`.
+3.  **Project Style**: Read 2-3 existing code samples to extract a 'Coding Style Guide' for `vibe-implementer` into `CLAUDE.md`.
 
 ---
 
-## 5. 2025년형 AI 도구 UX/DX 핵심 원칙 (BP)
+## 5. 2025 AI Tool UX/DX Core Principles (BP)
 
 ---
-## 요약: "아이디어만 있으면 서비스가 되는 생태계"
 
-사용자님의 시스템은 **하나의 강력한 에이전트 소스(Core)**를 기반으로, 유저의 선택에 따라 때로는 템플릿이 되고, 때로는 플러그인이 되며, 때로는 강력한 자동화 엔진(MCP)으로 작동합니다. 이 4대 전략의 결합을 통해 `claude-vibe-flow`는 단순한 도구를 넘어 독보적인 AI 개발 인프라로 자리 잡을 것입니다.
+## Summary: "An Ecosystem Where Ideas Become Services"
+
+Your system is based on **one powerful agent source (Core)** and functions as a template, a plugin, or a powerful automation engine (MCP) depending on the user's choice. Through the combination of these four strategies, `claude-vibe-flow` will evolve beyond a simple tool into an unrivaled AI development infrastructure.
 
 ---
-*Antigravity AI: 2025 종합 배포 및 확장 전략 수립 완료*
+*Antigravity AI: 2025 Comprehensive Distribution and Expansion Strategy established*

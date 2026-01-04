@@ -1,18 +1,18 @@
 ---
 name: check-setup
-description: Vibe coding 환경 설정 검증. 에이전트, CLAUDE.md 설정 상태를 확인합니다.
+description: Vibe coding environment setup validation. Checks the setup status of agents and CLAUDE.md.
 ---
 
-# Vibe Coding 환경 검증
+# Vibe Coding Environment Validation
 
-이 명령어는 vibe coding 환경이 올바르게 설정되었는지 확인합니다.
+This command checks if the Vibe coding environment is correctly set up.
 
-## 검증 항목
+## Validation Items
 
-### 1. 에이전트 구조 확인
+### 1. Agent Structure Verification
 
 ```markdown
-필수 에이전트 (15개):
+Required Agents (15):
 - [ ] git-guardian
 - [ ] issue-fixer
 - [ ] code-reviewer
@@ -30,74 +30,74 @@ description: Vibe coding 환경 설정 검증. 에이전트, CLAUDE.md 설정 �
 - [ ] readme-sync
 ```
 
-### 2. CLAUDE.md 확인
+### 2. CLAUDE.md Verification
 
 ```markdown
-필수 섹션:
-- [ ] Quick Reference (명령어)
-- [ ] 에이전트 자동 선택 테이블
-- [ ] 핵심 규칙
+Required Sections:
+- [ ] Quick Reference (Commands)
+- [ ] Agent Auto-selection Table
+- [ ] Core Rules
 ```
 
 ---
 
-## 실행 방법
+## How to Run
 
 ```
 /claude-vibe-flow:check-setup
 ```
 
-또는 자연어로:
+Or in natural language:
 ```
-"바이브 코딩 환경 확인해줘"
-"vibe setup 검증"
+"Check Vibe coding environment"
+"Verify vibe setup"
 ```
 
 ---
 
-## 출력 형식
+## Output Format
 
 ```markdown
-## 🔧 Vibe Coding 환경 검증
+## 🔧 Vibe Coding Environment Validation
 
-### 에이전트 상태
-| 카테고리 | 설치됨 | 누락 |
-|----------|--------|------|
-| 핵심 | N개 | - |
-| 품질 | N개 | - |
-| 오케스트레이션 | N개 | - |
-| 메타 | N개 | - |
+### Agent Status
+| Category | Installed | Missing |
+|----------|-----------|---------|
+| Core | N | - |
+| Quality | N | - |
+| Orchestration | N | - |
+| Meta | N | - |
 
-### CLAUDE.md 상태
-| 섹션 | 상태 |
-|------|------|
+### CLAUDE.md Status
+| Section | Status |
+|---------|--------|
 | Quick Reference | ✅/❌ |
-| 에이전트 테이블 | ✅/❌ |
-| 핵심 규칙 | ✅/❌ |
+| Agent Table | ✅/❌ |
+| Core Rules | ✅/❌ |
 
-### 권장 조치
-1. [필요한 조치 목록]
+### Recommended Actions
+1. [List of required actions]
 
 ---
-✅ 환경 준비 완료! / ⚠️ 일부 설정 필요
+✅ Environment ready! / ⚠️ Some setup required
 ```
 
 ---
 
-## 자동 수정
+## Auto-fix
 
-누락된 항목 발견 시:
-- 누락 에이전트 목록 제공
-- CLAUDE.md 템플릿 제공
+When missing items are found:
+- Provides a list of missing agents
+- Provides a CLAUDE.md template
 
 ---
 
-## 검증 스크립트 (내부)
+## Validation Script (Internal)
 
 ```bash
-# 에이전트 파일 확인
+# Check agent files
 ls .claude/agents/*.md 2>/dev/null | wc -l
 
-# CLAUDE.md 존재 확인
+# Check existence of CLAUDE.md
 test -f CLAUDE.md && echo "exists"
 ```

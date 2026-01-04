@@ -1,59 +1,61 @@
 # Claude Code ClaudeVibeFlow
 
-Claude Code를 활용한 풀 바이브 코딩을 위한 범용 에이전트 및 명령어 플러그인입니다.
+Generic agent and command plugins for Full Vibe Coding using Claude Code.
 
-## 설치 방법
+[한국어 문서 (Korean Documentation)](file:///Users/jack/client/claude-vibe-flow/README.ko.md)
 
-### 방법 1: 플러그인 마켓플레이스 (권장)
+## Installation
+
+### Method 1: Plugin Marketplace (Recommended)
 
 ```bash
-# 마켓플레이스 추가 (GitHub 저장소)
+# Add marketplace (GitHub repository)
 /plugin marketplace add your-org/claude-vibe-flow
 
-# 플러그인 설치
+# Install plugin
 /plugin install claude-vibe-flow
 
-# 프로젝트 범위로 설치 (선택)
+# Install project-scoped (optional)
 /plugin install claude-vibe-flow --scope project
 ```
 
-### 방법 2: 로컬 개발/테스트
+### Method 2: Local Development/Testing
 
 ```bash
-# 로컬 플러그인으로 실행
+# Run as local plugin
 claude --plugin-dir ./claude-vibe-flow
 
-# 플러그인 검증
+# Validate plugin
 claude plugin validate ./claude-vibe-flow
 ```
 
-### 방법 3: 수동 복사 (레거시)
+### Method 3: Manual Copy (Legacy)
 
 ```bash
-# agents만 복사
+# Copy agents only
 cp -r claude-vibe-flow/agents/ your-project/.claude/agents/
 
-# commands 복사
+# Copy commands
 cp -r claude-vibe-flow/commands/ your-project/.claude/commands/
 ```
 
 ---
 
-## 구조 (공식 플러그인 형식)
+## Structure (Official Plugin Format)
 
 ```
 claude-vibe-flow/
 ├── .claude-plugin/
-│   └── plugin.json           # 플러그인 메타데이터 (필수)
+│   └── plugin.json           # Plugin metadata (Required)
 ├── config/
-│   └── intent-routing.md     # 의도-에이전트 매핑 규칙
-├── agents/                   # 서브에이전트 (15개)
+│   └── intent-routing.md     # Intent-to-Agent mapping rules
+├── agents/                   # Sub-agents (15+)
 │   ├── git-guardian.md
 │   ├── issue-fixer.md
 │   ├── code-reviewer.md
 │   ├── pm-orchestrator.md
 │   └── ...
-├── commands/                 # 슬래시 명령어
+├── commands/                 # Slash commands
 │   ├── new-feature.md
 │   └── check-setup.md
 └── README.md
@@ -61,175 +63,175 @@ claude-vibe-flow/
 
 ---
 
-## 의도 기반 라우팅
+## Intent-Based Routing
 
-`config/intent-routing.md`에서 **동사 + 컨텍스트** 조합으로 에이전트를 자동 선택합니다.
+Automatically selects agents based on **Verb + Context** combinations in `config/intent-routing.md`.
 
-### 주요 동사 패턴
+### Key Verb Patterns
 
-| 동사 | 컨텍스트 | 에이전트 |
+| Verb | Context | Agent |
 |------|----------|----------|
-| **검토해** | 코드, PR | `code-reviewer` |
-| **검증해** | 테스트, 품질 | `test-quality-validator` |
-| **검증해** | 타입, 동기화 | `type-sync-checker` |
-| **검증해** | 보안, 마스킹 | `security-validator` |
-| **확인해** | 에이전트 상태 | `agent-manager` |
-| **확인해** | 코드 존재 | 직접 Grep/Read |
-| **만들어줘** | 기능, 컴포넌트 | `pm-orchestrator` → 판단 |
-| **고쳐줘** | 버그, 에러 | `issue-fixer` |
+| **Review** | Code, PR | `code-reviewer` |
+| **Validate** | Test, Quality | `test-quality-validator` |
+| **Validate** | Types, Sync | `type-sync-checker` |
+| **Validate** | Security, Masking | `security-validator` |
+| **Check** | Agent Status | `agent-manager` |
+| **Check** | Code Existence | Direct Grep/Read |
+| **Create** | Feature, Component | `pm-orchestrator` → Decision |
+| **Fix** | Bug, Error | `issue-fixer` |
 
-### 예시
+### Examples
 
 ```bash
-"코드 검토해줘"     → code-reviewer
-"타입 검증해줘"     → type-sync-checker
-"보안 검증해줘"     → security-validator
-"에이전트 확인해줘" → agent-manager
-"이 함수 확인해줘"  → 직접 Grep (에이전트 불필요)
+"Review the code"     → code-reviewer
+"Validate types"      → type-sync-checker
+"Validate security"   → security-validator
+"Check agents"        → agent-manager
+"Check this function" → Direct Grep (No agent needed)
 ```
 
-> 상세 규칙은 `config/intent-routing.md` 참조
+> See `config/intent-routing.md` for detailed rules.
 
 ---
 
-## 에이전트 목록
+## Agent List
 
-### 🔴 핵심 (Critical)
+### 🔴 Critical
 
-| 에이전트 | 설명 | 트리거 |
+| Agent | Description | Trigger |
 |----------|------|--------|
-| `git-guardian` | Git 워크플로우 자동화 | 세션 시작, 커밋 요청 |
-| `issue-fixer` | 버그 수정 전문가 | 에러, 버그, fix, debug |
-| `code-reviewer` | 코드 리뷰 | 코드 변경 후 자동 |
-| `test-generator` | 테스트 생성 | test, 커버리지 |
+| `git-guardian` | Git workflow automation | Session start, commit request |
+| `issue-fixer` | Bug fixing expert | Error, bug, fix, debug |
+| `code-reviewer` | Code review | Automatic after code change |
+| `test-generator` | Test generation | test, coverage |
 
-### 🟡 품질 (Quality)
+### 🟡 Quality
 
-| 에이전트 | 설명 | 트리거 |
+| Agent | Description | Trigger |
 |----------|------|--------|
-| `test-quality-validator` | 테스트 품질 검증 | 테스트 작성 후 |
-| `context-optimizer` | 토큰 최적화 | 컨텍스트 50%+ |
+| `test-quality-validator` | Test quality validation | After test creation |
+| `context-optimizer` | Token optimization | Context 50%+ |
 
-### 🟢 오케스트레이션 (Orchestration)
+### 🟢 Orchestration
 
-| 에이전트 | 설명 | 트리거 |
+| Agent | Description | Trigger |
 |----------|------|--------|
-| `pm-orchestrator` | 요청 분석/라우팅 | 복잡한 기능 요청 |
-| `planner` | 요구사항 명확화 | 모호한 요청 |
-| `architect` | 기술 설계 | 아키텍처 결정 |
-| `spec-validator` | 스펙 완전성 검증 | 구현 시작 전 |
-| `vibe-implementer` | 빠른 구현 | 명확한 구현 요청 |
-| `task-manager` | 작업 생명주기 | 세션 시작/종료 |
+| `pm-orchestrator` | Request analysis/routing | Complex feature requests |
+| `planner` | Requirement clarification | Ambiguous requests |
+| `architect` | Technical design | Architecture decisions |
+| `spec-validator` | Spec completeness validation | Before implementation starts |
+| `vibe-implementer` | Fast implementation | Clear implementation requests |
+| `task-manager` | Task lifecycle management | Session start/end |
 
-### 🔵 메타 (Meta)
+### 🔵 Meta
 
-| 에이전트 | 설명 | 트리거 |
+| Agent | Description | Trigger |
 |----------|------|--------|
-| `agent-manager` | 에이전트 생태계 관리 | 에이전트 관련 요청 |
-| `docs-sync` | 내부 문서 동기화 | 구현 완료 후 |
-| `readme-sync` | README 동기화 | Public API 변경 |
+| `agent-manager` | Agent ecosystem management | Agent-related requests |
+| `docs-sync` | Internal docs sync | After implementation completion |
+| `readme-sync` | README sync | Public API changes |
 
 ---
 
-## Commands 사용법
+## Command Usage
 
-### new-feature 명령어
+### new-feature command
 
 ```bash
-/claude-vibe-flow:new-feature "기능명"
+/claude-vibe-flow:new-feature "feature-name"
 ```
 
-전체 구현 워크플로우 자동 실행:
-1. 요구사항 분석
-2. 기술 설계
-3. 브랜치 생성
-4. 구현
-5. 테스트
-6. 리뷰
-7. 커밋
+Automatically executes the full implementation workflow:
+1. Requirement Analysis
+2. Technical Design
+3. Branch Creation
+4. Implementation
+5. Testing
+6. Review
+7. Commit
 
-### check-setup 명령어
+### check-setup command
 
 ```bash
 /claude-vibe-flow:check-setup
 ```
 
-플러그인 설치 상태 및 의존성 확인
+Verifies plugin installation status and dependencies.
 
 ---
 
-## 프로젝트별 CLAUDE.md 예시
+## Example CLAUDE.md for Projects
 
 ```markdown
 # CLAUDE.md - Your Project
 
-## 서브에이전트 자동 선택
+## Automatic Sub-agent Selection
 
-| 트리거 | 에이전트 |
+| Trigger | Agent |
 |--------|----------|
-| 버그, 에러, fix | `issue-fixer` |
-| 테스트, test | `test-generator` |
-| 코드 변경 후 | `code-reviewer` |
-| 세션 시작 | `git-guardian` |
+| bug, error, fix | `issue-fixer` |
+| test | `test-generator` |
+| After code change | `code-reviewer` |
+| Session start | `git-guardian` |
 
 ## Quick Reference
 
 \`\`\`bash
-npm run dev      # 개발 서버
-npm run build    # 빌드
-npm run test     # 테스트
-npm run lint     # 린트
+npm run dev      # Development server
+npm run build    # Build
+npm run test     # Test
+npm run lint     # Lint
 \`\`\`
 
-## 핵심 규칙
+## Core Rules
 
-- 코드 변경 전 관련 파일 먼저 읽기
-- 변경 후 검증 명령어 실행
-- 기존 패턴 따르기
+- Read relevant files before changing code
+- Run validation commands after changes
+- Follow existing patterns
 ```
 
 ---
 
-## 커스터마이징 가이드
+## Customization Guide
 
-### 에이전트 추가
+### Adding an Agent
 
 ```markdown
 # agents/my-custom-agent.md
 
 ---
 name: my-custom-agent
-description: 설명. AUTOMATICALLY 트리거 조건.
+description: Description. AUTOMATICALLY triggered conditions.
 tools: Read, Grep, Glob
 model: sonnet
 ---
 
-# 에이전트 내용
+# Agent Content
 ```
 
-### 프로젝트 특화 에이전트 (별도 생성 필요)
+### Project-Specific Agents (Optional)
 
-다음은 범용 템플릿에서 제외되었습니다:
+The following were excluded from the generic template:
 
-- `security-validator` - 보안 마스킹 패턴 (프로젝트별 다름)
-- `type-sync-checker` - 타입 동기화 (프로젝트 구조에 의존)
-- `api-integration` - API 스키마 검증 (프로젝트별 다름)
-- `i18n-validator` - 다국어 검증 (프로젝트별 다름)
-- `vercel-constraint-checker` - Vercel 특화
+- `security-validator` - Security masking patterns (Project-specific)
+- `type-sync-checker` - Type synchronization (Depends on project structure)
+- `api-integration` - API schema validation (Project-specific)
+- `i18n-validator` - Multi-language validation (Project-specific)
+- `vercel-constraint-checker` - Vercel-specific constraints
 
 ---
 
-## CLI 명령어 레퍼런스
+## CLI Command Reference
 
 ```bash
-# 설치/관리
+# Installation/Management
 /plugin install claude-vibe-flow
 /plugin uninstall claude-vibe-flow
 /plugin enable claude-vibe-flow
 /plugin disable claude-vibe-flow
 /plugin update claude-vibe-flow
 
-# 개발/디버그
+# Development/Debug
 claude --plugin-dir ./claude-vibe-flow
 claude plugin validate .
 claude --debug
@@ -237,15 +239,15 @@ claude --debug
 
 ---
 
-## 설치 체크리스트
+## Installation Checklist
 
-- [ ] `/plugin install claude-vibe-flow` 실행
-- [ ] `CLAUDE.md`에 에이전트 테이블 추가
-- [ ] Quick Reference 추가
-- [ ] 프로젝트 특화 에이전트 생성 (필요시)
+- [ ] Run `/plugin install claude-vibe-flow`
+- [ ] Add agent table to `CLAUDE.md`
+- [ ] Add Quick Reference
+- [ ] Create project-specific agents (if needed)
 
 ---
 
-## 라이선스
+## License
 
 MIT
