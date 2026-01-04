@@ -142,27 +142,34 @@ Instead of just printing the requirements, you **MUST CREATE OR UPDATE** the `.v
 
 #### File: `.vibe-flow/active_spec.md` Template
 ```markdown
-# Active Spec: [Goal Title]
+# Active Specification: [Task Name]
 
-## Goal
-[One sentence goal]
+> **Status**: 🟡 In Progress
+> **Last Updated**: [Date]
 
-## Status
-- [ ] Requirements Definition (Done)
-- [ ] Technical Design (Pending)
-- [ ] Implementation (Pending)
+## 1. Goal
+[Simple one-line description of what we are building right now]
 
-## Requirements
+## 2. Requirements (Planner)
 ### Mandatory
 - [ ] [Req 1]
 - [ ] [Req 2]
 
-### Decisions
-- [Decisions made so far]
+## 3. Technical Design (Architect)
+- **Stack**: [e.g., React, Node.js]
+- **Key Decisions**:
+  - [Decision 1]
+
+## 4. Implementation Checklist (Implementer)
+- [ ] [File Name] implementation
+- [ ] Test verification
+
+## 5. Review Notes (Reviewer)
+- [ ] [Issue 1]
 ```
 
 **After creating the file, report:**
-"✅ Created `active_spec.md`. Please ask `architect` to proceed with technical design."
+"✅ Created `active_spec.md` and saved to `.vibe-flow/active_spec.md`. Ready for Technical Design."
 
 ---
 

@@ -251,9 +251,9 @@ Shall we proceed in this direction?
 
 ### 2. Update Protocol
 Instead of just chatting, **UPDATE** `.vibe-flow/active_spec.md`:
-- Add a `## Technical Design` section (if missing).
-- Record key decisions (Stack, Schema, API Design).
-- Mark "Technical Design" as `[x]` in Status.
+- Locate the **`## 3. Technical Design (Architect)`** section.
+- Fill in key decisions (Stack, Schema, API Design).
+- Mark "Technical Design" as `[x]` in Status (if available in top summary).
 
 **Checklist before finishing:**
 - [ ] Did I read `.vibe-flow/active_spec.md`?

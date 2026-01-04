@@ -202,6 +202,7 @@ Starting implementation.
 ### 2. Update Protocol (Deep Mode Only)
 If running in Deep Mode:
 - **UPDATE** `.vibe-flow/active_spec.md` checkboxes (`[x]`) in real-time.
+- Focus on the **`## 4. Implementation Checklist`** section.
 - If you find a bug or need a change, **UPDATE** the spec first.
 
 **Checklist before finishing:**

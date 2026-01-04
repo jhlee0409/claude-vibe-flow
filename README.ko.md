@@ -1,254 +1,108 @@
-# Claude Code ClaudeVibeFlow
+# Claude Code ClaudeVibeFlow (v2.0)
 
-Claude Code를 활용한 풀 바이브 코딩을 위한 범용 에이전트 및 명령어 플러그인입니다.
+> **"파일이 상태를 관리하고, AI는 그 상태를 따른다."**
+>
+> 진정한 **바이브 코딩(Vibe Coding)**을 위한 파일 기반 상태 머신(File-Based State Machine) 플러그인입니다.
 
-## 설치 방법
+[English Documentation](README.md)
 
-### 방법 1: 플러그인 마켓플레이스 (권장)
+---
+
+## 🌟 무엇이 달라졌나요? (v2.0 철학)
+
+기존의 "채팅(Chat)" 기반 코딩은 **맥락 표류(Context Drift)**에 취약했습니다. 대화가 길어지면 초기의 계획은 잊혀지고, AI는 환각을 일으키기 시작합니다.
+
+**ClaudeVibeFlow**는 **Active Context Architecture**를 통해 이 문제를 해결합니다.
+
+1.  **칠판(Blackboard) 패턴**: 모든 에이전트는 채팅 내역이 아니라 `.vibe-flow/active_spec.md`라는 **공유된 칠판**을 바라보고 작업합니다.
+2.  **규격화된 흐름**: `생각(Planner)` -> `기록(File)` -> `구현(Implementer)`의 흐름이 강제됩니다.
+3.  **지속성(Persistence)**: 컴퓨터를 껐다 켜도, 당신의 프로젝트 상태는 파일 시스템에 그대로 남아있습니다.
+
+---
+
+## 🚀 시작하기 (Getting Started)
+
+### 1단계: 설치 (Installation)
 
 ```bash
-# 마켓플레이스 추가 (GitHub 저장소)
-/plugin marketplace add your-org/claude-vibe-flow
-
-# 플러그인 설치
+# 플러그인 마켓플레이스에서 설치 (권장)
 /plugin install claude-vibe-flow
 
-# 프로젝트 범위로 설치 (선택)
-/plugin install claude-vibe-flow --scope project
-```
-
-### 방법 2: 로컬 개발/테스트
-
-```bash
-# 로컬 플러그인으로 실행
+# 또는 로컬 설치
 claude --plugin-dir ./claude-vibe-flow
-
-# 플러그인 검증
-claude plugin validate ./claude-vibe-flow
 ```
 
-### 방법 3: 수동 복사 (레거시)
+### 2단계: 환경 초기화 (Bootstrap)
+
+프로젝트 루트에서 다음 명령어를 실행하여 "바이브 환경"을 구축하세요. 이것이 **가장 중요한** 단계입니다.
 
 ```bash
-# agents만 복사
-cp -r claude-vibe-flow/agents/ your-project/.claude/agents/
-
-# commands 복사
-cp -r claude-vibe-flow/commands/ your-project/.claude/commands/
+/claude-vibe-flow:init
 ```
 
----
+> **결과**: `.vibe-flow/` 디렉토리와 `active_spec.md` 칠판이 생성됩니다. 이제 에이전트들이 일할 준비가 되었습니다.
 
-## 구조 (공식 플러그인 형식)
+### 3단계: 바이브 코딩 시작 (Start Vibe)
 
-```
-claude-vibe-flow/
-├── .claude-plugin/
-│   └── plugin.json           # 플러그인 메타데이터 (필수)
-├── agents/                   # 서브에이전트 (16개)
-│   ├── git-guardian.md
-│   ├── issue-fixer.md
-│   ├── code-reviewer.md
-│   ├── pm-orchestrator.md
-│   └── ...
-├── commands/                 # 슬래시 명령어
-│   ├── new-feature.md
-│   └── check-setup.md
-├── skills/                   # 스킬
-│   └── research.md
-├── outputStyles/             # 출력 품질 스타일
-└── README.md
-```
-
----
-
-## Description 기반 자동 라우팅
-
-Claude Code가 에이전트의 **description** 필드를 기반으로 자동 선택합니다 (공식 패턴).
-
-### 동작 방식
-
-```
-사용자 요청 → Claude가 에이전트 description 분석 → 적합한 에이전트 자동 선택
-```
-
-### 주요 패턴
-
-| 의도 | 에이전트 | Description 키워드 |
-|------|----------|-------------------|
-| 코드 리뷰 | `code-reviewer` | PROACTIVELY executes after code changes |
-| 버그 수정 | `issue-fixer` | AUTOMATICALLY executes on errors |
-| 기능 생성 | `vibe-implementer` | AUTOMATICALLY executes for clear requests |
-| 테스트 생성 | `test-generator` | AUTOMATICALLY writes tests |
-| 복잡한 작업 | `pm-orchestrator` | AUTOMATICALLY routes after analysis |
-
-### 예시
+이제 맥락 걱정 없이 기능을 요청하세요.
 
 ```bash
-"코드 검토해줘"     → code-reviewer (description 매칭)
-"버그 고쳐줘"       → issue-fixer (description 매칭)
-"버튼 만들어줘"     → vibe-implementer (description 매칭)
-"테스트 추가해줘"   → test-generator (description 매칭)
-```
-
-> Claude Code의 네이티브 의미론적 매칭으로 에이전트 description 기반 라우팅
-
----
-
-## 에이전트 목록
-
-### 🔴 핵심 (Critical)
-
-| 에이전트 | 설명 | 트리거 |
-|----------|------|--------|
-| `git-guardian` | Git 워크플로우 자동화 | 세션 시작, 커밋 요청 |
-| `issue-fixer` | 버그 수정 전문가 | 에러, 버그, fix, debug |
-| `code-reviewer` | 코드 리뷰 | 코드 변경 후 자동 |
-| `test-generator` | 테스트 생성 | test, 커버리지 |
-
-### 🟡 품질 (Quality)
-
-| 에이전트 | 설명 | 트리거 |
-|----------|------|--------|
-| `test-quality-validator` | 테스트 품질 검증 | 테스트 작성 후 |
-| `context-optimizer` | 토큰 최적화 | 컨텍스트 50%+ |
-
-### 🟢 오케스트레이션 (Orchestration)
-
-| 에이전트 | 설명 | 트리거 |
-|----------|------|--------|
-| `pm-orchestrator` | 요청 분석/라우팅 | 복잡한 기능 요청 |
-| `planner` | 요구사항 명확화 | 모호한 요청 |
-| `architect` | 기술 설계 | 아키텍처 결정 |
-| `spec-validator` | 스펙 완전성 검증 | 구현 시작 전 |
-| `vibe-implementer` | 빠른 구현 | 명확한 구현 요청 |
-| `task-manager` | 작업 생명주기 | 세션 시작/종료 |
-
-### 🔵 메타 (Meta)
-
-| 에이전트 | 설명 | 트리거 |
-|----------|------|--------|
-| `agent-manager` | 에이전트 생태계 관리 | 에이전트 관련 요청 |
-| `docs-sync` | 내부 문서 동기화 | 구현 완료 후 |
-| `readme-sync` | README 동기화 | Public API 변경 |
-
----
-
-## Commands 사용법
-
-### new-feature 명령어
-
-```bash
-/claude-vibe-flow:new-feature "기능명"
-```
-
-전체 구현 워크플로우 자동 실행:
-1. 요구사항 분석
-2. 기술 설계
-3. 브랜치 생성
-4. 구현
-5. 테스트
-6. 리뷰
-7. 커밋
-
-### check-setup 명령어
-
-```bash
-/claude-vibe-flow:check-setup
-```
-
-플러그인 설치 상태 및 의존성 확인
-
----
-
-## 프로젝트별 CLAUDE.md 예시
-
-```markdown
-# CLAUDE.md - Your Project
-
-## 서브에이전트 자동 선택
-
-| 트리거 | 에이전트 |
-|--------|----------|
-| 버그, 에러, fix | `issue-fixer` |
-| 테스트, test | `test-generator` |
-| 코드 변경 후 | `code-reviewer` |
-| 세션 시작 | `git-guardian` |
-
-## Quick Reference
-
-\`\`\`bash
-npm run dev      # 개발 서버
-npm run build    # 빌드
-npm run test     # 테스트
-npm run lint     # 린트
-\`\`\`
-
-## 핵심 규칙
-
-- 코드 변경 전 관련 파일 먼저 읽기
-- 변경 후 검증 명령어 실행
-- 기존 패턴 따르기
+/claude-vibe-flow:new-feature "소셜 로그인 기능 만들어줘"
 ```
 
 ---
 
-## 커스터마이징 가이드
+## 🔄 워크플로우 (How It Works)
 
-### 에이전트 추가
+이 플러그인은 아래의 순환 구조를 통해 "속도"와 "정확성"을 동시에 잡습니다.
 
-```markdown
-# agents/my-custom-agent.md
-
----
-name: my-custom-agent
-description: 설명. AUTOMATICALLY 트리거 조건.
-tools: Read, Grep, Glob
-model: sonnet
----
-
-# 에이전트 내용
+```mermaid
+graph TD
+    User[사용자] -->|1. 기능 요청| PM[PM Orchestrator]
+    PM -->|2. 분석 요청| Planner[Planner]
+    Planner -->|3. 스펙 작성| AC{active_spec.md}
+    AC -->|4. 스펙 읽기| Arch[Architect]
+    Arch -->|5. 설계 업데이트| AC
+    AC -->|6. 구현 체크리스트 확인| Imp[Vibe Implementer]
+    Imp -->|7. 코드 작성| Code[Source Code]
+    Imp -->|8. 체크리스트 완료| AC
 ```
 
-### 프로젝트 특화 에이전트 (별도 생성 필요)
-
-다음은 범용 템플릿에서 제외되었습니다:
-
-- `security-validator` - 보안 마스킹 패턴 (프로젝트별 다름)
-- `type-sync-checker` - 타입 동기화 (프로젝트 구조에 의존)
-- `api-integration` - API 스키마 검증 (프로젝트별 다름)
-- `i18n-validator` - 다국어 검증 (프로젝트별 다름)
-- `vercel-constraint-checker` - Vercel 특화
+1.  **Planner**: 당신의 모호한 말을 구체적인 요구사항으로 바꿔 `active_spec.md`에 **적습니다**.
+2.  **Architect**: 기술적 결정을 `active_spec.md`에 **추가합니다**.
+3.  **Implementer**: `active_spec.md`의 체크리스트를 하나씩 지워가며 코드를 **구현합니다**.
+4.  **User**: 당신은 그저 이 과정이 흘러가는 것을 지켜보며 감독하면 됩니다.
 
 ---
 
-## CLI 명령어 레퍼런스
+## 🤖 에이전트 목록 (Agents)
 
-```bash
-# 설치/관리
-/plugin install claude-vibe-flow
-/plugin uninstall claude-vibe-flow
-/plugin enable claude-vibe-flow
-/plugin disable claude-vibe-flow
-/plugin update claude-vibe-flow
+Claude는 description 기반으로 이 에이전트들을 **자동으로 호출**합니다.
 
-# 개발/디버그
-claude --plugin-dir ./claude-vibe-flow
-claude plugin validate .
-claude --debug
-```
+| 분류 | 에이전트 | 역할 | 트리거 조건 |
+|------|----------|------|-------------|
+| 🟣 **Core** | `pm-orchestrator` | **지휘자**. 복잡도를 분석하고 팀을 꾸립니다. | 복잡한 기능 요청 |
+| 🔵 **Plan** | `planner` | **서기**. 칠판(`active_spec.md`)에 요구사항을 정리합니다. | 모호한 요청 |
+| 🔵 **Plan** | `architect` | **설계자**. 기술 스택을 결정하고 칠판에 기록합니다. | 기술적 의사결정 |
+| 🟠 **Action** | `vibe-implementer` | **시공자**. 칠판을 보고 코드를 짭니다. | 명확한 구현 요청 |
+| 🟢 **Quality** | `spec-validator` | **감리**. 칠판의 내용이 충분한지 검사합니다. | 구현 시작 전 |
+| 🟢 **Quality** | `code-reviewer` | **검토자**. 구현된 코드가 칠판의 내용과 맞는지 봅니다. | 코드 변경 후 |
+| ⚪ **Support** | `task-manager` | **관리자**. 작업이 끝나면 칠판을 지우고 정리합니다. | 세션 시작/종료 |
 
 ---
 
-## 설치 체크리스트
+## 🛠 명령어 (Commands)
 
-- [ ] `/plugin install claude-vibe-flow` 실행
-- [ ] `CLAUDE.md`에 에이전트 테이블 추가
-- [ ] Quick Reference 추가
-- [ ] 프로젝트 특화 에이전트 생성 (필요시)
+| 명령어 | 설명 | 예시 |
+|--------|------|------|
+| `/claude-vibe-flow:init` | **[필수]** 프로젝트에 바이브 환경(`.vibe-flow`)을 설정합니다. | - |
+| `/claude-vibe-flow:new-feature` | 전체 구현 파이프라인(기획~구현~검증)을 실행합니다. | `/claude-vibe-flow:new-feature "결제 모듈"` |
+| `/claude-vibe-flow:check-setup` | 플러그인 설치 상태와 의존성을 확인합니다. | - |
 
 ---
 
-## 라이선스
+## ⚡ 팁: 바이브를 유지하는 법
 
-MIT
+1.  **"파일을 믿으세요"**: 채팅창에 긴 설명을 다시 쓸 필요가 없습니다. "Spec 파일 확인해" 한마디면 에이전트는 알아듣습니다.
+2.  **"초기화는 한 번만"**: `init`은 프로젝트당 한 번이면 충분합니다.
+3.  **"작게 시작하세요"**: `new-feature`는 거대한 기능보다 "로그인", "헤더 수정" 같은 단위 작업에 최적화되어 있습니다.
