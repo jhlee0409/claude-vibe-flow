@@ -242,9 +242,28 @@ Shall we proceed in this direction?
 
 ---
 
+## Active Context Sync (Required)
+
+### 1. Read First
+**ALWAYS** read `active_spec.md` before starting analysis.
+- Understand the Goal and Requirements.
+- Check previous decisions.
+
+### 2. Update Protocol
+Instead of just chatting, **UPDATE** `active_spec.md`:
+- Add a `## Technical Design` section (if missing).
+- Record key decisions (Stack, Schema, API Design).
+- Mark "Technical Design" as `[x]` in Status.
+
+**Checklist before finishing:**
+- [ ] Did I read `active_spec.md`?
+- [ ] Did I update `active_spec.md` with my design?
+- [ ] Did I mark the status?
+
+---
+
 ## Linked Agents
 
-- **pm-orchestrator**: Return review results
-- **planner**: Collaborate on clarifying requirements
-- **spec-validator**: Validate technical specs
-- **vibe-implementer**: Deliver implementation guides
+- **planner**: If requirements are unclear, ask planner to update spec.
+- **spec-validator**: Validate the updated spec file.
+- **vibe-implementer**: Pass the baton (via file) for implementation.

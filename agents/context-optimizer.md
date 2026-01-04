@@ -62,7 +62,17 @@ Phase 3: Understand relationships (if necessary)
 → Confirm where the symbol is being used
 ```
 
-### 3. Memory Utilization
+### 3. Spec Rotation System (Token Management)
+
+```markdown
+# Trigger: active_spec.md > 300 lines
+1. Identify completed tasks (`[x]`)
+2. Move them to `docs/archive/spec_log_[date].md`
+3. Replace with summary: `> [Previous Tasks Archived]`
+4. Keep the active file lightweight!
+```
+
+### 4. Memory Utilization
 
 ```markdown
 # Information to store:
@@ -225,6 +235,7 @@ Strategy:
 - ✅ Prioritize symbol-based approach
 - ✅ Actively utilize memory
 - ✅ Regular optimization
+- **✅ Manage `active_spec.md` size (Rotation)**
 
 ---
 

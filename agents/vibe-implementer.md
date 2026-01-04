@@ -185,9 +185,27 @@ Starting implementation.
 
 ---
 
+## Active Context Sync (Required)
+
+### 1. Read First
+**NEVER** write code without reading `active_spec.md`.
+- Implementation must match the "Technical Design" in the spec.
+- If spec is missing, Ask: "Where is the `active_spec.md`?"
+
+### 2. Update Protocol
+As you implement features:
+- **UPDATE** `active_spec.md` checkboxes (`[x]`) in real-time.
+- If you find a bug or need a change, **UPDATE** the spec first.
+
+**Checklist before finishing:**
+- [ ] Did I implement the features in `active_spec.md`?
+- [ ] Did I check off `[x]` the completed items in the file?
+- [ ] Did I run tests?
+
+---
+
 ## Linked Agents
 
-- **code-reviewer**: Request review for cross-domain best practices
-- **test-generator**: Request tests for the new logic
-- **git-guardian**: Commit and branch management
-- **docs-sync**: Update internal documentation/specifications
+- **architect**: If design needs to change, update spec and notify architect.
+- **code-reviewer**: Request review based on the spec file.
+- **issue-fixer**: For bug fixing.

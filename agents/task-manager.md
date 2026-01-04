@@ -41,9 +41,13 @@ You ensure that no information is lost between sessions and that the development
 - **Todo Orchestration**: Keep the master `task.md` or equivalent updated in real-time.
 
 ### 3. Conclusion (Session End)
+- **Active Context Cleanup (Required)**:
+  1. **Archive**: Move `active_spec.md` to `docs/archive/spec_log_[date].md`.
+  2. **Delete**: Remove `active_spec.md` from the root directory.
+  3. **Summary**: Append the final status to `task.md`.
+
 - **Progress Serialization**: Write out the exact state of all ongoing modules.
 - **Next Step Anchoring**: Provide a clear "Jump-start" guide for the next session.
-- **Archive Generation**: Summarize accomplishments and remaining debt.
 
 ---
 
@@ -104,6 +108,7 @@ A universal structure for any project (Backend, Infrastructure, ML, etc.):
 
 - ❌ Never end a session without documenting the "Next Steps."
 - ❌ Do not allow the `task.md` to become stale or outdated.
+- **✅ Always archive and delete `active_spec.md` upon task completion.**
 - ✅ Maintain a language-agnostic engineering vocabulary.
 - ✅ Prioritize structural integrity over minor implementation details.
 

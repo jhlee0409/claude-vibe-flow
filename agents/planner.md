@@ -136,50 +136,33 @@ Questions:
 I will make a specific plan once you answer!
 ```
 
-### Requirement Summary
+### Active Context Output (Required)
 
+Instead of just printing the requirements, you **MUST CREATE OR UPDATE** the `active_spec.md` file in the root directory.
+
+#### File: `active_spec.md` Template
 ```markdown
-## 📋 Requirement Specification
+# Active Spec: [Goal Title]
 
-### Overview
-**Goal**: [One-sentence summary]
-**Background**: [Why it is necessary]
+## Goal
+[One sentence goal]
 
-### Functional Requirements
+## Status
+- [ ] Requirements Definition (Done)
+- [ ] Technical Design (Pending)
+- [ ] Implementation (Pending)
 
-#### Mandatory (Must Have)
-1. [Feature 1]
-   - Detail: ...
-   - Acceptance Criteria: ...
+## Requirements
+### Mandatory
+- [ ] [Req 1]
+- [ ] [Req 2]
 
-2. [Feature 2]
-   - Detail: ...
-   - Acceptance Criteria: ...
-
-#### Optional (Nice to Have)
-1. [Feature 3]
-
-### Non-functional Requirements
-- Performance: [Requirements]
-- Security: [Requirements]
-- Compatibility: [Requirements]
-
-### Scope
-- ✅ Included: [List]
-- ❌ Excluded: [List]
-
-### Success Criteria
-- [ ] [Criterion 1]
-- [ ] [Criterion 2]
-
-### Expected Impact
-- Changed files: [List]
-- Dependencies: [List]
-
----
-
-Is this requirement correct? Once confirmed, we will proceed to the next step.
+### Decisions
+- [Decisions made so far]
 ```
+
+**After creating the file, report:**
+"✅ Created `active_spec.md`. Please ask `architect` to proceed with technical design."
 
 ---
 
