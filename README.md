@@ -2,7 +2,7 @@
 
 [한국어](README.ko.md) | **English**
 
-A suite of 17 specialized agents for [Claude Code](https://github.com/anthropics/claude-code) that provides persistent context management and automated development workflows.
+A suite of 18 specialized agents for [Claude Code](https://github.com/anthropics/claude-code) that provides persistent context management and automated development workflows.
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![npm version](https://img.shields.io/npm/v/claude-vibe-flow)](https://www.npmjs.com/package/claude-vibe-flow)
@@ -95,9 +95,11 @@ Analyze and fix bugs.
 | `docs-sync` | Synchronizes documentation with code changes. |
 | `readme-sync` | Keeps READMEs updated. |
 | `research-agent` | Performs external research (web/docs). |
+| `code-simplifier` | Reduces code complexity while preserving behavior. |
 
 ## Commands
 
+### Workflow Commands
 | Command | Description |
 |---------|-------------|
 | `/claude-vibe-flow:init` | Initializes the Vibe Flow environment. |
@@ -109,6 +111,16 @@ Analyze and fix bugs.
 | `/claude-vibe-flow:check-setup` | Verifies Vibe Flow installation. |
 | `/claude-vibe-flow:check-mcp` | Checks status of MCP servers. |
 | `/claude-vibe-flow:ask` | Asks a question about the codebase. |
+| `/claude-vibe-flow:plan` | Creates a detailed implementation plan before coding. |
+| `/claude-vibe-flow:commit-push-pr` | Commit, push, and create PR in one command. |
+
+### Mode Commands
+| Command | Description |
+|---------|-------------|
+| `/claude-vibe-flow:verify` | Enables Verification mode - thorough checks after every edit. |
+| `/claude-vibe-flow:fast` | Enables FastVibe mode - rapid prototyping with minimal checks. |
+| `/claude-vibe-flow:deep` | Enables DeepWork mode - complex tasks with detailed planning. |
+| `/claude-vibe-flow:action` | Enables Action mode - extreme bias toward action, anti-paralysis. |
 
 ## Contributing
 

@@ -254,6 +254,72 @@ result:
 
 ---
 
+## Anti-Analysis Paralysis Protocol
+
+> **Mission Critical**: Orchestration must NOT become an infinite loop.
+
+### Routing Exit Conditions
+
+ROUTE IMMEDIATELY when ANY is true:
+
+| Condition | Action |
+|-----------|--------|
+| Request mentions specific file/function | → `vibe-implementer` directly |
+| Request uses "just", "quickly", "simply" | → `vibe-implementer` directly |
+| Request is under 30 words with clear action | → `vibe-implementer` directly |
+| You've read 2+ files before routing | → STOP reading, route NOW |
+| Same agent considered twice | → Pick one, route NOW |
+
+### Commitment Before Routing
+
+BEFORE routing to any agent, state:
+
+```
+"Routing to [AGENT] because [ONE REASON].
+Expected output: [SPECIFIC DELIVERABLE].
+If this doesn't work: [FALLBACK PLAN]."
+```
+
+**If you can't complete this → Route to vibe-implementer with assumptions.**
+
+### Loop Breaking Rules
+
+| Pattern Detected | Immediate Action |
+|------------------|------------------|
+| planner → back to orchestrator → planner | BREAK: "Enough clarification. Proceeding with current understanding." |
+| architect → back to orchestrator → architect | BREAK: "Enough analysis. Using first viable option." |
+| Any agent called 2+ times | BREAK: Force next phase with explicit assumptions |
+
+### Fast-Track (Default Path)
+
+```markdown
+DEFAULT behavior for most requests:
+
+User request → Quick assessment (30 sec max) → vibe-implementer
+
+Use planner/architect ONLY when:
+- User explicitly asks for planning/design
+- Request involves 5+ files AND no clear pattern exists
+- Security/payment/auth with no existing patterns
+
+When in doubt → vibe-implementer. Course-correct later.
+```
+
+### Pipeline Maximum
+
+```markdown
+HARD LIMIT: 3 agents per request (including verification)
+
+✅ GOOD: request → vibe-implementer → code-reviewer
+✅ GOOD: request → architect → vibe-implementer → test-generator  
+❌ BAD: request → planner → architect → spec-validator → vibe-implementer → ...
+
+If you're building a 4+ agent pipeline → You're over-engineering.
+Simplify or ask user which phase to skip.
+```
+
+---
+
 ## Linked Agents
 
 - **planner**: Clarify vague requests

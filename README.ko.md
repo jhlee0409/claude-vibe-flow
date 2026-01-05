@@ -2,7 +2,7 @@
 
 **한국어** | [English](README.md)
 
-[Claude Code](https://github.com/anthropics/claude-code)를 위한 17개의 전문 에이전트 제품군으로, 영구적인 컨텍스트 관리와 자동화된 개발 워크플로우를 제공합니다.
+[Claude Code](https://github.com/anthropics/claude-code)를 위한 18개의 전문 에이전트 제품군으로, 영구적인 컨텍스트 관리와 자동화된 개발 워크플로우를 제공합니다.
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![npm version](https://img.shields.io/npm/v/claude-vibe-flow)](https://www.npmjs.com/package/claude-vibe-flow)
@@ -95,9 +95,11 @@ claude
 | `docs-sync` | 코드 변경 사항과 문서를 동기화합니다. |
 | `readme-sync` | README를 프로젝트 상태와 동기화합니다. |
 | `research-agent` | 웹/문서 검색 등 외부 조사를 수행합니다. |
+| `code-simplifier` | 동작을 유지하면서 코드 복잡도를 줄입니다. |
 
 ## 명령어 목록
 
+### 워크플로우 명령어
 | 명령어 | 설명 |
 |---------|-------------|
 | `/claude-vibe-flow:init` | Vibe Flow 환경을 초기화합니다. |
@@ -109,6 +111,16 @@ claude
 | `/claude-vibe-flow:check-setup` | Vibe Flow 설치 상태를 확인합니다. |
 | `/claude-vibe-flow:check-mcp` | MCP 서버 상태를 확인합니다. |
 | `/claude-vibe-flow:ask` | 코드베이스에 대해 질문합니다. |
+| `/claude-vibe-flow:plan` | 코딩 전 상세한 구현 계획을 작성합니다. |
+| `/claude-vibe-flow:commit-push-pr` | 커밋, 푸시, PR 생성을 한 번에 처리합니다. |
+
+### 모드 명령어
+| 명령어 | 설명 |
+|---------|-------------|
+| `/claude-vibe-flow:verify` | Verification 모드 - 모든 편집 후 철저한 검증. |
+| `/claude-vibe-flow:fast` | FastVibe 모드 - 최소 검증으로 빠른 프로토타이핑. |
+| `/claude-vibe-flow:deep` | DeepWork 모드 - 상세한 계획과 복잡한 작업 처리. |
+| `/claude-vibe-flow:action` | Action 모드 - 극단적 행동 우선, 분석 마비 방지. |
 
 ## 기여하기
 

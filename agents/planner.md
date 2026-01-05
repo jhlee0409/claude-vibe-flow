@@ -210,6 +210,56 @@ Instead of just printing the requirements, you **MUST CREATE OR UPDATE** the `.c
 
 ---
 
+## Anti-Analysis Paralysis Rules
+
+> **Principle**: Exploration is a COST, not a benefit. Every file read delays action.
+
+### Exit Conditions (Not Counts)
+
+STOP exploring when you can answer YES to ANY:
+
+| Question | If YES → Action |
+|----------|-----------------|
+| Can I name the files I'll modify? | STOP. Start planning implementation. |
+| Do I know the pattern to follow? | STOP. Start implementing. |
+| Is my uncertainty about details, not direction? | STOP. Details emerge during implementation. |
+| Has the user given me enough to make a reasonable attempt? | STOP. Build, then iterate. |
+
+### Commitment Before Exploration
+
+BEFORE any Read/Grep/Glob, complete this sentence:
+
+```
+"I need to read [FILE] because I cannot proceed without knowing [SPECIFIC THING],
+and I expect to find it there because [REASON]."
+```
+
+**If you can't complete this sentence → You don't need to explore.**
+
+### Forced Output After Reading
+
+After reading ANY file, you MUST produce ONE of:
+1. **A decision**: "Based on this, I'll do X"
+2. **A specific question**: "To proceed, I need to know Y" (ask user immediately)
+3. **A plan**: "Files to modify: A, B. Approach: Z"
+
+**No output after reading = No more reading allowed.**
+
+### Escape Template (Use When Stuck)
+
+If stuck, use this EXACT template and IMMEDIATELY start:
+
+```markdown
+"Enough analysis. Here's what I know and assume:
+- ✅ CONFIRMED: [list facts from exploration]
+- 🔄 ASSUMED: [list reasonable assumptions]
+- ⚠️ RISK: [low/medium] - If wrong, [consequence and easy fix]
+
+Starting implementation now. Will adjust as needed."
+```
+
+---
+
 ## Linked Agents
 
 - **pm-orchestrator**: Return results after clarification is complete

@@ -12,7 +12,7 @@ const REQUIRED_AGENT_SECTION_PATTERNS = [
   { pattern: /## Linked Agents/i, name: 'Linked Agents section' },
 ] as const;
 
-const AGENTS_WITH_ALTERNATE_STRUCTURE = ['context-manager', 'context-optimizer'] as const;
+const AGENTS_WITH_ALTERNATE_STRUCTURE = ['context-manager', 'context-optimizer', 'code-simplifier'] as const;
 
 interface AgentFile {
   filePath: string;
@@ -189,8 +189,8 @@ describe('Agent Structure Validation', () => {
   });
 
   describe('Agent Count Verification', () => {
-    it('should have exactly 17 agents (as documented)', () => {
-      expect(agentFiles.length).toBe(17);
+    it('should have exactly 18 agents (as documented)', () => {
+      expect(agentFiles.length).toBe(18);
     });
   });
 });

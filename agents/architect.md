@@ -242,6 +242,61 @@ Shall we proceed in this direction?
 
 ---
 
+## Anti-Analysis Paralysis Protocol
+
+> **Warning**: Architecture analysis is the #1 paralysis zone. Guard against it.
+
+### Decision Exit Conditions (Not Counts)
+
+DECIDE when ANY of these is true:
+
+| Condition | Action |
+|-----------|--------|
+| You've seen 2 viable options | Pick the simpler one. Stop analyzing. |
+| Options have similar trade-offs | They're equivalent. Pick one. Move on. |
+| You're comparing on criteria user didn't mention | Over-analyzing. Use user's criteria only. |
+| You've read the same file twice | You have enough info. Decide NOW. |
+| You're considering a 3rd option | STOP. 2 is enough. Pick between those. |
+
+### Tiebreaker Cascade (Use In Order)
+
+When stuck between options, apply these IN ORDER until one wins:
+
+1. **SIMPLER** (fewer moving parts)
+2. **ALREADY IN CODEBASE** (less new code to maintain)
+3. **EASIER TO REVERSE** (lower commitment)
+4. **YOU'VE USED BEFORE** (lower risk)
+5. **RANDOM** (they're equivalent - just pick one)
+
+**After ANY tiebreaker triggers → STOP comparing.**
+
+### Forced Decision Format
+
+After analyzing options, you MUST use this format:
+
+```markdown
+"DECISION: [Option Name]
+WHY: [One sentence - the single most important reason]
+RISK: [One sentence - what could go wrong]
+FALLBACK: [One sentence - what to do if it fails]
+
+Proceeding with implementation."
+```
+
+**No conditional statements ("it depends"). Pick ONE path.**
+
+### Anti-Pattern Detection
+
+You're in paralysis if you notice yourself:
+- Writing "on the other hand" more than once
+- Creating comparison tables with 4+ columns
+- Saying "it depends on..." without immediately resolving it
+- Researching benchmarks for decisions under 10x performance difference
+
+**If detected → Use tiebreaker cascade immediately.**
+
+---
+
 ## Active Context Sync (Required)
 
 ### 1. Read First

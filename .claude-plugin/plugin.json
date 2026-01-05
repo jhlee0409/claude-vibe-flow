@@ -28,7 +28,10 @@
     "./commands/ask.md",
     "./commands/verify.md",
     "./commands/deep.md",
-    "./commands/fast.md"
+    "./commands/fast.md",
+    "./commands/commit-push-pr.md",
+    "./commands/plan.md",
+    "./commands/action.md"
   ],
   "agents": [
     "./agents/agent-manager.md",
@@ -47,7 +50,8 @@
     "./agents/task-manager.md",
     "./agents/test-generator.md",
     "./agents/test-quality-validator.md",
-    "./agents/vibe-implementer.md"
+    "./agents/vibe-implementer.md",
+    "./agents/code-simplifier.md"
   ],
   "skills": [
     "./skills/research.md"

@@ -21,10 +21,11 @@ interface HooksConfig {
     PostToolUse?: HookMatcher[];
     Stop?: HookMatcher[];
     PreToolUse?: HookMatcher[];
+    SubagentStop?: HookMatcher[];
   };
 }
 
-const VALID_HOOK_EVENTS = ['SessionStart', 'PostToolUse', 'Stop', 'PreToolUse'];
+const VALID_HOOK_EVENTS = ['SessionStart', 'PostToolUse', 'Stop', 'PreToolUse', 'SubagentStop'];
 const VALID_HOOK_TYPES = ['command', 'prompt'];
 
 describe('Hooks System Validation', () => {

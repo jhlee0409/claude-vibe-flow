@@ -1,5 +1,5 @@
 {
-  "description": "Claude Vibe Flow verification hooks - enforces quality checks and validation loops",
+  "description": "Claude Vibe Flow verification hooks - enforces quality checks, formatting, and validation loops",
   "hooks": {
     "SessionStart": [
       {
@@ -19,7 +19,18 @@
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "Code was just modified. You MUST run `lsp_diagnostics` on the changed file to catch type errors and lint warnings immediately. This is non-negotiable - errors accumulate and become harder to fix later."
+            "prompt": "Code was just modified. You MUST:\n1. Run `lsp_diagnostics` on the changed file to catch type errors and lint warnings immediately\n2. If the project has a formatter (prettier, eslint --fix, gofmt, etc.), consider running it on modified files\n\nErrors accumulate and become harder to fix later. This is non-negotiable."
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "SUBAGENT VERIFICATION - The subagent has completed its task. Before proceeding:\n1. Review the subagent's output for completeness\n2. Verify any code changes with `lsp_diagnostics`\n3. If the subagent made file changes, ensure they align with the original task requirements\n4. Check if any follow-up actions are needed"
           }
         ]
       }
@@ -30,7 +41,27 @@
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "VERIFICATION CHECKPOINT - Before completing, confirm:\n1. TODO: If todowrite was used, run todoread - all items must be completed or explicitly cancelled\n2. DIAGNOSTICS: If code was modified, lsp_diagnostics must show 0 errors on all changed files\n3. TESTS: If implementation task with existing tests, tests must have been executed\n\nIf ANY check fails, block completion and specify the exact next action needed."
+            "prompt": "VERIFICATION CHECKPOINT - Before completing, confirm:\n1. TODO: If todowrite was used, run todoread - all items must be completed or explicitly cancelled\n2. DIAGNOSTICS: If code was modified, lsp_diagnostics must show 0 errors on all changed files\n3. TESTS: If implementation task with existing tests, tests must have been executed\n4. FORMATTING: If project has formatters configured, ensure modified files are formatted\n\nIf ANY check fails, block completion and specify the exact next action needed."
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "FILE PROTECTION CHECK - Before modifying this file, verify:\n- NOT a secrets file (.env, credentials.json, *.pem, *.key)\n- NOT a lock file that should not be manually edited (package-lock.json, yarn.lock, pnpm-lock.yaml)\n- NOT in .git/ directory\n\nIf any of these apply, STOP and ask for confirmation."
+          }
+        ]
+      },
+      {
+        "matcher": "Read|Grep|Glob|task",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "EXPLORATION CHECKPOINT - Before reading, answer:\n\n1. SEEKING: What specific info am I looking for? (If unclear, you don't need this file)\n2. GAP: Why don't files I've already seen have this? (If they should, re-read instead)\n3. AFTER: What will I DO after finding this? (If 'explore more' → you're in a loop)\n4. ALTERNATIVE: Can I assume and verify by DOING instead of READING? (80% confidence is enough)\n\nEXIT CONDITIONS - STOP exploring if ANY is true:\n□ I can name the files I'll modify\n□ I know the pattern to follow\n□ My uncertainty is about details, not direction\n□ I've read 3+ files without producing a plan or code\n\nIf ANY exit condition is met → STOP and ACT NOW."
           }
         ]
       }

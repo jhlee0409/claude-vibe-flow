@@ -11,8 +11,8 @@ claude-vibe-flow/
 │   └── plugin.json             # Plugin definition
 ├── hooks/
 │   └── hooks.json              # Hook settings (verification loop)
-├── agents/                     # 17 agents
-├── commands/                   # 12 slash commands (including modes)
+├── agents/                     # 18 agents
+├── commands/                   # 14 slash commands (including modes)
 ├── skills/                     # Skills
 └── outputStyles/               # Quality styles
 ```
@@ -67,13 +67,55 @@ claude plugin validate ./claude-vibe-flow
 | `Verification` | Enforce thorough verification | `/claude-vibe-flow:verify` |
 | `FastVibe` | Rapid prototyping | `/claude-vibe-flow:fast` |
 | `DeepWork` | Complex tasks | `/claude-vibe-flow:deep` |
+| `Action` | Anti-paralysis, extreme action bias | `/claude-vibe-flow:action` |
 
-| Aspect | Verification | FastVibe | DeepWork |
-|--------|--------------|----------|----------|
-| Planning | Default | Minimal | Thorough |
-| lsp_diagnostics | Every edit | Final only | Every edit |
-| TODO tracking | Required | Optional | Detailed |
-| Testing | Required | Deferred | Step-by-step |
+| Aspect | Verification | FastVibe | DeepWork | Action |
+|--------|--------------|----------|----------|--------|
+| Planning | Default | Minimal | Thorough | None |
+| lsp_diagnostics | Every edit | Final only | Every edit | Final only |
+| TODO tracking | Required | Optional | Detailed | Skip |
+| Testing | Required | Deferred | Step-by-step | Skip |
+| File reads before acting | Unlimited | ~10 | Unlimited | MAX 3 |
+| Questions allowed | As needed | 1-2 | As needed | MAX 1 |
+
+---
+
+## 🛡️ Anti-Analysis Paralysis
+
+**Problem**: AI agents can get stuck in infinite analysis loops, reading files repeatedly without taking action.
+
+**Solution**: Multi-layer defense system built into this plugin.
+
+### Defense Layers
+
+| Layer | Location | Mechanism |
+|-------|----------|-----------|
+| **Hook Level** | `hooks.json` | PreToolUse check before Read/Grep/Glob |
+| **Agent Level** | `planner.md`, `architect.md`, `pm-orchestrator.md` | Hard limits on exploration |
+| **Mode Level** | `/action` command | Extreme action bias mode |
+
+### Key Limits
+
+| Resource | Limit | Enforced By |
+|----------|-------|-------------|
+| File explorations | MAX 5-7 | Hook + Agent rules |
+| Clarification rounds | MAX 3 | Planner agent |
+| Options to analyze | MAX 3 | Architect agent |
+| Pipeline length | MAX 4 agents | PM Orchestrator |
+
+### When Stuck
+
+If you notice repeated file reads without progress:
+1. Use `/claude-vibe-flow:action` to force action mode
+2. Or explicitly say: "Stop analyzing, just implement with assumptions"
+
+### Philosophy
+
+```
+"Imperfect action beats perfect inaction."
+"80% confidence is enough to proceed."
+"Ship it, then fix it."
+```
 
 ---
 
@@ -101,10 +143,12 @@ Edit/Write → lsp_diagnostics → Fix if errors → Re-verify → Proceed when 
 | Hook | Trigger | Action |
 |------|---------|--------|
 | `SessionStart` | Session start | Auto-load context |
-| `PostToolUse` | After Edit/Write | lsp_diagnostics reminder |
+| `PreToolUse` | Before Edit/Write | File protection check |
+| `PostToolUse` | After Edit/Write | lsp_diagnostics + formatting reminder |
+| `SubagentStop` | After subagent completes | Verify subagent output |
 | `Stop` | Session end attempt | TODO/verification/test check |
 
-**Stop hook verification**: TODO complete + lsp_diagnostics clean + Tests run
+**Stop hook verification**: TODO complete + lsp_diagnostics clean + Tests run + Formatting done
 
 ---
 
@@ -115,7 +159,7 @@ Edit/Write → lsp_diagnostics → Fix if errors → Re-verify → Proceed when 
 | **Core** | `git-guardian`, `issue-fixer`, `code-reviewer`, `test-generator` |
 | **Quality** | `test-quality-validator`, `context-optimizer`, `context-manager` |
 | **Orchestration** | `pm-orchestrator`, `planner`, `architect`, `spec-validator`, `vibe-implementer`, `task-manager` |
-| **Meta** | `agent-manager`, `docs-sync`, `readme-sync`, `research-agent` |
+| **Meta** | `agent-manager`, `docs-sync`, `readme-sync`, `research-agent`, `code-simplifier` |
 
 Dependency graph: `docs/agent-dependency-graph.md`
 
@@ -175,3 +219,53 @@ Specify styles in your project's CLAUDE.md:
 ```
 
 Details: `outputStyles/README.md`
+
+---
+
+## Pro Tips (from Claude Code Creator Boris Cherny)
+
+### Recommended Model
+- Use **Opus 4.5 with thinking** for all tasks
+- Larger and slower, but requires less steering and produces better results
+
+### Parallel Execution
+- Run **5 Claude instances** in terminal (use tabs numbered 1-5)
+- Run **5-10 additional instances** on claude.ai/code
+- Use system notifications to know when input is needed
+
+### Plan Mode Workflow
+```
+1. Start most sessions in Plan mode (Shift+Tab twice)
+2. Iterate with Claude until plan is satisfactory
+3. Switch to auto-accept mode
+4. Claude usually completes in one shot
+```
+
+**Command**: `/claude-vibe-flow:plan <feature-description>`
+
+### Inner Loop Commands
+Use slash commands for workflows you repeat many times a day:
+- `/claude-vibe-flow:commit-push-pr` - Commit, push, and create PR in one shot
+
+### Subagent Workflows
+- `code-simplifier` - Run after implementation to reduce complexity
+- `code-reviewer` - Proactive code review after changes
+
+### The Most Important Tip: Verification Feedback Loop
+
+> "The single most important factor for great results: Give Claude a way to verify its work."
+
+This feedback loop **2-3x improves** final output quality:
+- Run tests after implementation
+- Use `lsp_diagnostics` after every edit
+- Test UI changes in browser (Chrome extension)
+
+### Permissions Setup
+Use `/permissions` to pre-allow common safe commands:
+```
+Bash(npm run lint)
+Bash(npm run test:*)
+Bash(git:*)
+```
+
+This avoids permission prompts without using `--dangerously-skip-permissions`.

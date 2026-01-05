@@ -2,9 +2,9 @@
   "name": "claude-vibe-flow",
   "version": "1.0.0",
   "description": "Full vibe coding framework for Claude Code with verification loops, mode system, and agent pipelines.",
-  "main": "./dist/cli.js",
+  "main": "dist/cli.js",
   "bin": {
-    "claude-vibe-flow": "./dist/cli.js"
+    "claude-vibe-flow": "dist/cli.js"
   },
   "engines": {
     "node": ">=20.0.0"
