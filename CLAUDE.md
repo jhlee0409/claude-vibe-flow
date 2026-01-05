@@ -2,9 +2,9 @@
 
 ## Project Overview
 
-A universal agent and command plugin for Claude Code. Provides persistent context management, automated development workflows, and 18 specialized agents for vibe coding.
+A universal agent and command plugin for Claude Code. Provides persistent context management, automated development workflows, and 19 specialized agents for vibe coding.
 
-**Version**: 1.0.0  
+**Version**: 1.1.0  
 **Node.js**: >= 20.0.0 (22+ recommended)  
 **Repository**: https://github.com/jhlee0409/claude-vibe-flow
 
@@ -12,11 +12,11 @@ A universal agent and command plugin for Claude Code. Provides persistent contex
 ```
 claude-vibe-flow/
 ├── .claude-plugin/
-│   └── plugin.json             # Plugin definition (18 agents, 15 commands)
+│   └── plugin.json             # Plugin definition (19 agents, 13 commands)
 ├── hooks/
 │   └── hooks.json              # Hook settings (verification loop)
-├── agents/                     # 18 specialized agents
-├── commands/                   # 15 slash commands (including modes)
+├── agents/                     # 19 specialized agents
+├── commands/                   # 13 slash commands (including modes)
 ├── skills/                     # Skills (research)
 ├── outputStyles/               # Quality styles (3 patterns)
 ├── scripts/
@@ -175,12 +175,13 @@ Edit/Write → lsp_diagnostics → Fix if errors → Re-verify → Proceed when 
 
 ---
 
-## 🤖 Agent List (18 agents)
+## 🤖 Agent List (19 agents)
 
 ### Core Orchestration
 | Agent | Description |
 |-------|-------------|
 | `pm-orchestrator` | Routes user requests to appropriate agents |
+| `idea-shaper` | Transforms vague ideas into validated, actionable specifications |
 | `planner` | Clarifies requirements through Socratic dialogue |
 | `architect` | Technical feasibility and architectural decisions |
 | `vibe-implementer` | Fast implementation across all domains |
@@ -215,16 +216,18 @@ Dependency graph: `docs/agent-dependency-graph.md`
 
 ---
 
-## 📋 Commands (15 commands)
+## 📋 Commands (13 commands)
 
 ### Workflow Commands
 | Command | Description |
 |---------|-------------|
-| `/claude-vibe-flow:init` | Initialize `.claude-vibe-flow/` directory |
-| `/claude-vibe-flow:new-feature` | Full feature pipeline (Planner → Architect → Implementer → Tests → Review) |
+| `/claude-vibe-flow:vibe` | Unified command: idea → plan → implement (full pipeline by default) |
+| `/claude-vibe-flow:vibe --idea` | Idea validation only |
+| `/claude-vibe-flow:vibe --plan` | Requirements and architecture only |
+| `/claude-vibe-flow:vibe --implement` | Direct implementation only |
 | `/claude-vibe-flow:fix-bug` | Direct bug fixing with root cause analysis |
 | `/claude-vibe-flow:refactor` | Code restructuring without behavior changes |
-| `/claude-vibe-flow:plan` | Create detailed implementation plan before coding |
+| `/claude-vibe-flow:init` | Initialize `.claude-vibe-flow/` directory |
 | `/claude-vibe-flow:sync-context` | Refresh codebase context map |
 | `/claude-vibe-flow:resume` | Manually load context from previous session |
 | `/claude-vibe-flow:commit-push-pr` | One-shot: commit → push → create PR |
@@ -240,8 +243,7 @@ Dependency graph: `docs/agent-dependency-graph.md`
 ### Utility Commands
 | Command | Description |
 |---------|-------------|
-| `/claude-vibe-flow:check-setup` | Validate Vibe environment |
-| `/claude-vibe-flow:check-mcp` | Verify MCP servers status |
+| `/claude-vibe-flow:check` | Validate environment (--setup, --mcp flags) |
 | `/claude-vibe-flow:ask` | Q&A about codebase or libraries |
 
 ---
@@ -263,7 +265,7 @@ Pre-configured in `.mcp.json`:
 Agents are **role guides**, and Claude automatically switches roles while executing the pipeline.
 
 ```
-Request → [INTAKE] planner → [PLAN] architect → [IMPLEMENT] vibe-implementer → [TEST] test-generator → [REVIEW] code-reviewer → ✅
+Request → [IDEA] idea-shaper → [PLAN] planner → [DESIGN] architect → [IMPLEMENT] vibe-implementer → [TEST] test-generator → [REVIEW] code-reviewer → ✅
 ```
 
 | Principle | Description |
@@ -374,7 +376,7 @@ Usage: `/research [query]`, `/research --latest [query]`, `/research --version N
 4. Claude usually completes in one shot
 ```
 
-**Command**: `/claude-vibe-flow:plan <feature-description>`
+**Command**: `/claude-vibe-flow:vibe --plan <feature-description>`
 
 ### Inner Loop Commands
 Use slash commands for workflows you repeat many times a day:
@@ -437,4 +439,5 @@ npx ts-node scripts/generate-agent-graph.ts
 
 ## Changelog
 
+- **v1.1.0**: Added `/vibe` unified command and `idea-shaper` agent. Removed legacy `/new-feature` and `/plan` commands.
 - **v1.0.0**: Initial release with 18 agents, 15 commands, 5 hooks, 3 MCP servers

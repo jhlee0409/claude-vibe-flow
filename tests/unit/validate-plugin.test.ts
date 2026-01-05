@@ -157,12 +157,12 @@ describe('Plugin Manifest Validation', () => {
   });
 
   describe('Count Verification', () => {
-    it('should have 18 agents registered', () => {
-      expect(plugin.agents.length).toBe(18);
+    it('should have 19 agents registered', () => {
+      expect(plugin.agents.length).toBe(19);
     });
 
-    it('should have 15 commands registered', () => {
-      expect(plugin.commands.length).toBe(15);
+    it('should have 13 commands registered', () => {
+      expect(plugin.commands.length).toBe(13);
     });
   });
 

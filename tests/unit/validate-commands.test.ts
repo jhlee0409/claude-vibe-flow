@@ -144,8 +144,8 @@ describe('Command Structure Validation', () => {
   });
 
   describe('Command Count Verification', () => {
-    it('should have exactly 15 commands (as documented)', () => {
-      expect(commandFiles.length).toBe(15);
+    it('should have exactly 13 commands (as documented)', () => {
+      expect(commandFiles.length).toBe(13);
     });
   });
 });
