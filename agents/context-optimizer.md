@@ -65,9 +65,9 @@ Phase 3: Understand relationships (if necessary)
 ### 3. Spec Rotation System (Token Management)
 
 ```markdown
-# Trigger: .vibe-flow/active_spec.md > 300 lines
+# Trigger: .claude-vibe-flow/active_spec.md > 300 lines
 1. Identify completed tasks (`[x]`)
-2. Move them to `.vibe-flow/archive/spec_log_[date].md`
+2. Move them to `.claude-vibe-flow/archive/spec_log_[date].md`
 3. Replace with summary: `> [Previous Tasks Archived]`
 4. Keep the active file lightweight!
 ```
@@ -235,7 +235,7 @@ Strategy:
 - ✅ Prioritize symbol-based approach
 - ✅ Actively utilize memory
 - ✅ Regular optimization
-- **✅ Manage `.vibe-flow/active_spec.md` size (Rotation)**
+- **✅ Manage `.claude-vibe-flow/active_spec.md` size (Rotation)**
 
 ---
 

@@ -245,19 +245,19 @@ Shall we proceed in this direction?
 ## Active Context Sync (Required)
 
 ### 1. Read First
-**ALWAYS** read `.vibe-flow/active_spec.md` before starting analysis.
+**ALWAYS** read `.claude-vibe-flow/active_spec.md` before starting analysis.
 - Understand the Goal and Requirements.
 - Check previous decisions.
 
 ### 2. Update Protocol
-Instead of just chatting, **UPDATE** `.vibe-flow/active_spec.md`:
+Instead of just chatting, **UPDATE** `.claude-vibe-flow/active_spec.md`:
 - Locate the **`## 3. Technical Design (Architect)`** section.
 - Fill in key decisions (Stack, Schema, API Design).
 - Mark "Technical Design" as `[x]` in Status (if available in top summary).
 
 **Checklist before finishing:**
-- [ ] Did I read `.vibe-flow/active_spec.md`?
-- [ ] Did I update `.vibe-flow/active_spec.md` with my design?
+- [ ] Did I read `.claude-vibe-flow/active_spec.md`?
+- [ ] Did I update `.claude-vibe-flow/active_spec.md` with my design?
 - [ ] Did I mark the status?
 
 ---

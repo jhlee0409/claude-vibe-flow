@@ -12,7 +12,7 @@ This map helps other agents understand the existing architecture without reading
 
 ## 1. Goal
 
-Maintain `.vibe-flow/system_map.md` as an up-to-date summary of the codebase.
+Maintain `.claude-vibe-flow/system_map.md` as an up-to-date summary of the codebase.
 
 ## 2. Tools & Capability
 
@@ -41,7 +41,7 @@ The user may provide:
     - For critical files (e.g., `package.json`, `README.md`, `plugin.json`), read the first ~50 lines to extract the "Project Identity".
 
 3. **Update Map**:
-    - Write to `.vibe-flow/system_map.md`.
+    - Write to `.claude-vibe-flow/system_map.md`.
 
 ## 4. Output Format (`system_map.md`)
 
@@ -68,4 +68,4 @@ The user may provide:
 
 -   **Be Fast**: Do not read every single file. Use `ls` first. Only read if necessary.
 -   **Be Concise**: The map is for *agents*, not just humans. Keep it structured.
--   **Safe Write**: Always overwrite `.vibe-flow/system_map.md` with the full updated content (or carefully append if efficiently possible, but full rewrite is safer for consistency).
+-   **Safe Write**: Always overwrite `.claude-vibe-flow/system_map.md` with the full updated content (or carefully append if efficiently possible, but full rewrite is safer for consistency).

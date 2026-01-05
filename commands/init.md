@@ -19,19 +19,19 @@ You execute the initialization process to set up the **Active Context** environm
 ### Phase 1: Directory Structure Setup
 
 1.  **Create Root Directory**
-    -   Check if `.vibe-flow/` exists.
-    -   If not, create it: `mkdir -p .vibe-flow/archive`
+    -   Check if `.claude-vibe-flow/` exists.
+    -   If not, create it: `mkdir -p .claude-vibe-flow/archive`
 
 2.  **Git Integration**
     -   Check `.gitignore`.
-    -   Ensure `.vibe-flow/` is **NOT** ignored (it is essential context).
-    -   Ensure `.vibe-flow/archive/` is ignored (optional, to keep repo light).
+    -   Ensure `.claude-vibe-flow/` is **NOT** ignored (it is essential context).
+    -   Ensure `.claude-vibe-flow/archive/` is ignored (optional, to keep repo light).
 
 ### Phase 2: Core Context Files Creation
 
 Create the following files with default templates if they don't exist.
 
-#### 1. `.vibe-flow/active_spec.md` (The Blackboard)
+#### 1. `.claude-vibe-flow/active_spec.md` (The Blackboard)
 This is the single source of truth for the current task.
 
 ```markdown
@@ -60,7 +60,7 @@ This is the single source of truth for the current task.
 - [ ] [Issue 1]
 ```
 
-#### 2. `.vibe-flow/current_goal.md` (The Compass)
+#### 2. `.claude-vibe-flow/current_goal.md` (The Compass)
 Keeps the high-level objective clear.
 
 ```markdown
@@ -88,7 +88,7 @@ Keeps the high-level objective clear.
 ```markdown
 # ✅ Vibe Environment Initialized
 
-## 📁 Directory: `.vibe-flow/` is ready.
+## 📁 Directory: `.claude-vibe-flow/` is ready.
 
 ## 📄 Active Files Created:
 1.  **`active_spec.md`**: The central blackboard for Agents.
@@ -96,7 +96,7 @@ Keeps the high-level objective clear.
 2.  **`current_goal.md`**: High-level alignment.
 
 ## 🚀 Next Steps
-1.  Edit `.vibe-flow/current_goal.md` to define your project.
+1.  Edit `.claude-vibe-flow/current_goal.md` to define your project.
 2.  Run `/claude-vibe-flow:new-feature "Your Feature"` to start Vibe Coding.
 
 > ✨ MCP servers are auto-configured via `.mcp.json` - no manual setup needed!

@@ -86,7 +86,7 @@ Complex Request:
 ### Phase 0: Initialization Check
 Before analyzing the request, check if the Vibe/init environment exists.
 
-1. **Check Directory**: Does `.vibe-flow/` exist?
+1. **Check Directory**: Does `.claude-vibe-flow/` exist?
 2. **Action**:
    - **IF Missing**: STOP immediately. Suggest: "Please run `/claude-vibe-flow:init` first to set up the workspace."
    - **IF Exists**: Proceed to Phase 1.

@@ -140,9 +140,9 @@ I will make a specific plan once you answer!
 
 ### Active Context Output (Required)
 
-Instead of just printing the requirements, you **MUST CREATE OR UPDATE** the `.vibe-flow/active_spec.md` file.
+Instead of just printing the requirements, you **MUST CREATE OR UPDATE** the `.claude-vibe-flow/active_spec.md` file.
 
-#### File: `.vibe-flow/active_spec.md` Template
+#### File: `.claude-vibe-flow/active_spec.md` Template
 ```markdown
 # Active Specification: [Task Name]
 
@@ -171,7 +171,7 @@ Instead of just printing the requirements, you **MUST CREATE OR UPDATE** the `.v
 ```
 
 **After creating the file, report:**
-"✅ Created `active_spec.md` and saved to `.vibe-flow/active_spec.md`. Ready for Technical Design."
+"✅ Created `active_spec.md` and saved to `.claude-vibe-flow/active_spec.md`. Ready for Technical Design."
 
 ---
 

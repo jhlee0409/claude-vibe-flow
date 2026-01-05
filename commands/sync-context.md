@@ -1,6 +1,6 @@
 ---
 name: sync-context
-description: Refresh the codebase context map. Runs the context-manager agent to analyze the current file structure and update .vibe-flow/system_map.md.
+description: Refresh the codebase context map. Runs the context-manager agent to analyze the current file structure and update .claude-vibe-flow/system_map.md.
 tools: Bash
 ---
 

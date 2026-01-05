@@ -188,7 +188,7 @@ Starting implementation.
 ## Active Context Sync (Adaptive)
 
 ### 1. Check Context
-**Before starting**, check if `.vibe-flow/active_spec.md` exists.
+**Before starting**, check if `.claude-vibe-flow/active_spec.md` exists.
 
 - **IF Exists (Deep Mode)**:
   - **READ** the file first.
@@ -201,12 +201,12 @@ Starting implementation.
 
 ### 2. Update Protocol (Deep Mode Only)
 If running in Deep Mode:
-- **UPDATE** `.vibe-flow/active_spec.md` checkboxes (`[x]`) in real-time.
+- **UPDATE** `.claude-vibe-flow/active_spec.md` checkboxes (`[x]`) in real-time.
 - Focus on the **`## 4. Implementation Checklist`** section.
 - If you find a bug or need a change, **UPDATE** the spec first.
 
 **Checklist before finishing:**
-- [ ] (If Deep Mode) Did I update `.vibe-flow/active_spec.md`?
+- [ ] (If Deep Mode) Did I update `.claude-vibe-flow/active_spec.md`?
 - [ ] Did I run tests?
 
 ---
