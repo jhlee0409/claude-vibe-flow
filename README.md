@@ -37,35 +37,59 @@ claude login
 
 Choose the installation method that fits your needs.
 
-### Method 1: The Full Experience (GitHub Template) 🌟
-> **Best for:** New projects, or users who want the full suite of Agents & Commands (`/fix-bug`, `/new-feature`).
+### Method 1: New Project (GitHub Template) 🌟
+> **Best for:** Starting a new project with full Vibe Coding setup.
 
-1.  **Clone the Repository**:
-    ```bash
-    git clone https://github.com/jhlee0409/claude-vibe-flow.git my-new-project
-    cd my-new-project
-    ```
+```bash
+git clone https://github.com/jhlee0409/claude-vibe-flow.git my-new-project
+cd my-new-project
+claude
+```
+> ✨ Plugin & MCP servers are auto-configured via `.claude-plugin/` and `.mcp.json`
 
-2.  **Start Claude Code**:
-    ```bash
-    claude
-    ```
-    > ✨ Plugin & MCP servers are auto-configured via `.claude-plugin/` and `.mcp.json`
+Then initialize:
+```
+/claude-vibe-flow:init
+```
 
-3.  **Initialize & Start Coding**:
-    ```
-    /claude-vibe-flow:init
-    /claude-vibe-flow:new-feature "Your first feature"
-    ```
+---
 
-### Method 2: The Standard Stack (CLI) ⚡️
-> **Best for:** Existing projects where you only need the core MCP tools (Context7, GitHub, Sequential Thinking).
+### Method 2: Existing Project (Full Experience) 📦
+> **Best for:** Adding full Vibe Coding capabilities to your existing project.
 
-Inject the Vibe Standard Stack into *any* project:
+```bash
+# 1. Download vibe-flow files
+git clone --depth 1 https://github.com/jhlee0409/claude-vibe-flow.git /tmp/vibe-flow
+
+# 2. Copy required files to your project
+cp -r /tmp/vibe-flow/.claude-plugin .
+cp -r /tmp/vibe-flow/.mcp.json .
+cp -r /tmp/vibe-flow/agents .
+cp -r /tmp/vibe-flow/commands .
+cp -r /tmp/vibe-flow/skills .
+cp -r /tmp/vibe-flow/outputStyles .
+
+# 3. Cleanup
+rm -rf /tmp/vibe-flow
+
+# 4. Start Claude Code
+claude
+```
+
+Then initialize:
+```
+/claude-vibe-flow:init
+```
+
+---
+
+### Method 3: MCP Only (Lightweight) ⚡️
+> **Best for:** Projects where you only need the core MCP tools without agents/commands.
+
 ```bash
 npx vibe-flow
 ```
-*Note: This strictly installs the MCP servers. It does not add the specialized Agents or Commands files to your project.*
+*Note: This only installs MCP servers (Context7, GitHub, Sequential Thinking). No agents or commands.*
 
 
 

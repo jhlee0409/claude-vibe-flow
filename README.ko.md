@@ -37,35 +37,59 @@ claude login
 
 상황에 맞는 설치 방법을 선택하세요.
 
-### 방법 1: 완전한 경험 (GitHub Template) 🌟
-> **추천 대상:** 신규 프로젝트, 또는 전용 에이전트와 명령어(`/fix-bug`, `/new-feature` 등)를 모두 사용하고 싶은 경우.
+### 방법 1: 신규 프로젝트 (GitHub Template) 🌟
+> **추천 대상:** 새 프로젝트를 Full Vibe Coding 환경으로 시작하고 싶은 경우.
 
-1.  **저장소 클론**:
-    ```bash
-    git clone https://github.com/jhlee0409/claude-vibe-flow.git my-new-project
-    cd my-new-project
-    ```
+```bash
+git clone https://github.com/jhlee0409/claude-vibe-flow.git my-new-project
+cd my-new-project
+claude
+```
+> ✨ 플러그인 및 MCP 서버가 `.claude-plugin/`과 `.mcp.json`을 통해 자동 설정됩니다.
 
-2.  **Claude Code 시작**:
-    ```bash
-    claude
-    ```
-    > ✨ 플러그인 및 MCP 서버가 `.claude-plugin/`과 `.mcp.json`을 통해 자동 설정됩니다.
+초기화:
+```
+/claude-vibe-flow:init
+```
 
-3.  **초기화 및 코딩 시작**:
-    ```
-    /claude-vibe-flow:init
-    /claude-vibe-flow:new-feature "첫 번째 기능"
-    ```
+---
 
-### 방법 2: 표준 스택 주입 (CLI) ⚡️
-> **추천 대상:** 이미 진행 중인 프로젝트에 핵심 MCP 도구(Context7, GitHub, Sequential Thinking)만 빠르게 적용하고 싶은 경우.
+### 방법 2: 기존 프로젝트 (Full Experience) 📦
+> **추천 대상:** 이미 진행 중인 프로젝트에 전체 Vibe Coding 기능을 추가하고 싶은 경우.
 
-어떤 프로젝트든 한 줄의 명령어로 표준 스택을 주입할 수 있습니다:
+```bash
+# 1. vibe-flow 파일 다운로드
+git clone --depth 1 https://github.com/jhlee0409/claude-vibe-flow.git /tmp/vibe-flow
+
+# 2. 필요한 파일을 프로젝트에 복사
+cp -r /tmp/vibe-flow/.claude-plugin .
+cp -r /tmp/vibe-flow/.mcp.json .
+cp -r /tmp/vibe-flow/agents .
+cp -r /tmp/vibe-flow/commands .
+cp -r /tmp/vibe-flow/skills .
+cp -r /tmp/vibe-flow/outputStyles .
+
+# 3. 정리
+rm -rf /tmp/vibe-flow
+
+# 4. Claude Code 시작
+claude
+```
+
+초기화:
+```
+/claude-vibe-flow:init
+```
+
+---
+
+### 방법 3: MCP만 설치 (Lightweight) ⚡️
+> **추천 대상:** 에이전트/명령어 없이 핵심 MCP 도구만 필요한 경우.
+
 ```bash
 npx vibe-flow
 ```
-*참고: 이 방법은 MCP 서버만 설치하며, 에이전트 파일이나 커스텀 명령어는 포함되지 않습니다.*
+*참고: MCP 서버(Context7, GitHub, Sequential Thinking)만 설치됩니다. 에이전트나 명령어는 포함되지 않습니다.*
 
 
 
