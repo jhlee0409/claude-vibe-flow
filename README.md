@@ -7,9 +7,11 @@ A suite of 17 specialized agents for [Claude Code](https://github.com/anthropics
 
 ## Features
 
-- **Persistent Context**: Automatically saves project capabilities, architecture decisions, and current tasks to `.claude-vibe-flow/`.
+- **Context Persistence**: Saves project state to `.claude-vibe-flow/` and auto-loads it when starting a new Claude Code session via [SessionStart hook](https://github.com/anthropics/claude-code).
 - **Agent Orchestration**: Routes complex requests to specialized agents (Architecture, Implementation, Testing) instead of a single generalist model.
 - **Workflow Automation**: Standardized pipelines for feature development, refactoring, and bug fixing.
+
+> **Note**: Context is stored in markdown files and auto-injected at session start. If context doesn't load automatically, run `/claude-vibe-flow:resume`.
 
 ## Installation
 
@@ -101,6 +103,7 @@ Analyze and fix bugs.
 | `/claude-vibe-flow:fix-bug` | Analyzes and fixes a specified bug. |
 | `/claude-vibe-flow:refactor` | Refactors code without changing behavior. |
 | `/claude-vibe-flow:sync-context` | Synchronizes the context map. |
+| `/claude-vibe-flow:resume` | Manually loads context from previous session. |
 | `/claude-vibe-flow:check-setup` | Verifies Vibe Flow installation. |
 | `/claude-vibe-flow:check-mcp` | Checks status of MCP servers. |
 | `/claude-vibe-flow:ask` | Asks a question about the codebase. |

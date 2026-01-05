@@ -20,7 +20,7 @@
     "./commands/new-feature.md",
     "./commands/check-setup.md",
     "./commands/init.md",
-
+    "./commands/resume.md",
     "./commands/sync-context.md",
     "./commands/check-mcp.md",
     "./commands/fix-bug.md",

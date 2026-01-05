@@ -7,9 +7,11 @@
 
 ## 주요 기능
 
-- **영구 컨텍스트 (Persistent Context)**: 프로젝트의 기능, 아키텍처 결정사항, 현재 작업 내역을 `.claude-vibe-flow/` 디렉토리에 자동으로 저장하고 관리합니다.
+- **컨텍스트 저장**: 프로젝트 상태를 `.claude-vibe-flow/`에 저장하고, Claude Code 세션 시작 시 [SessionStart 훅](https://github.com/anthropics/claude-code)을 통해 자동으로 불러옵니다.
 - **에이전트 오케스트레이션**: 복잡한 요청을 분석하여 적절한 전문 에이전트(기획, 설계, 구현, 테스트 등)에게 라우팅합니다.
 - **워크플로우 자동화**: 기능 개발, 리팩토링, 버그 수정을 위한 표준화된 파이프라인을 제공합니다.
+
+> **참고**: 컨텍스트는 마크다운 파일로 저장되며 세션 시작 시 자동 주입됩니다. 자동 로드가 안 될 경우 `/claude-vibe-flow:resume`을 실행하세요.
 
 ## 설치
 
@@ -101,6 +103,7 @@ claude
 | `/claude-vibe-flow:fix-bug` | 지정된 버그를 분석하고 수정합니다. |
 | `/claude-vibe-flow:refactor` | 동작 변경 없이 코드를 리팩토링합니다. |
 | `/claude-vibe-flow:sync-context` | 컨텍스트 맵을 동기화합니다. |
+| `/claude-vibe-flow:resume` | 이전 세션의 컨텍스트를 수동으로 불러옵니다. |
 | `/claude-vibe-flow:check-setup` | Vibe Flow 설치 상태를 확인합니다. |
 | `/claude-vibe-flow:check-mcp` | MCP 서버 상태를 확인합니다. |
 | `/claude-vibe-flow:ask` | 코드베이스에 대해 질문합니다. |
