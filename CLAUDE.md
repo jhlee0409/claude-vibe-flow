@@ -2,19 +2,54 @@
 
 ## Project Overview
 
-A universal agent and command plugin for Claude Code.
+A universal agent and command plugin for Claude Code. Provides persistent context management, automated development workflows, and 18 specialized agents for vibe coding.
+
+**Version**: 1.0.0  
+**Node.js**: >= 20.0.0 (22+ recommended)  
+**Repository**: https://github.com/jhlee0409/claude-vibe-flow
 
 **Structure:**
 ```
 claude-vibe-flow/
 ├── .claude-plugin/
-│   └── plugin.json             # Plugin definition
+│   └── plugin.json             # Plugin definition (18 agents, 15 commands)
 ├── hooks/
 │   └── hooks.json              # Hook settings (verification loop)
-├── agents/                     # 18 agents
-├── commands/                   # 14 slash commands (including modes)
-├── skills/                     # Skills
-└── outputStyles/               # Quality styles
+├── agents/                     # 18 specialized agents
+├── commands/                   # 15 slash commands (including modes)
+├── skills/                     # Skills (research)
+├── outputStyles/               # Quality styles (3 patterns)
+├── scripts/
+│   ├── load-context.sh         # SessionStart hook context loader
+│   └── generate-agent-graph.ts # Agent dependency graph generator
+├── src/
+│   └── cli.ts                  # npx CLI installer
+├── tests/
+│   └── unit/                   # Vitest validation tests
+└── docs/
+    ├── active-spec-protocol.md # Spec state machine protocol
+    └── agent-dependency-graph.md # Agent relationship graph
+```
+
+---
+
+## Quick Reference
+
+```bash
+# Installation (for existing projects)
+npx claude-vibe-flow
+
+# Local development
+claude --plugin-dir ./claude-vibe-flow
+
+# Plugin validation
+claude plugin validate ./claude-vibe-flow
+
+# Run tests
+npm test
+
+# Type checking
+npm run typecheck
 ```
 
 ---
@@ -36,26 +71,14 @@ Claude's training data is up to January 2025, but the actual date may differ.
 
 ```
 <env>
-Today's date: 2026-01-05
+Today's date: 2026-01-06
 </env>
 
-❌ Wrong: "Written: 2025-01-05" (based on knowledge cutoff)
-✅ Correct: "Written: 2026-01-05" (based on env)
+❌ Wrong: "Written: 2025-01-06" (based on knowledge cutoff)
+✅ Correct: "Written: 2026-01-06" (based on env)
 
 ❌ Wrong: "React best practices" search
 ✅ Correct: "React best practices 2026" search
-```
-
----
-
-## Quick Reference
-
-```bash
-# Local testing
-claude --plugin-dir ./claude-vibe-flow
-
-# Plugin validation
-claude plugin validate ./claude-vibe-flow
 ```
 
 ---
@@ -90,7 +113,7 @@ claude plugin validate ./claude-vibe-flow
 
 | Layer | Location | Mechanism |
 |-------|----------|-----------|
-| **Hook Level** | `hooks.json` | PreToolUse check before Read/Grep/Glob |
+| **Hook Level** | `hooks.json` | PreToolUse check before Read/Grep/Glob/task |
 | **Agent Level** | `planner.md`, `architect.md`, `pm-orchestrator.md` | Hard limits on exploration |
 | **Mode Level** | `/action` command | Extreme action bias mode |
 
@@ -142,8 +165,8 @@ Edit/Write → lsp_diagnostics → Fix if errors → Re-verify → Proceed when 
 
 | Hook | Trigger | Action |
 |------|---------|--------|
-| `SessionStart` | Session start | Auto-load context |
-| `PreToolUse` | Before Edit/Write | File protection check |
+| `SessionStart` | Session start | Auto-load context via `scripts/load-context.sh` |
+| `PreToolUse` | Before Edit/Write/Read/Grep/Glob/task | File protection + exploration checkpoint |
 | `PostToolUse` | After Edit/Write | lsp_diagnostics + formatting reminder |
 | `SubagentStop` | After subagent completes | Verify subagent output |
 | `Stop` | Session end attempt | TODO/verification/test check |
@@ -152,16 +175,86 @@ Edit/Write → lsp_diagnostics → Fix if errors → Re-verify → Proceed when 
 
 ---
 
-## Agent List
+## 🤖 Agent List (18 agents)
 
-| Category | Agents |
-|----------|--------|
-| **Core** | `git-guardian`, `issue-fixer`, `code-reviewer`, `test-generator` |
-| **Quality** | `test-quality-validator`, `context-optimizer`, `context-manager` |
-| **Orchestration** | `pm-orchestrator`, `planner`, `architect`, `spec-validator`, `vibe-implementer`, `task-manager` |
-| **Meta** | `agent-manager`, `docs-sync`, `readme-sync`, `research-agent`, `code-simplifier` |
+### Core Orchestration
+| Agent | Description |
+|-------|-------------|
+| `pm-orchestrator` | Routes user requests to appropriate agents |
+| `planner` | Clarifies requirements through Socratic dialogue |
+| `architect` | Technical feasibility and architectural decisions |
+| `vibe-implementer` | Fast implementation across all domains |
+
+### Quality & Verification
+| Agent | Description |
+|-------|-------------|
+| `spec-validator` | Validates specification completeness |
+| `code-reviewer` | Code quality, security, performance review |
+| `test-generator` | Test generation across all technical domains |
+| `test-quality-validator` | Test quality and bug detection assessment |
+| `code-simplifier` | Complexity reduction while preserving behavior |
+
+### Context & Documentation
+| Agent | Description |
+|-------|-------------|
+| `context-manager` | Codebase mapping and architecture documentation |
+| `context-optimizer` | Token efficiency and context window optimization |
+| `docs-sync` | Automatic CLAUDE.md synchronization |
+| `readme-sync` | README synchronization for public APIs |
+| `task-manager` | Task lifecycle and session handoff |
+
+### Utility & Support
+| Agent | Description |
+|-------|-------------|
+| `git-guardian` | Git workflow automation (`vibe/*` branching) |
+| `issue-fixer` | Bug fixing through root cause analysis |
+| `research-agent` | Version-aware documentation lookup |
+| `agent-manager` | Agent ecosystem health and synchronization |
 
 Dependency graph: `docs/agent-dependency-graph.md`
+
+---
+
+## 📋 Commands (15 commands)
+
+### Workflow Commands
+| Command | Description |
+|---------|-------------|
+| `/claude-vibe-flow:init` | Initialize `.claude-vibe-flow/` directory |
+| `/claude-vibe-flow:new-feature` | Full feature pipeline (Planner → Architect → Implementer → Tests → Review) |
+| `/claude-vibe-flow:fix-bug` | Direct bug fixing with root cause analysis |
+| `/claude-vibe-flow:refactor` | Code restructuring without behavior changes |
+| `/claude-vibe-flow:plan` | Create detailed implementation plan before coding |
+| `/claude-vibe-flow:sync-context` | Refresh codebase context map |
+| `/claude-vibe-flow:resume` | Manually load context from previous session |
+| `/claude-vibe-flow:commit-push-pr` | One-shot: commit → push → create PR |
+
+### Mode Commands
+| Command | Description |
+|---------|-------------|
+| `/claude-vibe-flow:verify` | Enable Verification mode |
+| `/claude-vibe-flow:fast` | Enable FastVibe mode |
+| `/claude-vibe-flow:deep` | Enable DeepWork mode |
+| `/claude-vibe-flow:action` | Enable Action mode (anti-paralysis) |
+
+### Utility Commands
+| Command | Description |
+|---------|-------------|
+| `/claude-vibe-flow:check-setup` | Validate Vibe environment |
+| `/claude-vibe-flow:check-mcp` | Verify MCP servers status |
+| `/claude-vibe-flow:ask` | Q&A about codebase or libraries |
+
+---
+
+## 🔌 MCP Servers
+
+Pre-configured in `.mcp.json`:
+
+| Server | Purpose | Auto-Start |
+|--------|---------|------------|
+| `context7` | Documentation lookup (prevents hallucinations) | ✅ |
+| `github` | GitHub integration (issues, PRs) | ✅ (requires `GITHUB_TOKEN`) |
+| `sequential-thinking` | Chain of Thought workspace | ✅ |
 
 ---
 
@@ -195,13 +288,43 @@ Request → [INTAKE] planner → [PLAN] architect → [IMPLEMENT] vibe-implement
 - Circular references between agents
 - Hardcoded project paths
 - Project-specific logic (maintain generality)
-- **No exit without Active Context**: Never exit after modifying code without updating the spec file.
+- **No exit without Active Context**: Never exit after modifying code without updating the spec file
+
+---
+
+## 🧪 Testing
+
+### Test Suites
+
+| Test | Description |
+|------|-------------|
+| `validate-agents.test.ts` | Agent markdown structure (frontmatter, sections) |
+| `validate-commands.test.ts` | Command markdown structure |
+| `validate-plugin.test.ts` | plugin.json integrity (sync with agents/commands) |
+| `validate-hooks.test.ts` | Hook system structure |
+| `cli-e2e.test.ts` | CLI installation flow |
+
+### Running Tests
+
+```bash
+npm test                    # Run all tests
+npm run test:watch          # Watch mode
+npm run test:coverage       # Coverage report
+npm run validate            # Verbose output
+```
+
+### Validation Requirements
+
+- **Agents**: Must have `name`, `description`, `tools` frontmatter
+- **Agents**: Must have Principles/Goal, Constraints/Instructions, Linked Agents sections
+- **Commands**: Must have `name`, `description` frontmatter
+- **plugin.json**: Must reference all agents and commands in directories
 
 ---
 
 ## Output Styles (Official Patterns)
 
-You can activate quality styles that match your project characteristics.
+Activate quality styles that match your project characteristics.
 
 | Style | Purpose | Suitable Projects |
 |-------|---------|-------------------|
@@ -219,6 +342,16 @@ Specify styles in your project's CLAUDE.md:
 ```
 
 Details: `outputStyles/README.md`
+
+---
+
+## 📖 Skills
+
+| Skill | Description | Delegation |
+|-------|-------------|------------|
+| `research` | Version-aware documentation lookup | Delegates to `research-agent` |
+
+Usage: `/research [query]`, `/research --latest [query]`, `/research --version N [query]`
 
 ---
 
@@ -269,3 +402,39 @@ Bash(git:*)
 ```
 
 This avoids permission prompts without using `--dangerously-skip-permissions`.
+
+---
+
+## Development
+
+### Adding New Agents
+
+1. Create `agents/your-agent.md` with frontmatter:
+   ```markdown
+   ---
+   name: your-agent
+   description: One-line description
+   tools: Read, Write, Bash, Glob, Grep
+   ---
+   ```
+2. Add required sections: Goal/Principles, Constraints/Instructions, Linked Agents
+3. Update `.claude-plugin/plugin.json` to include the new agent
+4. Run `npm test` to validate structure
+
+### Adding New Commands
+
+1. Create `commands/your-command.md` with frontmatter
+2. Update `.claude-plugin/plugin.json`
+3. Run `claude plugin validate ./`
+
+### Regenerating Agent Graph
+
+```bash
+npx ts-node scripts/generate-agent-graph.ts
+```
+
+---
+
+## Changelog
+
+- **v1.0.0**: Initial release with 18 agents, 15 commands, 5 hooks, 3 MCP servers
