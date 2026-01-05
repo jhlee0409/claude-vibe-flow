@@ -58,21 +58,8 @@ Then initialize:
 > **Best for:** Adding full Vibe Coding capabilities to your existing project.
 
 ```bash
-# 1. Download vibe-flow files
-git clone --depth 1 https://github.com/jhlee0409/claude-vibe-flow.git /tmp/vibe-flow
-
-# 2. Copy required files to your project
-cp -r /tmp/vibe-flow/.claude-plugin .
-cp -r /tmp/vibe-flow/.mcp.json .
-cp -r /tmp/vibe-flow/agents .
-cp -r /tmp/vibe-flow/commands .
-cp -r /tmp/vibe-flow/skills .
-cp -r /tmp/vibe-flow/outputStyles .
-
-# 3. Cleanup
-rm -rf /tmp/vibe-flow
-
-# 4. Start Claude Code
+cd your-existing-project
+npx vibe-flow init
 claude
 ```
 

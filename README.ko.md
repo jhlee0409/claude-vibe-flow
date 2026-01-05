@@ -58,21 +58,8 @@ claude
 > **추천 대상:** 이미 진행 중인 프로젝트에 전체 Vibe Coding 기능을 추가하고 싶은 경우.
 
 ```bash
-# 1. vibe-flow 파일 다운로드
-git clone --depth 1 https://github.com/jhlee0409/claude-vibe-flow.git /tmp/vibe-flow
-
-# 2. 필요한 파일을 프로젝트에 복사
-cp -r /tmp/vibe-flow/.claude-plugin .
-cp -r /tmp/vibe-flow/.mcp.json .
-cp -r /tmp/vibe-flow/agents .
-cp -r /tmp/vibe-flow/commands .
-cp -r /tmp/vibe-flow/skills .
-cp -r /tmp/vibe-flow/outputStyles .
-
-# 3. 정리
-rm -rf /tmp/vibe-flow
-
-# 4. Claude Code 시작
+cd your-existing-project
+npx vibe-flow init
 claude
 ```
 

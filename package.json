@@ -6,9 +6,23 @@
   "bin": {
     "vibe-flow": "./bin/vibe-flow.js"
   },
-  
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "bin",
+    "agents",
+    "commands",
+    "skills",
+    "outputStyles",
+    "scripts",
+    ".claude-plugin",
+    ".mcp.json",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node bin/vibe-flow.js --help"
   },
   "repository": {
     "type": "git",
