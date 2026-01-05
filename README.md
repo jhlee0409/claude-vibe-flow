@@ -72,6 +72,9 @@ The system maintains a real-time map of your project in `.vibe-flow/active_spec.
 | `/claude-vibe-flow:sync-context` | Forces a re-scan of the codebase to update the context map. |
 | `/claude-vibe-flow:check-mcp` | Verifies if the Standard Stack is installed and active. |
 | `/claude-vibe-flow:new-feature` | Starts a new feature development cycle (`active_spec.md`). |
+| `/claude-vibe-flow:fix-bug` | Pipes error logs to Issue Fixer agent for RCA and patching. |
+| `/claude-vibe-flow:refactor` | Improves code structure without changing business logic. |
+| `/claude-vibe-flow:ask` | Quick Q&A about codebase or external docs (no file changes). |
 
 ---
 

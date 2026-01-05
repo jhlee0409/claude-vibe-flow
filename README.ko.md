@@ -68,10 +68,13 @@
 
 | 명령어 | 설명 |
 |--------|------|
-| `/claude-vibe-flow:init` | 환경 초기화 및 필수 도구 설치 안내. |
-| `/claude-vibe-flow:sync-context` | 코드베이스 재스캔 및 컨텍스트 업데이트. |
+| `/claude-vibe-flow:init` | 바이브 환경을 초기화하고 필수 도구 설치를 안내합니다. |
+| `/claude-vibe-flow:sync-context` | 코드베이스를 다시 스캔하여 컨텍스트 지도를 최신화합니다. |
 | `/claude-vibe-flow:check-mcp` | Standard Stack 설치 상태 확인. |
 | `/claude-vibe-flow:new-feature` | 신규 기능 개발 시작 (`active_spec.md` 생성). |
+| `/claude-vibe-flow:fix-bug` | 버그 리포트/로그를 분석하여 원인을 찾고 수정합니다. |
+| `/claude-vibe-flow:refactor` | 기능 변경 없이 코드 구조만 개선합니다 (Architect 호출). |
+| `/claude-vibe-flow:ask` | 코드를 수정하지 않고 질문만 합니다 (빠른 Q&A). |
 
 ---
 

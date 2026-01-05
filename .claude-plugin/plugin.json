@@ -22,7 +22,10 @@
     "./commands/init.md",
 
     "./commands/sync-context.md",
-    "./commands/check-mcp.md"
+    "./commands/check-mcp.md",
+    "./commands/fix-bug.md",
+    "./commands/refactor.md",
+    "./commands/ask.md"
   ],
   "agents": [
     "./agents/agent-manager.md",
