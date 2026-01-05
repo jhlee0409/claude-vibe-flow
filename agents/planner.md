@@ -29,6 +29,8 @@ You transform vague ideas into clear requirements through Socratic dialogue.
 
 ## Clarification Process
 
+> **Tip**: For complex, multi-layered requirements, use the **Sequential Thinking MCP** to decompose the problem *before* asking questions.
+
 ### Phase 1: Core Understanding
 
 ```markdown

@@ -37,10 +37,13 @@ You fix bugs through systematic root cause analysis.
    - Expected behavior vs. Actual behavior
    - Reproduction conditions
 
-2. Explore Relevant Code
+2. Explore Relevant Code & Context
    - Analyze error messages/stack traces
    - Identify relevant files and functions
    - Check recent change history (git log)
+   - **GitHub MCP**: Search existing issues/discussions.
+     - `github_search_issues(query)` to see if this is a known bug.
+     - `github_get_issue(issue_number)` if responding to a specific issue.
 ```
 
 ### Phase 2: Root Cause Analysis

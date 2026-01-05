@@ -97,5 +97,13 @@ Keeps the high-level objective clear.
 
 ## 🚀 Next Steps
 1.  Edit `.vibe-flow/current_goal.md` to define your project.
-2.  Run `/claude-vibe-flow:new-feature "Your Feature"` to start Vibe Coding.
+2.  **Run `sh scripts/setup_vibe.sh` to install necessary Vibe Tools.**
+3.  Run `/claude-vibe-flow:new-feature "Your Feature"` to start Vibe Coding.
+
+### Phase 4: Initial Context Sync
+
+1. **Auto-Integration**
+    - Execute `/claude-vibe-flow:sync-context` to generate the initial system map.
+    - This ensures the system understands the starting state of the project.
+
 ```

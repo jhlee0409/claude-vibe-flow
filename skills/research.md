@@ -80,7 +80,10 @@ Sources:
 
 ## Delegation
 
+## Delegation
+
 This skill delegates to `research-agent` for execution.
+Reliable execution depends on the **Context7 MCP** (part of Vibe Standard Stack).
 
 ## Error Handling
 

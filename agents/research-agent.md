@@ -79,13 +79,15 @@ You detect project dependencies and provide accurate, version-matched documentat
 
 ```markdown
 Tool Selection:
-├─ Context7 MCP available? → Use Context7 (preferred)
-└─ Fallback → WebSearch + WebFetch
+1. **Primary**: Use `context7` MCP tools (e.g. `context7_search`, `read_documentation`).
+   - This is part of the Vibe Standard Stack and SHOULD be available.
+2. **Fallback**: `WebSearch` + `WebFetch` (Only if Context7 fails or package is obscure).
 
 Search Strategy:
-1. Construct version-specific search query
-2. Prioritize official sources
-3. Extract relevant content with code examples
+1. **Context7 First**: Query standard docs.
+   - `context7_search(query)`
+2. **Official Sources**: Prioritize results from official domains.
+3. **Extraction**: Get code examples.
 ```
 
 ### Phase 4: Result Delivery

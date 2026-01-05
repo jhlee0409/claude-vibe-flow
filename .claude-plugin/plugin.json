@@ -18,12 +18,17 @@
   ],
   "commands": [
     "./commands/new-feature.md",
-    "./commands/check-setup.md"
+    "./commands/check-setup.md",
+    "./commands/init.md",
+
+    "./commands/sync-context.md",
+    "./commands/check-mcp.md"
   ],
   "agents": [
     "./agents/agent-manager.md",
     "./agents/architect.md",
     "./agents/code-reviewer.md",
+    "./agents/context-manager.md",
     "./agents/context-optimizer.md",
     "./agents/docs-sync.md",
     "./agents/git-guardian.md",
