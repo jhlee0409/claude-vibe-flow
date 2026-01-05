@@ -8,8 +8,8 @@ const REPO = "jhlee0409/claude-vibe-flow";
 const BRANCH = "main";
 const TARBALL_URL = `https://github.com/${REPO}/archive/${BRANCH}.tar.gz`;
 
-const MIN_NODE_VERSION = 18;
-const RECOMMENDED_NODE_VERSION = 20;
+const MIN_NODE_VERSION = 20;
+const RECOMMENDED_NODE_VERSION = 22;
 
 const INSTALL_ITEMS = [
   ".claude-plugin",
