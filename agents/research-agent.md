@@ -79,13 +79,16 @@ You detect project dependencies and provide accurate, version-matched documentat
 
 ```markdown
 Tool Selection:
-1. **Primary**: Use `context7` MCP tools (e.g. `context7_search`, `read_documentation`).
+1. **Primary**: Use Context7 MCP tools:
+   - `context7_resolve-library-id`: Find library ID from package name
+   - `context7_query-docs`: Query documentation with library ID
    - This is part of the Vibe Standard Stack and SHOULD be available.
 2. **Fallback**: `WebSearch` + `WebFetch` (Only if Context7 fails or package is obscure).
 
 Search Strategy:
-1. **Context7 First**: Query standard docs.
-   - `context7_search(query)`
+1. **Context7 First**: 
+   - Step 1: `context7_resolve-library-id(libraryName, query)` to get library ID
+   - Step 2: `context7_query-docs(libraryId, query)` to fetch documentation
 2. **Official Sources**: Prioritize results from official domains.
 3. **Extraction**: Get code examples.
 ```

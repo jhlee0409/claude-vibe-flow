@@ -1,0 +1,35 @@
+{
+  "name": "claude-vibe-flow",
+  "version": "1.0.0",
+  "description": "Full Vibe Coding for Claude Code - A comprehensive suite of agents, commands, and tools designed to maximize flow and enforce Vibe Coding best practices.",
+  "main": "./bin/vibe-flow.js",
+  "bin": {
+    "vibe-flow": "./bin/vibe-flow.js"
+  },
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jhlee0409/claude-vibe-flow.git"
+  },
+  "keywords": [
+    "claude-code",
+    "vibe-coding",
+    "agents",
+    "workflow",
+    "productivity"
+  ],
+  "author": {
+    "name": "jack",
+    "email": "relee6203@gmail.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jhlee0409/claude-vibe-flow/issues"
+  },
+  "homepage": "https://github.com/jhlee0409/claude-vibe-flow#readme"
+}

@@ -12,13 +12,14 @@ This command checks if the Vibe coding environment is correctly set up.
 ### 1. Agent Structure Verification
 
 ```markdown
-Required Agents (15):
+Required Agents (17):
 - [ ] git-guardian
 - [ ] issue-fixer
 - [ ] code-reviewer
 - [ ] test-generator
 - [ ] test-quality-validator
 - [ ] context-optimizer
+- [ ] context-manager
 - [ ] pm-orchestrator
 - [ ] planner
 - [ ] architect
@@ -28,6 +29,7 @@ Required Agents (15):
 - [ ] agent-manager
 - [ ] docs-sync
 - [ ] readme-sync
+- [ ] research-agent
 ```
 
 ### 2. CLAUDE.md Verification
@@ -96,7 +98,7 @@ When missing items are found:
 
 ```bash
 # Check agent files
-ls .claude/agents/*.md 2>/dev/null | wc -l
+ls agents/*.md 2>/dev/null | wc -l
 
 # Check existence of CLAUDE.md
 test -f CLAUDE.md && echo "exists"

@@ -21,29 +21,46 @@ We believe in a "Zero-Friction" environment. Vibe Flow automates the setup of th
 
 ---
 
-## 📦 Installation (The Vibe Doctor)
+## Prerequisites
 
-We provide an automated installer to ensure your environment is perfect.
+**Track A: Existing Users**
+If you already use `claude` CLI, just proceed to Installation.
 
-1.  **Clone the repository**
+**Track B: New Users**
+You need the Claude Code CLI (Beta) installed first.
+```bash
+npm install -g @anthropic-ai/claude-code
+claude login
+```
+
+## 🏁 Getting Started
+
+Choose the installation method that fits your needs.
+
+### Method 1: The Full Experience (GitHub Template) 🌟
+> **Best for:** New projects, or users who want the full suite of Agents & Commands (`/fix-bug`, `/new-feature`).
+
+1.  **Use this Template**: Click the "Use this template" button on GitHub or clone manually.
     ```bash
-    git clone https://github.com/jhlee0409/claude-vibe-flow.git
-    cd claude-vibe-flow
+    git clone https://github.com/jhlee0409/claude-vibe-flow.git my-new-project
+    cd my-new-project
     ```
-
-2.  **Initialize Vibe Flow**
-    Run the following command inside Claude Code:
+2.  **Initialize**:
     ```
     /claude-vibe-flow:init
     ```
-    
-    *This will create the `.vibe-flow` context directory and guide you to the setup script.*
+3.  **Setup**: Follow the "Vibe Doctor" prompt to install MCPs.
 
-3.  **Run the Setup Script** (if not triggered automatically)
-    ```bash
-    sh scripts/setup_vibe.sh
-    ```
-    *The "Vibe Doctor" will check your Node.js/Git status and install the Standard Stack.*
+### Method 2: The Standard Stack (CLI) ⚡️
+> **Best for:** Existing projects where you only need the core MCP tools (Context7, GitHub, Sequential Thinking).
+
+Inject the Vibe Standard Stack into *any* project:
+```bash
+npx vibe-flow
+```
+*Note: This strictly installs the MCP servers. It does not add the specialized Agents or Commands files to your project.*
+
+
 
 ---
 

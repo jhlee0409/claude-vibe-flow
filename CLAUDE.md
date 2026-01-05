@@ -8,9 +8,9 @@ Claude Code를 위한 범용 에이전트 및 명령어 플러그인.
 ```
 claude-vibe-flow/
 ├── .claude-plugin/plugin.json  # 플러그인 정의
-├── agents/                     # 16개 에이전트
+├── agents/                     # 17개 에이전트
 ├── commands/                   # 슬래시 명령어
-├── skills/                     # 스킬 (예정)
+├── skills/                     # 스킬
 ├── outputStyles/               # 품질 스타일 (공식 패턴)
 └── analysis/                   # 분석 문서
 ```
@@ -73,6 +73,7 @@ claude plugin validate ./claude-vibe-flow
 |----------|------|
 | `test-quality-validator` | 테스트 품질 검증 |
 | `context-optimizer` | 토큰 최적화 |
+| `context-manager` | 코드베이스 매핑 |
 
 ### 오케스트레이션 (Orchestration)
 | 에이전트 | 설명 |
@@ -90,11 +91,7 @@ claude plugin validate ./claude-vibe-flow
 | `agent-manager` | 에이전트 생태계 관리 |
 | `docs-sync` | 내부 문서 동기화 |
 | `readme-sync` | README 동기화 |
-
-### 예정 (Planned)
-| 에이전트 | 설명 |
-|----------|------|
-| `research-agent` | 자동 리서치 (설계 완료) |
+| `research-agent` | 기술 문서 리서치 |
 
 ---
 
@@ -206,7 +203,6 @@ claude finish        # archives .vibe-flow/active_spec.md and cleans up
 
 | 문서 | 설명 |
 |------|------|
-| `analysis/total.md` | 마스터 보고서 |
-| `analysis/distribution_strategy_2025.md` | 4대 배포 전략 |
-| `analysis/research_feature_design.md` | Research 기능 설계 |
+| `analysis/distribution_strategy_2025.md` | 배포 전략 |
+| `analysis/mcp_integration_strategy.md` | MCP 통합 전략 |
 | `outputStyles/` | 품질 스타일 (공식 패턴) |

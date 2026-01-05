@@ -21,29 +21,46 @@
 
 ---
 
-## 📦 설치 (Installation)
+## 사전 준비 (Prerequisites)
 
-자동화 스크립트를 통해 환경을 설정할 수 있습니다.
+**기존 사용자 (Track A)**
+이미 `claude` CLI를 사용 중이라면 바로 [설치](#설치-installation) 단계로 넘어가세요.
 
-1.  **리포지토리 클론**
+**신규 사용자 (Track B)**
+이 플러그인은 Claude Code CLI (Beta)가 필요합니다. 먼저 설치하고 로그인해주세요.
+```bash
+npm install -g @anthropic-ai/claude-code
+claude login
+```
+
+## 🏁 시작하기 (Getting Started)
+
+상황에 맞는 설치 방법을 선택하세요.
+
+### 방법 1: 완전한 경험 (GitHub Template) 🌟
+> **추천 대상:** 신규 프로젝트, 또는 전용 에이전트와 명령어(`/fix-bug`, `/new-feature` 등)를 모두 사용하고 싶은 경우.
+
+1.  **템플릿 사용**: GitHub의 "Use this template" 버튼을 누르거나 클론하세요.
     ```bash
-    git clone https://github.com/jhlee0409/claude-vibe-flow.git
-    cd claude-vibe-flow
+    git clone https://github.com/jhlee0409/claude-vibe-flow.git my-new-project
+    cd my-new-project
     ```
-
-2.  **초기화 (Initialize)**
-    Claude Code 내에서 다음 명령어를 실행하세요:
+2.  **초기화**:
     ```
     /claude-vibe-flow:init
     ```
-    
-    *`.vibe-flow` 컨텍스트 디렉토리가 생성됩니다.*
+3.  **설치**: "Vibe Doctor"의 안내에 따라 MCP 도구를 설치합니다.
 
-3.  **셋업 스크립트 실행**
-    ```bash
-    sh scripts/setup_vibe.sh
-    ```
-    *Node.js 및 Git 상태를 점검하고, 필요한 MCP 서버를 설치합니다.*
+### 방법 2: 표준 스택 주입 (CLI) ⚡️
+> **추천 대상:** 이미 진행 중인 프로젝트에 핵심 MCP 도구(Context7, GitHub, Sequential Thinking)만 빠르게 적용하고 싶은 경우.
+
+어떤 프로젝트든 한 줄의 명령어로 표준 스택을 주입할 수 있습니다:
+```bash
+npx vibe-flow
+```
+*참고: 이 방법은 MCP 서버만 설치하며, 에이전트 파일이나 커스텀 명령어는 포함되지 않습니다.*
+
+
 
 ---
 

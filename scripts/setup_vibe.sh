@@ -36,6 +36,14 @@ else
     echo -e "${GREEN}✅ Node.js found.${NC}"
 fi
 
+if ! command -v claude &> /dev/null; then
+    echo -e "${YELLOW}⚠️  Claude Code CLI not found.${NC}"
+    echo "   Vibe Flow is designed to run within Claude Code."
+    echo "   Please install it: npm install -g @anthropic-ai/claude-code"
+else
+    echo -e "${GREEN}✅ Claude Code CLI found.${NC}"
+fi
+
 # 2. Locate Config
 echo -e "\n🔍 Locating Claude Configuration..."
 OS="$(uname)"

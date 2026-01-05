@@ -1,129 +1,95 @@
-# claude-vibe-flow Distribution Strategy (2025)
+# claude-vibe-flow Distribution Strategy (2025-2026)
 
-> Single Source, Multi-Publish
-
----
-
-## 1. 4 Core Distribution Models
-
-| Category | Form | Target | Value |
-|----------|------|--------|-------|
-| **Intelligence** | GitHub Template | New Users (0→1) | Clone and start |
-| **Intelligence** | npx CLI | Existing Projects (1→N) | Single command setup |
-| **Intelligence** | Claude Plugin | Teams/Enterprise | Standardized, secure |
-| **Action** | MCP Server | Advanced Users | External tool integration |
+> Standard Stack for Autonomous Coding
 
 ---
 
-## 2. Current State
+## 1. The 4 Core Distribution Models
 
-**✅ Implemented**: Claude Plugin
-- `plugin.json` in repository root
-- 16 agents, 2 commands, 1 skill registered
-- Works with `claude --plugin-dir ./`
+We distribute Vibe Flow in four distinct forms to match user needs.
 
-**⏸️ Deferred**: CLI, Template, MCP
-- Plugin form is sufficient for current needs
-- Other forms can be added when demand grows
-
----
-
-## 3. Repository Structure
-
-```
-claude-vibe-flow/
-├── .claude-plugin/
-│   └── plugin.json      # Plugin definition
-├── agents/              # 16 agent prompts
-├── commands/            # Slash commands
-├── skills/              # Skills
-├── outputStyles/        # Quality styles
-└── analysis/            # This directory
-```
+| Model | Form | Target | Value |
+|-------|------|--------|-------|
+| **1. Intelligence** | **Claude Plugin** | Teams/Enterprise | Standardized, secure integration. (Current) |
+| **2. Intelligence** | **GitHub Template** | New Users (0→1) | "Clone & Go". Requires Setup Guide. |
+| **3. Intelligence** | **npx CLI** | Existing Projects (1→N) | "Vibe Doctor" injection. |
+| **4. Action** | **MCP Server** | Power Users | Modular tool usage. |
 
 ---
 
-## 4. Distribution by Form
+## 2. Detailed Strategy by Model
 
-### 🟠 Claude Plugin (Current)
+### A. Claude Plugin (Current Mainstream)
+- **Status**: Stable.
+- **Delivery**: `git clone` + `claude plugin add`.
+- **Pros**: Direct integration with Claude Code.
 
-**Status**: Active, Primary
+### B. GitHub Template (The Growth Engine) 🚀
+*Target: New Projects*
 
-```bash
-# Local testing
-claude --plugin-dir ./claude-vibe-flow
+This is the primary channel for new users. However, we must handle the "Cold Start" problem.
 
-# Validation
-claude plugin validate ./claude-vibe-flow
-```
+**Dual-Track Guide for Template Users:**
 
-**Update Flow**:
-- Push to `main` → Plugin is up-to-date
-- Users run `claude plugin update` to sync
+| User Type | Condition | Action Guide |
+|-----------|-----------|--------------|
+| **Track A (Veteran)** | Has `claude` CLI | 1. Clone Repo<br>2. Run `./scripts/setup_vibe.sh` |
+| **Track B (Newcomer)** | No `claude` CLI | 1. **Install Prerequisites**: `npm i -g @anthropic-ai/claude-code`<br>2. Clone Repo<br>3. Run Setup |
 
-### 🟢 GitHub Template (Future)
+> **Note**: The `README.md` must prominently display this Track B guide.
 
-**Status**: Deferred
+### C. npx CLI (The Expansion Engine)
+*Target: Brownfield Projects*
 
-When needed:
-1. Enable "Template repository" in settings
-2. Users click "Use this template"
-3. No separate maintenance required
+- **Command**: `npx create-vibe-flow` (Future)
+- **Strategy**: Wraps `setup_vibe.sh` into a standalone binary.
+- **Goal**: Inject Vibe Standard Stack into *any* project.
 
-### 🔵 npx CLI (Future)
-
-**Status**: Deferred
-
-When needed:
-1. Create `bin/install.js`
-2. Add to `package.json` as bin
-3. Publish to npm
-
-### 🟣 MCP Server (Future)
-
-**Status**: Deferred
-
-When needed:
-1. Create `src/mcp/` TypeScript server
-2. Register tools for external API access
-3. Publish to Smithery/MCP Registry
+### D. MCP Server (The Component)
+- **Strategy**: Distribute individual tools (like `issue-fixer`) via Smithery.io later.
 
 ---
 
-## 5. Release Workflow
+## 3. Growth Strategy (The Viral Loop)
 
-```
-1. Modify agents/commands/skills
-2. Update plugin.json version
-3. git commit && git push
-4. (Optional) git tag v1.x.x
-```
+### A. Artifact Sharing
+Leverage the `walkthrough.md` artifact. This file serves as concrete proof of the system's automated debugging and reporting capabilities, encouraging users to share their results.
 
----
-
-## 6. Quality Gates
-
-Before release, verify:
-
-| Gate | Check |
-|------|-------|
-| **Context Efficiency** | Agent prompts < 500 tokens each |
-| **Instruction Adherence** | Agents follow constraints |
-| **Cross-Agent Sync** | pm-orchestrator routes correctly |
+### B. Community Configuration
+Allow users to share custom `task.md` templates and agent prompts, similar to how dotfiles or shell configurations are shared.
 
 ---
 
-## 7. Decision: Why Plugin-Only?
+## 5. Immediate Action Plan (Q1 2026)
 
-| Form | Effort | Benefit | Decision |
-|------|--------|---------|----------|
-| Plugin | Low | Direct Claude Code integration | ✅ Now |
-| Template | Low | Users can clone instead | ⏸️ Later |
-| CLI | Medium | Manual copy works fine | ⏸️ Later |
-| MCP | High | Context7/WebSearch suffice | ⏸️ Later |
+### Phase 1: Foundation (Completed)
+- [x] Stable Plugin Architecture
+- [x] Automated Installer (`setup_vibe.sh`)
+- [x] Standard Stack Definition
 
-**Principle**: Ship what works, expand when needed.
+### Phase 2: Documentation (In Progress)
+- [ ] **Landing Page**: GitHub Pages or README.io.
+- [ ] **Demo**: Technical demonstration of the `/fix-bug` command.
+- [ ] **Technical Blog**: Explanation of the autonomous coding workflow.
+
+### Phase 3: Community Growth
+- [ ] **Twitter Strategy**:
+    - [ ] "Day 1": Announcement thread focusing on "The Flow" (not just the tool).
+    - [ ] "Day 3": Share `walkthrough.md` examples as "Proof of Work".
+    - [ ] "Day 7": Retweet user success stories (The "Vibe Check").
+- [ ] **Discord Strategy**:
+    - [ ] Establish a dedicated `#vibe-coding` channel.
+    - [ ] Pin `setup_vibe.sh` instruction as the entry point.
+    - [ ] Weekly "Prompt Sharing" session to encourage `task.md` template exchange.
 
 ---
 
-*Last updated: 2026-01-05*
+## 6. Success Metrics
+
+1.  **Template Usage**: Number of repository forks/usage.
+2.  **Retention**: Frequency of `/sync-context` usage (indicating sustained use).
+3.  **Contributions**: Pull requests for new MCP integrations.
+
+---
+
+*Last Refined: 2026-01-05*

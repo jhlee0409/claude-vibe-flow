@@ -1,6 +1,6 @@
 {
   "name": "claude-vibe-flow",
-  "version": "1.2.0",
+  "version": "1.0.0",
   "description": "Claude Code를 활용한 풀 바이브 코딩을 위한 범용 에이전트 및 명령어 모음",
   "author": {
     "name": "jack",
