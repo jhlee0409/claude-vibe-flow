@@ -203,4 +203,3 @@ claude finish        # archives .vibe-flow/active_spec.md and cleans up
 | 문서 | 설명 |
 |------|------|
 | `outputStyles/` | 품질 스타일 (공식 패턴) |
-| `docs/vibe-context-guide.md` | Vibe Context 가이드 |
