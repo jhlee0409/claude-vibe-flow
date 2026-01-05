@@ -46,24 +46,15 @@ claude login
     cd my-new-project
     ```
 
-2.  **Claude Code 시작** (플러그인 자동 인식):
+2.  **Claude Code 시작**:
     ```bash
     claude
     ```
-    > `.claude-plugin/plugin.json`을 통해 플러그인이 자동으로 인식됩니다.
+    > ✨ 플러그인 및 MCP 서버가 `.claude-plugin/`과 `.mcp.json`을 통해 자동 설정됩니다.
 
-3.  **환경 초기화**:
+3.  **초기화 및 코딩 시작**:
     ```
     /claude-vibe-flow:init
-    ```
-
-4.  **MCP 스택 설치**:
-    ```bash
-    sh scripts/setup_vibe.sh
-    ```
-
-5.  **코딩 시작**:
-    ```
     /claude-vibe-flow:new-feature "첫 번째 기능"
     ```
 

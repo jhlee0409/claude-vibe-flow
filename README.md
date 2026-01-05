@@ -46,24 +46,15 @@ Choose the installation method that fits your needs.
     cd my-new-project
     ```
 
-2.  **Start Claude Code** (plugin auto-detected):
+2.  **Start Claude Code**:
     ```bash
     claude
     ```
-    > The plugin is automatically recognized from `.claude-plugin/plugin.json`.
+    > ✨ Plugin & MCP servers are auto-configured via `.claude-plugin/` and `.mcp.json`
 
-3.  **Initialize Environment**:
+3.  **Initialize & Start Coding**:
     ```
     /claude-vibe-flow:init
-    ```
-
-4.  **Install MCP Stack**:
-    ```bash
-    sh scripts/setup_vibe.sh
-    ```
-
-5.  **Start Coding**:
-    ```
     /claude-vibe-flow:new-feature "Your first feature"
     ```
 

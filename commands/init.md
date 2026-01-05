@@ -97,8 +97,9 @@ Keeps the high-level objective clear.
 
 ## 🚀 Next Steps
 1.  Edit `.vibe-flow/current_goal.md` to define your project.
-2.  **Run `sh scripts/setup_vibe.sh` to install necessary Vibe Tools.**
-3.  Run `/claude-vibe-flow:new-feature "Your Feature"` to start Vibe Coding.
+2.  Run `/claude-vibe-flow:new-feature "Your Feature"` to start Vibe Coding.
+
+> ✨ MCP servers are auto-configured via `.mcp.json` - no manual setup needed!
 ```
 
 ### Phase 4: Initial Context Sync
