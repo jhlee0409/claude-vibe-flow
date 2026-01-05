@@ -1,5 +1,7 @@
 # Claude Vibe Flow
 
+**한국어** | [English](README.md)
+
 [Claude Code](https://github.com/anthropics/claude-code)를 위한 17개의 전문 에이전트 제품군으로, 영구적인 컨텍스트 관리와 자동화된 개발 워크플로우를 제공합니다.
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)

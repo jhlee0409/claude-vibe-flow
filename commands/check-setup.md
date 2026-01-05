@@ -7,6 +7,12 @@ description: Vibe coding environment setup validation. Checks the setup status o
 
 This command checks if the Vibe coding environment is correctly set up.
 
+## Usage
+
+```
+/claude-vibe-flow:check-setup
+```
+
 ## Validation Items
 
 ### 1. Agent Structure Verification

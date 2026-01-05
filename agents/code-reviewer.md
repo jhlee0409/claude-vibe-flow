@@ -1,6 +1,6 @@
 ---
 name: code-reviewer
-description: Specialist in code quality, security, and performance review. PROACTIVELY executes after code changes and is used for review requests. Provides three levels of feedback: Critical/Warning/Suggestion.
+description: "Specialist in code quality, security, and performance review. PROACTIVELY executes after code changes and is used for review requests. Provides three levels of feedback: Critical/Warning/Suggestion."
 tools: Read, Grep, Glob
 model: sonnet
 ---

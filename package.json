@@ -1,7 +1,7 @@
 {
   "name": "claude-vibe-flow",
-  "version": "2.0.0",
-  "description": "Claude Code 내장 도구를 100% 활용하는 풀 바이브 코딩 프레임워크. 검증 루프, 모드 시스템, 에이전트 파이프라인 제공.",
+  "version": "1.0.0",
+  "description": "Full vibe coding framework for Claude Code with verification loops, mode system, and agent pipelines.",
   "main": "./dist/cli.js",
   "bin": {
     "claude-vibe-flow": "./dist/cli.js"
@@ -23,8 +23,12 @@
   ],
   "scripts": {
     "build": "tsc",
-    "prepublishOnly": "npm run build",
-    "test": "tsc --noEmit && node dist/cli.js --help"
+    "prepublishOnly": "npm run build && npm run test",
+    "test": "vitest run",
+    "test:watch": "vitest watch",
+    "test:coverage": "vitest run --coverage",
+    "validate": "npm run test -- --reporter=verbose",
+    "typecheck": "tsc --noEmit"
   },
   "repository": {
     "type": "git",
@@ -47,7 +51,11 @@
   },
   "homepage": "https://github.com/jhlee0409/claude-vibe-flow#readme",
   "devDependencies": {
+    "@types/glob": "^8.1.0",
     "@types/node": "^20.10.0",
-    "typescript": "^5.3.0"
+    "glob": "^13.0.0",
+    "gray-matter": "^4.0.3",
+    "typescript": "^5.3.0",
+    "vitest": "^4.0.16"
   }
 }
