@@ -164,17 +164,6 @@ claude plugin validate ./claude-vibe-flow
 
 ---
 
-## Commands (Vibe Context)
-
-```bash
-# 컨텍스트 파일 읽기 (Alias)
-claude context-read  # reads .vibe-flow/active_spec.md
-
-# 작업 완료 및 정리
-claude finish        # archives .vibe-flow/active_spec.md and cleans up
-```
-
-
 ## Output Styles (공식 패턴)
 
 프로젝트 특성에 맞는 품질 스타일을 활성화할 수 있습니다.
@@ -195,11 +184,3 @@ claude finish        # archives .vibe-flow/active_spec.md and cleans up
 ```
 
 자세한 내용: `outputStyles/README.md`
-
----
-
-## 문서 참조
-
-| 문서 | 설명 |
-|------|------|
-| `outputStyles/` | 품질 스타일 (공식 패턴) |
