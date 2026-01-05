@@ -1,0 +1,39 @@
+{
+  "description": "Claude Vibe Flow verification hooks - enforces quality checks and validation loops",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/load-context.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Code was just modified. You MUST run `lsp_diagnostics` on the changed file to catch type errors and lint warnings immediately. This is non-negotiable - errors accumulate and become harder to fix later."
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "VERIFICATION CHECKPOINT - Before completing, confirm:\n1. TODO: If todowrite was used, run todoread - all items must be completed or explicitly cancelled\n2. DIAGNOSTICS: If code was modified, lsp_diagnostics must show 0 errors on all changed files\n3. TESTS: If implementation task with existing tests, tests must have been executed\n\nIf ANY check fails, block completion and specify the exact next action needed."
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -7,11 +7,14 @@ Claude Code를 위한 범용 에이전트 및 명령어 플러그인.
 **구조:**
 ```
 claude-vibe-flow/
-├── .claude-plugin/plugin.json  # 플러그인 정의
+├── .claude-plugin/
+│   └── plugin.json             # 플러그인 정의
+├── hooks/
+│   └── hooks.json              # 훅 설정 (검증 루프)
 ├── agents/                     # 17개 에이전트
-├── commands/                   # 슬래시 명령어
+├── commands/                   # 12개 슬래시 명령어 (모드 포함)
 ├── skills/                     # 스킬
-└── outputStyles/               # 품질 스타일 (공식 패턴)
+└── outputStyles/               # 품질 스타일
 ```
 
 ---
@@ -54,6 +57,66 @@ claude --plugin-dir ./claude-vibe-flow
 # 플러그인 검증
 claude plugin validate ./claude-vibe-flow
 ```
+
+---
+
+## 🎨 모드 시스템
+
+모드는 **행동 패턴**을 정의합니다. 슬래시 커맨드에 직접 통합되어 있습니다.
+
+| 모드 | 용도 | 활성화 |
+|------|------|--------|
+| `Verification` | 철저한 검증 강제 | Stop 훅 자동, `/claude-vibe-flow:verify` |
+| `FastVibe` | 빠른 프로토타이핑 | `/claude-vibe-flow:fast` |
+| `DeepWork` | 복잡한 작업의 철저한 계획 | `/claude-vibe-flow:deep` |
+
+### 모드별 행동 차이
+
+| 측면 | Verification | FastVibe | DeepWork |
+|------|--------------|----------|----------|
+| 계획 | 기본 | 최소 | 철저 |
+| lsp_diagnostics | 매 수정마다 | 마지막만 | 매 수정마다 |
+| TODO 추적 | 강제 | 선택 | 상세 |
+| 테스트 | 필수 | 연기 | 단계별 |
+
+---
+
+## 🔧 Claude Code 내장 도구 활용 (MUST)
+
+### 필수 도구
+
+| 도구 | 용도 | 언제 사용 |
+|------|------|----------|
+| `lsp_diagnostics` | 에러/경고 확인 | 모든 Edit/Write 후 |
+| `lsp_find_references` | 영향 분석 | 리팩토링 전 |
+| `lsp_rename` | 안전한 이름 변경 | 심볼 리네임 시 |
+| `lsp_goto_definition` | 정의 탐색 | 버그 추적 시 |
+| `ast_grep_search` | 패턴 검색 | 대규모 코드 분석 |
+| `todowrite` | 작업 추적 | 복잡한 작업 시작 시 |
+
+### 검증 루프 (핵심 패턴)
+
+```
+Edit/Write → lsp_diagnostics → 에러 있으면 수정 → 다시 검증 → 클린하면 진행
+```
+
+---
+
+## 🪝 훅 시스템
+
+### 활성 훅
+
+| 훅 | 트리거 | 동작 |
+|----|--------|------|
+| `SessionStart` | 세션 시작 | 컨텍스트 자동 로드 |
+| `PostToolUse` | Edit/Write 후 | lsp_diagnostics 리마인드 |
+| `Stop` | 세션 종료 시도 | TODO/검증/테스트 체크 |
+
+### Stop 훅 검증 항목
+
+1. **TODO 완료**: `todowrite` 사용 시 모든 항목 완료 확인
+2. **코드 품질**: 수정된 파일에 `lsp_diagnostics` 실행 확인
+3. **테스트**: 구현 작업 시 테스트 실행 확인
 
 ---
 

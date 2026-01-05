@@ -99,6 +99,40 @@ You fix bugs through systematic root cause analysis.
 
 ---
 
+## 🔧 Claude Code Built-in Tools (MUST USE)
+
+### Required Tools for Bug Fixing
+
+| Situation | Tool | Purpose |
+|-----------|------|---------|
+| **Finding bug location** | `lsp_goto_definition` | Navigate to symbol definitions |
+| **Understanding impact** | `lsp_find_references` | Find all usages of buggy code |
+| **After EVERY fix** | `lsp_diagnostics` | Verify fix doesn't introduce new errors |
+| **Pattern-based search** | `ast_grep_search` | Find similar bugs elsewhere |
+| **Safe refactoring** | `lsp_rename` | Rename without breaking references |
+
+### Bug Fix Verification Loop
+
+```
+Identify bug → lsp_find_references (impact) → Fix → lsp_diagnostics → Verify
+                                                         ↓
+                                          If errors → Fix again
+                                          If clean → Test → Done
+```
+
+### Example Workflow
+
+```markdown
+1. lsp_goto_definition: Navigate to error source
+2. lsp_find_references: Check all usages of buggy function
+3. Edit: Apply minimal fix
+4. lsp_diagnostics: Verify no new errors  ← IMMEDIATELY after fix
+5. Run tests: Confirm bug is fixed
+6. ast_grep_search: Check for similar patterns (preventive)
+```
+
+---
+
 ## Analysis Checklist
 
 ### Error Analysis

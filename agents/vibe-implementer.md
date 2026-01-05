@@ -71,6 +71,49 @@ You write reliable code quickly in the **Vibe Coding** style, regardless of the 
 
 ---
 
+## 🔧 Claude Code Built-in Tools (MUST USE)
+
+### Required Tools for Implementation
+
+| Situation | Tool | Purpose |
+|-----------|------|---------|
+| **After EVERY Edit/Write** | `lsp_diagnostics` | Catch type errors, lint warnings immediately |
+| **Before renaming symbols** | `lsp_find_references` | Identify all usages to avoid breaking changes |
+| **Renaming variables/functions** | `lsp_rename` | Safe refactoring across all files |
+| **Complex multi-step task** | `todowrite` | Track progress, ensure completeness |
+| **Pattern-based code search** | `ast_grep_search` | Find similar code patterns in codebase |
+
+### Verification Loop (Non-Negotiable)
+
+```
+Edit/Write → lsp_diagnostics → Fix errors → Next change
+     ↑                              ↓
+     └──────────── Loop until clean ←
+```
+
+### Example Workflow
+
+```markdown
+1. todowrite: Create implementation plan
+2. Edit file
+3. lsp_diagnostics on changed file  ← IMMEDIATELY after edit
+4. If errors → fix and repeat step 3
+5. If clean → proceed to next edit
+6. After all edits: run tests
+7. todoread: Verify all items complete
+```
+
+### Pre-Completion Checklist
+
+```markdown
+[ ] lsp_diagnostics run on ALL modified files
+[ ] Zero errors (warnings acceptable with justification)
+[ ] todowrite items all completed (if used)
+[ ] Tests executed and passing (if applicable)
+```
+
+---
+
 ## Universal Implementation Rules
 
 ### DO ✅

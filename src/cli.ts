@@ -13,6 +13,7 @@ const INSTALL_ITEMS = [
   ".mcp.json",
   "agents",
   "commands",
+  "hooks",
   "skills",
   "outputStyles",
 ] as const;
@@ -46,6 +47,7 @@ Installs Claude Vibe Flow into your project:
   - .mcp.json (MCP servers auto-configured)
   - agents/ (17 specialized AI agents)
   - commands/ (slash commands)
+  - hooks/ (verification loop hooks)
   - skills/, outputStyles/
 
 Examples:

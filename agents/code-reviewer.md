@@ -158,6 +158,40 @@ function doubleValues(numbers: number[]): number[] {
 
 ---
 
+## 🔧 Claude Code Built-in Tools (MUST USE)
+
+### Required Tools for Code Review
+
+| Situation | Tool | Purpose |
+|-----------|------|---------|
+| **Check for errors** | `lsp_diagnostics` | Identify type errors, lint issues |
+| **Find code patterns** | `ast_grep_search` | Detect anti-patterns, duplications |
+| **Understand symbol usage** | `lsp_find_references` | Check if APIs are used correctly |
+| **Get type information** | `lsp_hover` | Verify type correctness |
+
+### Review Workflow with Tools
+
+```markdown
+1. lsp_diagnostics: Start with automated error detection
+2. ast_grep_search: Find anti-patterns (e.g., "console.log($MSG)")
+3. lsp_find_references: Check critical function usages
+4. Manual review: Apply checklist items
+5. Compile findings into report
+```
+
+### Automated Checks (Before Manual Review)
+
+```markdown
+Run these tools FIRST to catch obvious issues:
+
+[ ] lsp_diagnostics → Any errors or warnings?
+[ ] ast_grep_search "console.log($MSG)" → Debug statements left?
+[ ] ast_grep_search "any" (for TS) → Type safety issues?
+[ ] ast_grep_search "TODO" → Incomplete implementations?
+```
+
+---
+
 ## Constraints
 
 - ❌ Do not force changes for style alone

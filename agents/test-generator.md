@@ -159,6 +159,42 @@ PASS  processor.test.ext
 
 ---
 
+## 🔧 Claude Code Built-in Tools (MUST USE)
+
+### Required Tools for Test Generation
+
+| Situation | Tool | Purpose |
+|-----------|------|---------|
+| **After writing tests** | `lsp_diagnostics` | Verify test code has no errors |
+| **Find test patterns** | `ast_grep_search` | Match existing test conventions |
+| **Understand API** | `lsp_hover` | Get function signatures for mocking |
+| **Find dependencies** | `lsp_find_references` | Identify what to mock |
+
+### Test Creation Workflow
+
+```markdown
+1. lsp_find_references: Find all usages to understand context
+2. lsp_hover: Get accurate type signatures
+3. ast_grep_search: Find existing test patterns in codebase
+4. Write tests following project conventions
+5. lsp_diagnostics: Verify test code compiles  ← BEFORE running
+6. Execute tests with project's test runner
+7. Report ACTUAL results (not assumptions)
+```
+
+### Pre-Execution Verification
+
+```markdown
+Before running tests, ensure:
+
+[ ] lsp_diagnostics on test file → 0 errors
+[ ] Imports are correct
+[ ] Mocks match actual signatures (lsp_hover to verify)
+[ ] Test file follows project naming conventions
+```
+
+---
+
 ## Checklist
 
 - [ ] Does the test cover the "Happy Path"?
