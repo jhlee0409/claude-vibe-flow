@@ -40,16 +40,32 @@ claude login
 ### 방법 1: 완전한 경험 (GitHub Template) 🌟
 > **추천 대상:** 신규 프로젝트, 또는 전용 에이전트와 명령어(`/fix-bug`, `/new-feature` 등)를 모두 사용하고 싶은 경우.
 
-1.  **템플릿 사용**: GitHub의 "Use this template" 버튼을 누르거나 클론하세요.
+1.  **저장소 클론**:
     ```bash
     git clone https://github.com/jhlee0409/claude-vibe-flow.git my-new-project
     cd my-new-project
     ```
-2.  **초기화**:
+
+2.  **Claude Code 시작** (플러그인 자동 인식):
+    ```bash
+    claude
+    ```
+    > `.claude-plugin/plugin.json`을 통해 플러그인이 자동으로 인식됩니다.
+
+3.  **환경 초기화**:
     ```
     /claude-vibe-flow:init
     ```
-3.  **설치**: "Vibe Doctor"의 안내에 따라 MCP 도구를 설치합니다.
+
+4.  **MCP 스택 설치**:
+    ```bash
+    sh scripts/setup_vibe.sh
+    ```
+
+5.  **코딩 시작**:
+    ```
+    /claude-vibe-flow:new-feature "첫 번째 기능"
+    ```
 
 ### 방법 2: 표준 스택 주입 (CLI) ⚡️
 > **추천 대상:** 이미 진행 중인 프로젝트에 핵심 MCP 도구(Context7, GitHub, Sequential Thinking)만 빠르게 적용하고 싶은 경우.

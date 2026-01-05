@@ -40,16 +40,32 @@ Choose the installation method that fits your needs.
 ### Method 1: The Full Experience (GitHub Template) 🌟
 > **Best for:** New projects, or users who want the full suite of Agents & Commands (`/fix-bug`, `/new-feature`).
 
-1.  **Use this Template**: Click the "Use this template" button on GitHub or clone manually.
+1.  **Clone the Repository**:
     ```bash
     git clone https://github.com/jhlee0409/claude-vibe-flow.git my-new-project
     cd my-new-project
     ```
-2.  **Initialize**:
+
+2.  **Start Claude Code** (plugin auto-detected):
+    ```bash
+    claude
+    ```
+    > The plugin is automatically recognized from `.claude-plugin/plugin.json`.
+
+3.  **Initialize Environment**:
     ```
     /claude-vibe-flow:init
     ```
-3.  **Setup**: Follow the "Vibe Doctor" prompt to install MCPs.
+
+4.  **Install MCP Stack**:
+    ```bash
+    sh scripts/setup_vibe.sh
+    ```
+
+5.  **Start Coding**:
+    ```
+    /claude-vibe-flow:new-feature "Your first feature"
+    ```
 
 ### Method 2: The Standard Stack (CLI) ⚡️
 > **Best for:** Existing projects where you only need the core MCP tools (Context7, GitHub, Sequential Thinking).
