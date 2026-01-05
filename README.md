@@ -1,122 +1,114 @@
-# Claude Vibe Flow 🌊
+# Claude Vibe Flow
 
-> **Full Vibe Coding** for Claude Code.
-> 
-> A comprehensive suite of agents, commands, and tools designed to maximize flow, minimize context switching, and enforce "Vibe Coding" best practices.
+A suite of 17 specialized agents for [Claude Code](https://github.com/anthropics/claude-code) that provides persistent context management and automated development workflows.
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![Claude Code](https://img.shields.io/badge/Claude%20Code-Ready-purple)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![npm version](https://img.shields.io/npm/v/claude-vibe-flow)](https://www.npmjs.com/package/claude-vibe-flow)
 
----
+## Features
 
-## 🚀 The Vibe Standard Stack
+- **Persistent Context**: Automatically saves project capabilities, architecture decisions, and current tasks to `.claude-vibe-flow/`.
+- **Agent Orchestration**: Routes complex requests to specialized agents (Architecture, Implementation, Testing) instead of a single generalist model.
+- **Workflow Automation**: Standardized pipelines for feature development, refactoring, and bug fixing.
 
-We believe in a "Zero-Friction" environment. Vibe Flow automates the setup of the **"Unconditionally Good"** tools that every developer needs.
+## Installation
 
-| Tool | Capability | Why it's essential |
-|------|------------|--------------------|
-| **Context7** | 📚 **Docs** | Autonomously finds the *correct* version of documentation. Prevents hallucinations. |
-| **GitHub** | 🐙 **Issues/PR** | Allows agents to read issues and manage PRs directly. |
-| **Sequential Thinking** | 🧠 **Reasoning** | Provides a "Chain of Thought" workspace for solving complex logic problems. |
+### For New Projects (Template)
 
----
+[![Use this template](https://img.shields.io/badge/Use%20this-Template-2ea44f?style=for-the-badge)](https://github.com/jhlee0409/claude-vibe-flow/generate)
 
-## Prerequisites
-
-**Track A: Existing Users**
-If you already use `claude` CLI, just proceed to Installation.
-
-**Track B: New Users**
-You need the Claude Code CLI (Beta) installed first.
+Or click **"Use this template"** on GitHub, then:
 ```bash
-npm install -g @anthropic-ai/claude-code
-claude login
-```
-
-## 🏁 Getting Started
-
-Choose the installation method that fits your needs.
-
-### Method 1: New Project (GitHub Template) 🌟
-> **Best for:** Starting a new project with full Vibe Coding setup.
-
-```bash
-git clone https://github.com/jhlee0409/claude-vibe-flow.git my-new-project
-cd my-new-project
-claude
-```
-> ✨ Plugin & MCP servers are auto-configured via `.claude-plugin/` and `.mcp.json`
-
-Then initialize:
-```
-/claude-vibe-flow:init
-```
-
----
-
-### Method 2: Existing Project (Full Experience) 📦
-> **Best for:** Adding full Vibe Coding capabilities to your existing project.
-
-```bash
-cd your-existing-project
-npx vibe-flow init
+cd my-app
 claude
 ```
 
-Then initialize:
+### For Existing Projects (CLI)
+```bash
+cd your-project
+npx claude-vibe-flow
+claude
 ```
+
+## Usage
+
+Run these commands inside **Claude Code**.
+
+### Initialization
+Sets up the `.claude-vibe-flow` directory for context storage.
+```bash
 /claude-vibe-flow:init
 ```
 
----
-
-### Method 3: MCP Only (Lightweight) ⚡️
-> **Best for:** Projects where you only need the core MCP tools without agents/commands.
-
+### Development
+Start a new feature with the full agent pipeline (Planner -> Architect -> Implementer).
 ```bash
-npx vibe-flow
+/claude-vibe-flow:new-feature "Add simple JWT authentication"
 ```
-*Note: This only installs MCP servers (Context7, GitHub, Sequential Thinking). No agents or commands.*
 
+### Maintenance
+Refresh the context map after manual file changes.
+```bash
+/claude-vibe-flow:sync-context
+```
 
+Analyze and fix bugs.
+```bash
+/claude-vibe-flow:fix-bug "Error: undefined property 'user'"
+```
 
----
+## Agents
 
-## ✨ Features
+### Core
+| Agent | Description |
+|-------|-------------|
+| `pm-orchestrator` | Routes user requests to the appropriate agents. |
+| `planner` | Clarifies requirements and creates specifications. |
+| `architect` | Makes technical design decisions. |
+| `vibe-implementer` | Implements code changes based on specs. |
 
-### 🤖 Specialized Agents
-Instead of a generic assistant, we route tasks to specialists:
+### Quality & Maintenance
+| Agent | Description |
+|-------|-------------|
+| `test-generator` | Generates unit and integration tests. |
+| `code-reviewer` | Reviews code for quality and security issues. |
+| `issue-fixer` | Analyzes and resolves bugs. |
+| `spec-validator` | Validates specifications against requirements. |
+| `test-quality-validator` | Checks test coverage and quality. |
 
-*   **`pm-orchestrator`**: The boss. Analyzes intent and routes to the right agent.
-*   **`planner`**: Requirement elicitation via Socratic dialogue.
-*   **`context-manager`**: Maintains the "Mental Map" of your codebase.
-*   **`research-agent`**: Uses Context7 to find *real* documentation.
-*   **`issue-fixer`**: Reads error logs/issues and performs root cause analysis.
-*   **`test-generator`**: Writes robust tests before/after implementation.
+### Context & Management
+| Agent | Description |
+|-------|-------------|
+| `context-manager` | Maintains the persistent context graph. |
+| `context-optimizer` | Optimizes context usage for token limits. |
+| `task-manager` | Tracks task progress and status. |
+| `agent-manager` | Manages agent interaction and lifecycle. |
 
-### 🔄 Active Context Sync
-The system maintains a real-time map of your project in `.vibe-flow/active_spec.md`. Agents allow you to **"Stop & Resume"** without losing context.
+### Utilities
+| Agent | Description |
+|-------|-------------|
+| `git-guardian` | Handles git operations and commit messages. |
+| `docs-sync` | Synchronizes documentation with code changes. |
+| `readme-sync` | Keeps READMEs updated. |
+| `research-agent` | Performs external research (web/docs). |
 
----
-
-## 🛠️ Commands
+## Commands
 
 | Command | Description |
 |---------|-------------|
-| `/claude-vibe-flow:init` | Initializes the Vibe environment and runs the setup script. |
-| `/claude-vibe-flow:sync-context` | Forces a re-scan of the codebase to update the context map. |
-| `/claude-vibe-flow:check-mcp` | Verifies if the Standard Stack is installed and active. |
-| `/claude-vibe-flow:new-feature` | Starts a new feature development cycle (`active_spec.md`). |
-| `/claude-vibe-flow:fix-bug` | Pipes error logs to Issue Fixer agent for RCA and patching. |
-| `/claude-vibe-flow:refactor` | Improves code structure without changing business logic. |
-| `/claude-vibe-flow:ask` | Quick Q&A about codebase or external docs (no file changes). |
+| `/claude-vibe-flow:init` | Initializes the Vibe Flow environment. |
+| `/claude-vibe-flow:new-feature` | Starts a new feature development workflow. |
+| `/claude-vibe-flow:fix-bug` | Analyzes and fixes a specified bug. |
+| `/claude-vibe-flow:refactor` | Refactors code without changing behavior. |
+| `/claude-vibe-flow:sync-context` | Synchronizes the context map. |
+| `/claude-vibe-flow:check-setup` | Verifies Vibe Flow installation. |
+| `/claude-vibe-flow:check-mcp` | Checks status of MCP servers. |
+| `/claude-vibe-flow:ask` | Asks a question about the codebase. |
 
----
+## Contributing
 
-## 🤝 Contributing
+Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
-We welcome contributions! Please open an issue or submit a Pull Request.
+## License
 
-## 📄 License
-
-This project is licensed under the **MIT License**.
+[MIT](LICENSE)

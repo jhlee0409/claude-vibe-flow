@@ -1,122 +1,114 @@
-# Claude Vibe Flow 🌊
+# Claude Vibe Flow
 
-> **Claude Code를 위한 바이브 코딩(Vibe Coding) 솔루션**
-> 
-> 맥락 전환(Context Switching)을 최소화하고 몰입(Flow)을 유지하기 위한 에이전트 및 도구 모음입니다.
+[Claude Code](https://github.com/anthropics/claude-code)를 위한 17개의 전문 에이전트 제품군으로, 영구적인 컨텍스트 관리와 자동화된 개발 워크플로우를 제공합니다.
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![Claude Code](https://img.shields.io/badge/Claude%20Code-Ready-purple)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![npm version](https://img.shields.io/npm/v/claude-vibe-flow)](https://www.npmjs.com/package/claude-vibe-flow)
 
----
+## 주요 기능
 
-## 🚀 The Vibe Standard Stack (표준 도구)
+- **영구 컨텍스트 (Persistent Context)**: 프로젝트의 기능, 아키텍처 결정사항, 현재 작업 내역을 `.claude-vibe-flow/` 디렉토리에 자동으로 저장하고 관리합니다.
+- **에이전트 오케스트레이션**: 복잡한 요청을 분석하여 적절한 전문 에이전트(기획, 설계, 구현, 테스트 등)에게 라우팅합니다.
+- **워크플로우 자동화**: 기능 개발, 리팩토링, 버그 수정을 위한 표준화된 파이프라인을 제공합니다.
 
-효율적인 개발 환경을 위해 다음 도구들을 자동으로 구성합니다.
+## 설치
 
-| 도구 (Tool) | 역할 (Capability) | 설명 |
-|-------------|-------------------|----------------|
-| **Context7** | 📚 **문서(Docs)** | 라이브러리의 최신 공식 문서를 검색하여 정확한 정보를 제공합니다. |
-| **GitHub** | 🐙 **이슈/PR** | 리포지토리의 이슈와 PR을 직접 읽고 관리합니다. |
-| **Sequential Thinking** | 🧠 **논리사고** | 복잡한 문제 해결을 위한 단계별 사고(Chain of Thought) 프로세스를 지원합니다. |
+### 새 프로젝트 (템플릿)
 
----
+[![Use this template](https://img.shields.io/badge/Use%20this-Template-2ea44f?style=for-the-badge)](https://github.com/jhlee0409/claude-vibe-flow/generate)
 
-## 사전 준비 (Prerequisites)
-
-**기존 사용자 (Track A)**
-이미 `claude` CLI를 사용 중이라면 바로 [설치](#설치-installation) 단계로 넘어가세요.
-
-**신규 사용자 (Track B)**
-이 플러그인은 Claude Code CLI (Beta)가 필요합니다. 먼저 설치하고 로그인해주세요.
+GitHub에서 **"Use this template"** 버튼 클릭 후:
 ```bash
-npm install -g @anthropic-ai/claude-code
-claude login
-```
-
-## 🏁 시작하기 (Getting Started)
-
-상황에 맞는 설치 방법을 선택하세요.
-
-### 방법 1: 신규 프로젝트 (GitHub Template) 🌟
-> **추천 대상:** 새 프로젝트를 Full Vibe Coding 환경으로 시작하고 싶은 경우.
-
-```bash
-git clone https://github.com/jhlee0409/claude-vibe-flow.git my-new-project
-cd my-new-project
-claude
-```
-> ✨ 플러그인 및 MCP 서버가 `.claude-plugin/`과 `.mcp.json`을 통해 자동 설정됩니다.
-
-초기화:
-```
-/claude-vibe-flow:init
-```
-
----
-
-### 방법 2: 기존 프로젝트 (Full Experience) 📦
-> **추천 대상:** 이미 진행 중인 프로젝트에 전체 Vibe Coding 기능을 추가하고 싶은 경우.
-
-```bash
-cd your-existing-project
-npx vibe-flow init
+cd my-app
 claude
 ```
 
-초기화:
+### 기존 프로젝트 (CLI)
+```bash
+cd your-project
+npx claude-vibe-flow
+claude
 ```
+
+## 사용법
+
+**Claude Code** 내부에서 다음 명령어들을 실행하세요.
+
+### 초기화
+컨텍스트 저장소인 `.claude-vibe-flow` 디렉토리를 생성합니다.
+```bash
 /claude-vibe-flow:init
 ```
 
----
-
-### 방법 3: MCP만 설치 (Lightweight) ⚡️
-> **추천 대상:** 에이전트/명령어 없이 핵심 MCP 도구만 필요한 경우.
-
+### 개발
+전체 에이전트 파이프라인(기획 -> 설계 -> 구현)을 통해 새 기능을 개발합니다.
 ```bash
-npx vibe-flow
+/claude-vibe-flow:new-feature "간단한 JWT 인증 추가해줘"
 ```
-*참고: MCP 서버(Context7, GitHub, Sequential Thinking)만 설치됩니다. 에이전트나 명령어는 포함되지 않습니다.*
 
+### 유지관리
+수동으로 파일을 변경한 경우 컨텍스트 맵을 동기화합니다.
+```bash
+/claude-vibe-flow:sync-context
+```
 
+버그를 분석하고 수정합니다.
+```bash
+/claude-vibe-flow:fix-bug "Error: undefined property 'user'"
+```
 
----
+## 에이전트 목록
 
-## ✨ 주요 기능 (Features)
+### 핵심 (Core)
+| 에이전트 | 설명 |
+|-------|-------------|
+| `pm-orchestrator` | 사용자 요청을 분석하여 적절한 에이전트에게 라우팅합니다. |
+| `planner` | 요구사항을 명확히 하고 명세서를 작성합니다. |
+| `architect` | 기술적인 설계 의사결정을 수행합니다. |
+| `vibe-implementer` | 명세에 따라 코드를 구현합니다. |
 
-### 🤖 전문 에이전트 (Specialized Agents)
-각 작업에 최적화된 에이전트가 업무를 수행합니다:
+### 품질 및 유지보수
+| 에이전트 | 설명 |
+|-------|-------------|
+| `test-generator` | 유닛 및 통합 테스트를 생성합니다. |
+| `code-reviewer` | 코드 품질과 보안 문제를 검토합니다. |
+| `issue-fixer` | 버그를 분석하고 해결합니다. |
+| `spec-validator` | 요구사항에 대한 명세를 검증합니다. |
+| `test-quality-validator` | 테스트 커버리지와 품질을 확인합니다. |
 
-*   **`pm-orchestrator`**: 사용자 의도를 분석하고 작업을 적절한 에이전트에게 할당합니다.
-*   **`planner`**: 모호한 요구사항을 구체적인 스펙으로 정리합니다.
-*   **`context-manager`**: 코드베이스의 구조와 주요 컨텍스트를 관리합니다.
-*   **`research-agent`**: Context7을 사용하여 공식 문서를 검색합니다.
-*   **`issue-fixer`**: 에러 로그를 분석하고 원인을 찾아 수정합니다.
-*   **`test-generator`**: 구현 전후에 필요한 테스트 코드를 작성합니다.
+### 컨텍스트 및 관리
+| 에이전트 | 설명 |
+|-------|-------------|
+| `context-manager` | 영구 컨텍스트 그래프를 유지 관리합니다. |
+| `context-optimizer` | 토큰 제한에 맞춰 컨텍스트를 최적화합니다. |
+| `task-manager` | 작업 진행 상황과 상태를 추적합니다. |
+| `agent-manager` | 에이전트 상호작용 및 수명 주기를 관리합니다. |
 
-### 🔄 능동형 컨텍스트 동기화 (Active Context Sync)
-`.vibe-flow/active_spec.md` 파일에 프로젝트의 상태를 기록하여, 세션이 끊겨도 작업을 연속적으로 이어나갈 수 있도록 지원합니다.
+### 유틸리티
+| 에이전트 | 설명 |
+|-------|-------------|
+| `git-guardian` | Git 작업 및 커밋 메시지를 처리합니다. |
+| `docs-sync` | 코드 변경 사항과 문서를 동기화합니다. |
+| `readme-sync` | README를 프로젝트 상태와 동기화합니다. |
+| `research-agent` | 웹/문서 검색 등 외부 조사를 수행합니다. |
 
----
-
-## 🛠️ 명령어 (Commands)
+## 명령어 목록
 
 | 명령어 | 설명 |
-|--------|------|
-| `/claude-vibe-flow:init` | 바이브 환경을 초기화하고 필수 도구 설치를 안내합니다. |
-| `/claude-vibe-flow:sync-context` | 코드베이스를 다시 스캔하여 컨텍스트 지도를 최신화합니다. |
-| `/claude-vibe-flow:check-mcp` | Standard Stack 설치 상태 확인. |
-| `/claude-vibe-flow:new-feature` | 신규 기능 개발 시작 (`active_spec.md` 생성). |
-| `/claude-vibe-flow:fix-bug` | 버그 리포트/로그를 분석하여 원인을 찾고 수정합니다. |
-| `/claude-vibe-flow:refactor` | 기능 변경 없이 코드 구조만 개선합니다 (Architect 호출). |
-| `/claude-vibe-flow:ask` | 코드를 수정하지 않고 질문만 합니다 (빠른 Q&A). |
+|---------|-------------|
+| `/claude-vibe-flow:init` | Vibe Flow 환경을 초기화합니다. |
+| `/claude-vibe-flow:new-feature` | 새 기능 개발 워크플로우를 시작합니다. |
+| `/claude-vibe-flow:fix-bug` | 지정된 버그를 분석하고 수정합니다. |
+| `/claude-vibe-flow:refactor` | 동작 변경 없이 코드를 리팩토링합니다. |
+| `/claude-vibe-flow:sync-context` | 컨텍스트 맵을 동기화합니다. |
+| `/claude-vibe-flow:check-setup` | Vibe Flow 설치 상태를 확인합니다. |
+| `/claude-vibe-flow:check-mcp` | MCP 서버 상태를 확인합니다. |
+| `/claude-vibe-flow:ask` | 코드베이스에 대해 질문합니다. |
 
----
+## 기여하기
 
-## 🤝 기여하기 (Contributing)
+자세한 내용은 [CONTRIBUTING.md](CONTRIBUTING.md)를 참조하세요.
 
-이슈 등록 및 PR 제출을 통해 기여할 수 있습니다.
+## 라이선스
 
-## 📄 라이선스 (License)
-
-이 프로젝트는 **MIT 라이선스**를 따릅니다.
+[MIT](LICENSE)
