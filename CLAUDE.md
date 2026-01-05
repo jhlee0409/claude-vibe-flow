@@ -11,8 +11,7 @@ claude-vibe-flow/
 ├── agents/                     # 17개 에이전트
 ├── commands/                   # 슬래시 명령어
 ├── skills/                     # 스킬
-├── outputStyles/               # 품질 스타일 (공식 패턴)
-└── analysis/                   # 분석 문서
+└── outputStyles/               # 품질 스타일 (공식 패턴)
 ```
 
 ---
@@ -203,6 +202,5 @@ claude finish        # archives .vibe-flow/active_spec.md and cleans up
 
 | 문서 | 설명 |
 |------|------|
-| `analysis/distribution_strategy_2025.md` | 배포 전략 |
-| `analysis/mcp_integration_strategy.md` | MCP 통합 전략 |
 | `outputStyles/` | 품질 스타일 (공식 패턴) |
+| `docs/vibe-context-guide.md` | Vibe Context 가이드 |
