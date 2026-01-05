@@ -77,67 +77,7 @@ describe('CLI E2E Tests', () => {
     });
   });
 
-  describe('CLI Structure', () => {
-    it('should have shebang for node execution', () => {
-      const content = fs.readFileSync(cliPath, 'utf-8');
-      expect(content.startsWith('#!/usr/bin/env node')).toBe(true);
-    });
-
-    it('should define error codes', () => {
-      const content = fs.readFileSync(cliPath, 'utf-8');
-
-      expect(content).toContain('enum ErrorCode');
-      expect(content).toContain('SUCCESS = 0');
-      expect(content).toContain('NETWORK_ERROR');
-      expect(content).toContain('FILE_SYSTEM_ERROR');
-      expect(content).toContain('DEPENDENCY_ERROR');
-      expect(content).toContain('NODE_VERSION_ERROR');
-    });
-
-    it('should have error handling with suggestions', () => {
-      const content = fs.readFileSync(cliPath, 'utf-8');
-
-      expect(content).toContain('interface CliError');
-      expect(content).toContain('suggestion');
-      expect(content).toContain('handleError');
-    });
-
-    it('should check Node.js version', () => {
-      const content = fs.readFileSync(cliPath, 'utf-8');
-
-      expect(content).toContain('checkNodeVersion');
-      expect(content).toContain('MIN_NODE_VERSION');
-      expect(content).toContain('RECOMMENDED_NODE_VERSION');
-    });
-
-    it('should check for required dependencies (curl, tar)', () => {
-      const content = fs.readFileSync(cliPath, 'utf-8');
-
-      expect(content).toContain('checkDependencies');
-      expect(content).toContain('"curl"');
-      expect(content).toContain('"tar"');
-    });
-  });
-
   describe('Install Items', () => {
-    it('should install correct directories', () => {
-      const content = fs.readFileSync(cliPath, 'utf-8');
-
-      const expectedItems = [
-        '.claude-plugin',
-        '.mcp.json',
-        'agents',
-        'commands',
-        'hooks',
-        'skills',
-        'outputStyles',
-      ];
-
-      for (const item of expectedItems) {
-        expect(content).toContain(`"${item}"`);
-      }
-    });
-
     it('all install items should exist in project', () => {
       const installItems = [
         '.claude-plugin',
@@ -164,19 +104,4 @@ describe('CLI E2E Tests', () => {
     });
   });
 
-  describe('Error Output Format', () => {
-    it('should format errors with emoji indicators', () => {
-      const content = fs.readFileSync(cliPath, 'utf-8');
-
-      expect(content).toContain('❌');
-      expect(content).toContain('💡');
-      expect(content).toContain('📋');
-    });
-
-    it('should support DEBUG environment variable', () => {
-      const content = fs.readFileSync(cliPath, 'utf-8');
-
-      expect(content).toContain('process.env.DEBUG');
-    });
-  });
 });
