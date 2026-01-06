@@ -44,7 +44,7 @@
     "./agents/idea-shaper.md",
     "./agents/issue-fixer.md",
     "./agents/planner.md",
-    "./agents/pm-orchestrator.md",
+    "./agents/vibe-orchestrator.md",
     "./agents/readme-sync.md",
     "./agents/research-agent.md",
     "./agents/spec-validator.md",

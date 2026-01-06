@@ -2,7 +2,7 @@
 
 [한국어](README.ko.md) | **English**
 
-A suite of 18 specialized agents for [Claude Code](https://github.com/anthropics/claude-code) that provides persistent context management and automated development workflows.
+A suite of 21 specialized agents for [Claude Code](https://github.com/anthropics/claude-code) that provides persistent context management and automated development workflows.
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![npm version](https://img.shields.io/npm/v/claude-vibe-flow)](https://www.npmjs.com/package/claude-vibe-flow)
@@ -45,9 +45,9 @@ Sets up the `.claude-vibe-flow` directory for context storage.
 ```
 
 ### Development
-Start a new feature with the full agent pipeline (Planner -> Architect -> Implementer).
+Start a new feature with the full agent pipeline (Idea -> Plan -> Architect -> Implement).
 ```bash
-/claude-vibe-flow:new-feature "Add simple JWT authentication"
+/claude-vibe-flow:vibe "Add simple JWT authentication"
 ```
 
 ### Maintenance
@@ -63,13 +63,20 @@ Analyze and fix bugs.
 
 ## Agents
 
-### Core
+### Core Orchestration
 | Agent | Description |
 |-------|-------------|
-| `pm-orchestrator` | Routes user requests to the appropriate agents. |
-| `planner` | Clarifies requirements and creates specifications. |
+| `vibe-orchestrator` | Routes user requests to the appropriate agents. |
+| `idea-shaper` | Transforms vague ideas into validated, actionable specifications. |
+| `planner` | Clarifies requirements through Socratic dialogue. |
 | `architect` | Makes technical design decisions. |
 | `vibe-implementer` | Implements code changes based on specs. |
+
+### Frontend Specialists
+| Agent | Description |
+|-------|-------------|
+| `frontend-implementer` | Frontend implementation (React 19, Svelte 5, Vue 3.5, WCAG 2.2). |
+| `ui-ux-designer` | UI/UX design systems, accessibility audits, design tokens. |
 
 ### Quality & Maintenance
 | Agent | Description |
@@ -103,15 +110,16 @@ Analyze and fix bugs.
 | Command | Description |
 |---------|-------------|
 | `/claude-vibe-flow:init` | Initializes the Vibe Flow environment. |
-| `/claude-vibe-flow:new-feature` | Starts a new feature development workflow. |
+| `/claude-vibe-flow:vibe` | Unified command: idea → plan → implement (full pipeline). |
+| `/claude-vibe-flow:vibe --idea` | Idea validation only. |
+| `/claude-vibe-flow:vibe --plan` | Requirements and architecture only. |
+| `/claude-vibe-flow:vibe --implement` | Direct implementation only. |
 | `/claude-vibe-flow:fix-bug` | Analyzes and fixes a specified bug. |
 | `/claude-vibe-flow:refactor` | Refactors code without changing behavior. |
 | `/claude-vibe-flow:sync-context` | Synchronizes the context map. |
 | `/claude-vibe-flow:resume` | Manually loads context from previous session. |
-| `/claude-vibe-flow:check-setup` | Verifies Vibe Flow installation. |
-| `/claude-vibe-flow:check-mcp` | Checks status of MCP servers. |
+| `/claude-vibe-flow:check` | Verifies installation (use `--setup` or `--mcp` flags). |
 | `/claude-vibe-flow:ask` | Asks a question about the codebase. |
-| `/claude-vibe-flow:plan` | Creates a detailed implementation plan before coding. |
 | `/claude-vibe-flow:commit-push-pr` | Commit, push, and create PR in one command. |
 
 ### Mode Commands

@@ -41,7 +41,7 @@ Unified command for validating the Vibe Coding environment.
 
 ```markdown
 Required Agents (19):
-- [ ] pm-orchestrator
+- [ ] vibe-orchestrator
 - [ ] idea-shaper
 - [ ] planner
 - [ ] architect

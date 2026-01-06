@@ -114,7 +114,7 @@ Today's date: 2026-01-06
 | Layer | Location | Mechanism |
 |-------|----------|-----------|
 | **Hook Level** | `hooks.json` | PreToolUse check before Read/Grep/Glob/task |
-| **Agent Level** | `planner.md`, `architect.md`, `pm-orchestrator.md` | Hard limits on exploration |
+| **Agent Level** | `planner.md`, `architect.md`, `vibe-orchestrator.md` | Hard limits on exploration |
 | **Mode Level** | `/action` command | Extreme action bias mode |
 
 ### Key Limits
@@ -180,7 +180,7 @@ Edit/Write → lsp_diagnostics → Fix if errors → Re-verify → Proceed when 
 ### Core Orchestration
 | Agent | Description |
 |-------|-------------|
-| `pm-orchestrator` | Routes user requests to appropriate agents |
+| `vibe-orchestrator` | Routes user requests to appropriate agents |
 | `idea-shaper` | Transforms vague ideas into validated, actionable specifications |
 | `planner` | Clarifies requirements through Socratic dialogue |
 | `architect` | Technical feasibility and architectural decisions |

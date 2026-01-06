@@ -2,7 +2,7 @@
 
 **한국어** | [English](README.md)
 
-[Claude Code](https://github.com/anthropics/claude-code)를 위한 18개의 전문 에이전트 제품군으로, 영구적인 컨텍스트 관리와 자동화된 개발 워크플로우를 제공합니다.
+[Claude Code](https://github.com/anthropics/claude-code)를 위한 21개의 전문 에이전트 제품군으로, 영구적인 컨텍스트 관리와 자동화된 개발 워크플로우를 제공합니다.
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![npm version](https://img.shields.io/npm/v/claude-vibe-flow)](https://www.npmjs.com/package/claude-vibe-flow)
@@ -45,9 +45,9 @@ claude
 ```
 
 ### 개발
-전체 에이전트 파이프라인(기획 -> 설계 -> 구현)을 통해 새 기능을 개발합니다.
+전체 에이전트 파이프라인(아이디어 -> 기획 -> 설계 -> 구현)을 통해 새 기능을 개발합니다.
 ```bash
-/claude-vibe-flow:new-feature "간단한 JWT 인증 추가해줘"
+/claude-vibe-flow:vibe "간단한 JWT 인증 추가해줘"
 ```
 
 ### 유지관리
@@ -63,13 +63,20 @@ claude
 
 ## 에이전트 목록
 
-### 핵심 (Core)
+### 핵심 오케스트레이션
 | 에이전트 | 설명 |
 |-------|-------------|
-| `pm-orchestrator` | 사용자 요청을 분석하여 적절한 에이전트에게 라우팅합니다. |
-| `planner` | 요구사항을 명확히 하고 명세서를 작성합니다. |
+| `vibe-orchestrator` | 사용자 요청을 분석하여 적절한 에이전트에게 라우팅합니다. |
+| `idea-shaper` | 막연한 아이디어를 검증된 실행 가능한 명세로 변환합니다. |
+| `planner` | 소크라테스 대화법으로 요구사항을 명확히 합니다. |
 | `architect` | 기술적인 설계 의사결정을 수행합니다. |
 | `vibe-implementer` | 명세에 따라 코드를 구현합니다. |
+
+### 프론트엔드 전문가
+| 에이전트 | 설명 |
+|-------|-------------|
+| `frontend-implementer` | 프론트엔드 구현 (React 19, Svelte 5, Vue 3.5, WCAG 2.2). |
+| `ui-ux-designer` | UI/UX 디자인 시스템, 접근성 감사, 디자인 토큰. |
 
 ### 품질 및 유지보수
 | 에이전트 | 설명 |
@@ -103,15 +110,16 @@ claude
 | 명령어 | 설명 |
 |---------|-------------|
 | `/claude-vibe-flow:init` | Vibe Flow 환경을 초기화합니다. |
-| `/claude-vibe-flow:new-feature` | 새 기능 개발 워크플로우를 시작합니다. |
+| `/claude-vibe-flow:vibe` | 통합 명령어: 아이디어 → 기획 → 구현 (전체 파이프라인). |
+| `/claude-vibe-flow:vibe --idea` | 아이디어 검증만 수행합니다. |
+| `/claude-vibe-flow:vibe --plan` | 요구사항과 아키텍처만 수행합니다. |
+| `/claude-vibe-flow:vibe --implement` | 직접 구현만 수행합니다. |
 | `/claude-vibe-flow:fix-bug` | 지정된 버그를 분석하고 수정합니다. |
 | `/claude-vibe-flow:refactor` | 동작 변경 없이 코드를 리팩토링합니다. |
 | `/claude-vibe-flow:sync-context` | 컨텍스트 맵을 동기화합니다. |
 | `/claude-vibe-flow:resume` | 이전 세션의 컨텍스트를 수동으로 불러옵니다. |
-| `/claude-vibe-flow:check-setup` | Vibe Flow 설치 상태를 확인합니다. |
-| `/claude-vibe-flow:check-mcp` | MCP 서버 상태를 확인합니다. |
+| `/claude-vibe-flow:check` | 설치 상태를 확인합니다 (`--setup` 또는 `--mcp` 플래그 사용). |
 | `/claude-vibe-flow:ask` | 코드베이스에 대해 질문합니다. |
-| `/claude-vibe-flow:plan` | 코딩 전 상세한 구현 계획을 작성합니다. |
 | `/claude-vibe-flow:commit-push-pr` | 커밋, 푸시, PR 생성을 한 번에 처리합니다. |
 
 ### 모드 명령어
