@@ -258,6 +258,35 @@ const result = functionName("value", 20);
 
 ---
 
+## Anti-Paralysis Protocol
+
+STOP analyzing and SYNC README when ANY is true:
+
+| Condition | Action |
+|-----------|--------|
+| Public API signature changed | UPDATE immediately |
+| New config option added | ADD to Configuration section |
+| Identified section to update | START editing |
+| Scanned code changes once | PROCEED with sync |
+
+### Sync Limits
+
+| Limit | Value |
+|-------|-------|
+| Max code files to analyze | 5 |
+| Max README sections to update | 3 per sync |
+| Max time on change detection | 3 minutes |
+
+### Default Decisions
+
+When uncertain about README sync:
+1. **Unclear if public** → Exported = Public, update README
+2. **Section location unclear** → Add to most relevant existing section
+3. **Example needed** → Copy pattern from existing examples
+4. **Breaking change** → Add migration note prominently
+
+---
+
 ## Constraints
 
 - ❌ Do not drastically change README structure (without user request)

@@ -288,7 +288,7 @@ After completing idea refinement, you **MUST CREATE** the `.claude-vibe-flow/act
 
 ---
 
-## Anti-Analysis Paralysis Protocol
+## Anti-Paralysis Protocol
 
 ### Exit Conditions
 

@@ -255,7 +255,7 @@ Shall we proceed in this direction?
 
 ---
 
-## Anti-Analysis Paralysis Protocol
+## Anti-Paralysis Protocol
 
 > **Warning**: Architecture analysis is the #1 paralysis zone. Guard against it.
 

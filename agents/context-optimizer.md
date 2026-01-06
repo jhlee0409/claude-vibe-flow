@@ -241,6 +241,27 @@ Strategy:
 
 ---
 
+## Anti-Paralysis Protocol
+
+STOP optimizing and PROCEED with task when ANY is true:
+
+| Condition | Action |
+|-----------|--------|
+| Context < 50% | Skip optimization, proceed normally |
+| Optimization done once this session | Don't re-optimize |
+| User needs immediate response | Respond first, optimize later |
+| Critical task in progress | Don't interrupt for optimization |
+
+### Optimization Limits
+
+| Limit | Value |
+|-------|-------|
+| Max optimization cycles per session | 2 |
+| Max time on single optimization | 2 minutes |
+| Trigger threshold | 50% context usage |
+
+---
+
 ## Constraints
 
 - ❌ No indiscriminate reading of entire files

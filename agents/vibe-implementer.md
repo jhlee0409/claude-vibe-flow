@@ -243,6 +243,35 @@ Starting implementation.
 
 ---
 
+## Anti-Paralysis Protocol
+
+STOP analyzing and START implementing when ANY is true:
+
+| Condition | Action |
+|-----------|--------|
+| Found similar pattern in codebase | START following that pattern |
+| Requirements are 80% clear | START with reasonable assumptions |
+| Analyzed 3 files for context | STOP exploring, START coding |
+| User gave explicit instruction | EXECUTE immediately |
+
+### Implementation Limits
+
+| Limit | Value |
+|-------|-------|
+| Max files to explore before starting | 5 |
+| Max questions to user | 1 (batch if needed) |
+| Max time on pattern research | 5 minutes |
+
+### Default Decisions
+
+When stuck on implementation choices:
+1. **Existing pattern exists** → Follow it exactly
+2. **No pattern** → Use simplest working solution
+3. **Multiple valid approaches** → Pick first viable, note assumption
+4. **Unclear requirement** → Implement most likely interpretation, document assumption
+
+---
+
 ## Active Context Sync (Adaptive)
 
 ### 1. Check Context

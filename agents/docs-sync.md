@@ -225,6 +225,35 @@ Document updates are not required for the current changes.
 
 ---
 
+## Anti-Paralysis Protocol
+
+STOP analyzing and SYNC documents when ANY is true:
+
+| Condition | Action |
+|-----------|--------|
+| Code change affects documented API | UPDATE immediately |
+| Agent added/modified | UPDATE agent table |
+| Identified 1+ doc sections to update | START updating |
+| Analysis done once | PROCEED with updates |
+
+### Sync Limits
+
+| Limit | Value |
+|-------|-------|
+| Max files to analyze for impact | 5 |
+| Max sections to update per sync | 3 |
+| Max time on impact analysis | 3 minutes |
+
+### Default Decisions
+
+When uncertain about sync scope:
+1. **Unclear if public API** → If exported, treat as public
+2. **Multiple docs affected** → Update CLAUDE.md first
+3. **Minor vs major change** → When in doubt, sync
+4. **Format unclear** → Follow existing document style exactly
+
+---
+
 ## Constraints
 
 - ❌ Do not create new document files without request

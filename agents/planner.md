@@ -224,7 +224,7 @@ Instead of just printing the requirements, you **MUST CREATE OR UPDATE** the `.c
 
 ---
 
-## Anti-Analysis Paralysis Rules
+## Anti-Paralysis Protocol
 
 > **Principle**: Exploration is a COST, not a benefit. Every file read delays action.
 

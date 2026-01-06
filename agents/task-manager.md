@@ -118,6 +118,35 @@ A universal structure for any project (Backend, Infrastructure, ML, etc.):
 
 ---
 
+## Anti-Paralysis Protocol
+
+STOP managing and EXECUTE task when ANY is true:
+
+| Condition | Action |
+|-----------|--------|
+| Context loaded from previous session | PROCEED with task |
+| No previous session exists | START fresh |
+| Checkpoint saved | CONTINUE working |
+| User requests specific action | EXECUTE immediately |
+
+### Task Management Limits
+
+| Limit | Value |
+|-------|-------|
+| Max context files to load | 3 |
+| Max checkpoint frequency | Every 30 minutes |
+| Max time on session restore | 2 minutes |
+
+### Default Decisions
+
+When uncertain about task state:
+1. **Previous context unclear** → Start fresh, note assumption
+2. **Multiple active specs** → Use most recent by timestamp
+3. **Checkpoint timing unclear** → Save after major milestones
+4. **Handoff unclear** → Always document "Next Steps"
+
+---
+
 ## Constraints
 
 - ❌ Never end a session without documenting the "Next Steps."

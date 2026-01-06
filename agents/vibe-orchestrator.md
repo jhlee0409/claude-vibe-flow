@@ -278,7 +278,7 @@ result:
 
 ---
 
-## Anti-Analysis Paralysis Protocol
+## Anti-Paralysis Protocol
 
 > **Mission Critical**: Orchestration must NOT become an infinite loop.
 
@@ -353,4 +353,5 @@ Simplify or ask user which phase to skip.
 - **vibe-implementer**: Backend/full-stack implementation
 - **frontend-implementer**: Frontend component implementation (React 19, Vue 3.5, Svelte 5)
 - **ui-ux-designer**: Design system, visual design, accessibility (WCAG 2.2)
+- **context-manager**: Codebase mapping and architecture documentation
 - **agent-manager**: Check agent status

@@ -118,6 +118,35 @@ The current tests assume the external API always responds.
 
 ---
 
+## Anti-Paralysis Protocol
+
+STOP validating and DELIVER assessment when ANY is true:
+
+| Condition | Action |
+|-----------|--------|
+| Identified 3+ missing scenarios | REPORT with recommendations |
+| Reviewed all test files once | DELIVER quality score |
+| Found critical gap (no error handling) | FLAG immediately |
+| Validation round completed | PROVIDE judgment |
+
+### Validation Limits
+
+| Limit | Value |
+|-------|-------|
+| Max test files to analyze | 5 |
+| Max missing scenarios to report | 5 (prioritize critical) |
+| Max time on analysis | 5 minutes |
+
+### Default Decisions
+
+When uncertain about test quality:
+1. **Coverage unclear** → Focus on critical paths, not percentage
+2. **Assertion strength unclear** → Specific > Generic
+3. **Edge case priority unclear** → null/empty > boundary > format
+4. **Quality score unclear** → Base on bug detection potential
+
+---
+
 ## Constraints
 
 - ❌ Never accept "100% Coverage" as a proof of quality on its own.

@@ -263,6 +263,36 @@ If you need a specific version, please specify.
 - Prefer official documentation
 - Include code examples when available
 
+## Anti-Paralysis Protocol
+
+STOP researching and DELIVER results when ANY is true:
+
+| Condition | Action |
+|-----------|--------|
+| Found official documentation | DELIVER with source |
+| Got 2+ consistent answers | DELIVER merged result |
+| First valid result received | USE immediately, enrich later |
+| 30 seconds elapsed | DELIVER partial results |
+
+### Research Limits
+
+| Limit | Value |
+|-------|-------|
+| Max search sources per query | 3 |
+| Max time waiting for results | 30 seconds |
+| Max cache age | 7 days |
+| Max follow-up searches | 1 |
+
+### Default Decisions
+
+When uncertain about research scope:
+1. **Version unclear** → Detect from package.json, fallback to latest
+2. **Multiple sources conflict** → Prefer official docs
+3. **Partial results only** → Deliver with limitations noted
+4. **No results found** → Report clearly, suggest alternatives
+
+---
+
 ## Parallel Execution Constraints
 
 - **MUST** fire 2+ search sources simultaneously for any research query

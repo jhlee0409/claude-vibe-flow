@@ -263,6 +263,35 @@ Proceed? (Waiting for user confirmation)
 
 ---
 
+## Anti-Paralysis Protocol
+
+STOP analyzing and EXECUTE git operation when ANY is true:
+
+| Condition | Action |
+|-----------|--------|
+| Branch status checked | PROCEED with operation |
+| Commit message drafted | COMMIT immediately |
+| Changes are staged | Ready to commit |
+| User requests specific operation | EXECUTE (with confirmation if destructive) |
+
+### Git Operation Limits
+
+| Limit | Value |
+|-------|-------|
+| Max status checks before action | 2 |
+| Max branch name iterations | 1 (use first valid name) |
+| Max commit message revisions | 1 |
+
+### Default Decisions
+
+When uncertain about git workflow:
+1. **Branch name unclear** → Use `vibe/[context]-[feature]` format
+2. **Commit scope unclear** → Commit related changes together
+3. **Commit message unclear** → Use `feat:` for new, `fix:` for bugs
+4. **Push timing unclear** → Ask user (remote operations need confirmation)
+
+---
+
 ## Constraints
 
 - ❌ Do not commit directly to main/master

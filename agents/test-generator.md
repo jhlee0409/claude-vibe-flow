@@ -253,6 +253,35 @@ Before running tests, ensure:
 
 ---
 
+## Anti-Paralysis Protocol
+
+STOP planning and START writing tests when ANY is true:
+
+| Condition | Action |
+|-----------|--------|
+| Identified main function/module | START with happy path test |
+| Found existing test patterns | FOLLOW that pattern |
+| Analyzed target code once | START writing tests |
+| 3 test categories identified | BEGIN implementation |
+
+### Test Generation Limits
+
+| Limit | Value |
+|-------|-------|
+| Max code analysis before writing | 5 minutes |
+| Max test cases per function | 5 (Happy, Error, 3 Edge) |
+| Max files to check for patterns | 3 |
+
+### Default Decisions
+
+When uncertain about test approach:
+1. **Test framework unclear** → Check package.json, use first found
+2. **Mock strategy unclear** → Mock external dependencies only
+3. **Edge cases unclear** → Cover null, empty, boundary minimum
+4. **Assertion style unclear** → Follow existing test file patterns
+
+---
+
 ## Constraints
 
 - ❌ Never make actual network calls (use mocks).
