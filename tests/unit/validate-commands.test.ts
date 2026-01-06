@@ -14,11 +14,11 @@ interface CommandFile {
   body: string;
 }
 
-describe('Command Structure Validation (v2)', () => {
+describe('Command Structure Validation', () => {
   let commandFiles: CommandFile[] = [];
 
   beforeAll(async () => {
-    const commandsDir = path.resolve(__dirname, '../../commands');
+    const commandsDir = path.resolve(__dirname, '../../.claude/commands');
     const files = await glob('*.md', { cwd: commandsDir });
 
     commandFiles = files.map((file) => {
@@ -36,7 +36,7 @@ describe('Command Structure Validation (v2)', () => {
     });
   });
 
-  it('should have exactly 4 commands (v2)', () => {
+  it('should have exactly 4 commands', () => {
     expect(commandFiles.length).toBe(4);
   });
 

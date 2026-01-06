@@ -14,11 +14,11 @@ interface AgentFile {
   body: string;
 }
 
-describe('Agent Structure Validation (v2)', () => {
+describe('Agent Structure Validation', () => {
   let agentFiles: AgentFile[] = [];
 
   beforeAll(async () => {
-    const agentsDir = path.resolve(__dirname, '../../agents');
+    const agentsDir = path.resolve(__dirname, '../../.claude/agents');
     const files = await glob('*.md', { cwd: agentsDir });
 
     agentFiles = files.map((file) => {
@@ -36,7 +36,7 @@ describe('Agent Structure Validation (v2)', () => {
     });
   });
 
-  it('should have exactly 3 agents (v2)', () => {
+  it('should have exactly 3 agents', () => {
     expect(agentFiles.length).toBe(3);
   });
 

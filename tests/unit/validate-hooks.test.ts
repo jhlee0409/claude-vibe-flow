@@ -25,12 +25,13 @@ interface HooksConfig {
 const VALID_HOOK_EVENTS = ['SessionStart', 'PostToolUse', 'Stop'];
 const VALID_HOOK_TYPES = ['command', 'prompt'];
 
-describe('Hooks System Validation (v2)', () => {
+describe('Hooks System Validation', () => {
   let hooksConfig: HooksConfig;
   const projectRoot = path.resolve(__dirname, '../..');
+  const claudeDir = path.join(projectRoot, '.claude');
 
   beforeAll(() => {
-    const hooksPath = path.join(projectRoot, 'hooks', 'hooks.json');
+    const hooksPath = path.join(claudeDir, 'hooks.json');
     const content = fs.readFileSync(hooksPath, 'utf-8');
     hooksConfig = JSON.parse(content);
   });
@@ -150,7 +151,7 @@ describe('Hooks System Validation (v2)', () => {
 
   describe('Scripts Integration', () => {
     it('load-context.sh should exist and be executable bash script', () => {
-      const scriptPath = path.join(projectRoot, 'scripts', 'load-context.sh');
+      const scriptPath = path.join(claudeDir, 'scripts', 'load-context.sh');
       expect(fs.existsSync(scriptPath)).toBe(true);
 
       const content = fs.readFileSync(scriptPath, 'utf-8');
@@ -158,7 +159,7 @@ describe('Hooks System Validation (v2)', () => {
     });
 
     it('check-tests-ran.sh should exist and be executable bash script', () => {
-      const scriptPath = path.join(projectRoot, 'scripts', 'check-tests-ran.sh');
+      const scriptPath = path.join(claudeDir, 'scripts', 'check-tests-ran.sh');
       expect(fs.existsSync(scriptPath)).toBe(true);
 
       const content = fs.readFileSync(scriptPath, 'utf-8');
@@ -166,12 +167,12 @@ describe('Hooks System Validation (v2)', () => {
     });
 
     it('detect-test-framework.sh should exist', () => {
-      const scriptPath = path.join(projectRoot, 'scripts', 'detect-test-framework.sh');
+      const scriptPath = path.join(claudeDir, 'scripts', 'detect-test-framework.sh');
       expect(fs.existsSync(scriptPath)).toBe(true);
     });
 
     it('check-tests-ran.sh should support exit code 2 for blocking', () => {
-      const scriptPath = path.join(projectRoot, 'scripts', 'check-tests-ran.sh');
+      const scriptPath = path.join(claudeDir, 'scripts', 'check-tests-ran.sh');
       const content = fs.readFileSync(scriptPath, 'utf-8');
       expect(content).toContain('exit 2');
     });

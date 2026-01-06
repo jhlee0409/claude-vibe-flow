@@ -70,31 +70,25 @@ export SKIP_TEST_CHECK=1
 
 ## 디렉토리 구조
 
-공식 Claude Code Plugin 형식을 사용합니다:
-
 ```
 your-project/
-├── .claude-plugin/
-│   └── plugin.json         # 플러그인 매니페스트 (필수)
-├── agents/
-│   ├── planner.md         # 아이디어 → 구체적 스펙
-│   ├── reviewer.md        # 코드 리뷰
-│   └── debugger.md        # 버그 수정
-├── skills/
-│   ├── test-enforcer/SKILL.md      # 구현 후 자동 테스트 실행
-│   └── verify-before-commit/SKILL.md  # 커밋 전 검사
-├── commands/
-│   ├── plan.md            # /plan 명령어
-│   ├── review.md          # /review 명령어
-│   ├── ship.md            # /ship 명령어
-│   └── check.md           # /check 명령어
-├── hooks/
-│   └── hooks.json         # SessionStart, Stop (차단), PostToolUse
-└── scripts/
-    ├── check-tests-ran.sh # 차단 훅 스크립트
-    ├── detect-test-framework.sh
-    ├── load-context.sh
-    └── run-tests.sh       # 자동 마커 생성 테스트 러너
+├── .claude/
+│   ├── agents/
+│   │   ├── planner.md         # 아이디어 → 구체적 스펙
+│   │   ├── reviewer.md        # 코드 리뷰
+│   │   └── debugger.md        # 버그 수정
+│   ├── commands/
+│   │   ├── plan.md, review.md, ship.md, check.md
+│   ├── skills/
+│   │   ├── test-enforcer/SKILL.md
+│   │   └── verify-before-commit/SKILL.md
+│   ├── scripts/
+│   │   ├── check-tests-ran.sh      # 차단 훅
+│   │   ├── detect-test-framework.sh
+│   │   ├── load-context.sh
+│   │   └── run-tests.sh
+│   └── hooks.json              # SessionStart, Stop, PostToolUse
+└── .mcp.json                   # MCP 서버 설정
 ```
 
 ## 에이전트

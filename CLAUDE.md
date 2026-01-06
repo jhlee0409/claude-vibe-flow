@@ -22,27 +22,23 @@ npm run typecheck   # Type check
 
 ## Architecture
 
-Uses official Claude Code Plugin format:
-
 ```
-.claude-plugin/
-└── plugin.json                   # Plugin manifest (required)
-agents/                           # 3 specialized agents
-├── planner.md                   # Idea → spec
-├── reviewer.md                  # Code review
-└── debugger.md                  # Bug fixing
-skills/                           # Model-invoked
-├── test-enforcer/SKILL.md       # Runs tests after implementation
-└── verify-before-commit/SKILL.md
-commands/                         # User-invoked
-├── plan.md, review.md, ship.md, check.md
-hooks/
+.claude/
+├── agents/                       # 3 specialized agents
+│   ├── planner.md               # Idea → spec
+│   ├── reviewer.md              # Code review
+│   └── debugger.md              # Bug fixing
+├── skills/                       # Model-invoked
+│   ├── test-enforcer/SKILL.md   # Runs tests after implementation
+│   └── verify-before-commit/SKILL.md
+├── commands/                     # User-invoked
+│   ├── plan.md, review.md, ship.md, check.md
+├── scripts/                      # Hook scripts
+│   ├── check-tests-ran.sh       # Exit code 2 = block
+│   ├── detect-test-framework.sh
+│   ├── load-context.sh
+│   └── run-tests.sh             # Test runner with auto-marker
 └── hooks.json                    # Deterministic enforcement
-scripts/                          # Hook scripts
-├── check-tests-ran.sh           # Exit code 2 = block
-├── detect-test-framework.sh
-├── load-context.sh
-└── run-tests.sh                 # Test runner with auto-marker
 ```
 
 ## Core Concept
@@ -129,15 +125,9 @@ docs/               # Migration docs
 
 ### Adding Features
 
-1. Skills go in `skills/<name>/SKILL.md`
-2. Commands go in `commands/<name>.md`
-3. Agents go in `agents/<name>.md`
-4. Update `.claude-plugin/plugin.json` if adding new components
-
-### Environment Variables
-
-- `${CLAUDE_PLUGIN_ROOT}` - Plugin root directory (for hooks/scripts)
-- `${CLAUDE_PROJECT_DIR}` - User's project directory
+1. Skills go in `.claude/skills/<name>/SKILL.md`
+2. Commands go in `.claude/commands/<name>.md`
+3. Agents go in `.claude/agents/<name>.md`
 
 ### Testing
 

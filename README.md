@@ -70,31 +70,25 @@ export SKIP_TEST_CHECK=1
 
 ## Directory Structure
 
-Uses official Claude Code Plugin format:
-
 ```
 your-project/
-├── .claude-plugin/
-│   └── plugin.json         # Plugin manifest (required)
-├── agents/
-│   ├── planner.md         # Idea → concrete spec
-│   ├── reviewer.md        # Code review
-│   └── debugger.md        # Bug fixing
-├── skills/
-│   ├── test-enforcer/SKILL.md      # Auto-runs tests after implementation
-│   └── verify-before-commit/SKILL.md  # Pre-commit checks
-├── commands/
-│   ├── plan.md            # /plan command
-│   ├── review.md          # /review command
-│   ├── ship.md            # /ship command
-│   └── check.md           # /check command
-├── hooks/
-│   └── hooks.json         # SessionStart, Stop (blocking), PostToolUse
-└── scripts/
-    ├── check-tests-ran.sh      # Blocking hook script
-    ├── detect-test-framework.sh
-    ├── load-context.sh
-    └── run-tests.sh            # Test runner with auto-marker
+├── .claude/
+│   ├── agents/
+│   │   ├── planner.md         # Idea → concrete spec
+│   │   ├── reviewer.md        # Code review
+│   │   └── debugger.md        # Bug fixing
+│   ├── commands/
+│   │   ├── plan.md, review.md, ship.md, check.md
+│   ├── skills/
+│   │   ├── test-enforcer/SKILL.md
+│   │   └── verify-before-commit/SKILL.md
+│   ├── scripts/
+│   │   ├── check-tests-ran.sh      # Blocking hook
+│   │   ├── detect-test-framework.sh
+│   │   ├── load-context.sh
+│   │   └── run-tests.sh
+│   └── hooks.json              # SessionStart, Stop, PostToolUse
+└── .mcp.json                   # MCP servers config
 ```
 
 ## Agents

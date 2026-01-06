@@ -80,25 +80,32 @@ describe('CLI E2E Tests', () => {
   });
 
   describe('Install Items', () => {
-    it('plugin install items should exist in project', () => {
-      const installItems = ['.claude-plugin', 'agents', 'commands', 'skills', 'hooks', 'scripts', '.mcp.json'];
+    it('.claude directory should exist with all subdirectories', () => {
+      const claudeDir = path.join(projectRoot, '.claude');
+      expect(fs.existsSync(claudeDir)).toBe(true);
 
+      const requiredItems = ['agents', 'commands', 'skills', 'scripts', 'hooks.json'];
       const errors: string[] = [];
 
-      for (const item of installItems) {
-        const itemPath = path.join(projectRoot, item);
+      for (const item of requiredItems) {
+        const itemPath = path.join(claudeDir, item);
         if (!fs.existsSync(itemPath)) {
-          errors.push(`Install item not found: ${item}`);
+          errors.push(`Missing in .claude/: ${item}`);
         }
       }
 
       if (errors.length > 0) {
-        throw new Error(`Missing install items:\n${errors.join('\n')}`);
+        throw new Error(`Missing items:\n${errors.join('\n')}`);
       }
     });
 
-    it('old .claude directory should NOT exist', () => {
-      const oldItems = ['.claude', 'outputStyles'];
+    it('.mcp.json should exist', () => {
+      const mcpPath = path.join(projectRoot, '.mcp.json');
+      expect(fs.existsSync(mcpPath)).toBe(true);
+    });
+
+    it('old root-level directories should NOT exist', () => {
+      const oldItems = ['agents', 'commands', 'skills', 'hooks', 'scripts', '.claude-plugin', 'outputStyles'];
 
       for (const item of oldItems) {
         const itemPath = path.join(projectRoot, item);

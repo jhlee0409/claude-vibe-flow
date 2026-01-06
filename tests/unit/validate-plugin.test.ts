@@ -4,27 +4,17 @@ import path from 'path';
 
 describe('Plugin Structure Validation', () => {
   const projectRoot = path.resolve(__dirname, '../..');
+  const claudeDir = path.join(projectRoot, '.claude');
 
-  describe('Plugin Manifest', () => {
-    it('should have .claude-plugin directory', () => {
-      const pluginDir = path.join(projectRoot, '.claude-plugin');
-      expect(fs.existsSync(pluginDir)).toBe(true);
-    });
-
-    it('should have plugin.json manifest', () => {
-      const manifestPath = path.join(projectRoot, '.claude-plugin', 'plugin.json');
-      expect(fs.existsSync(manifestPath)).toBe(true);
-
-      const content = fs.readFileSync(manifestPath, 'utf-8');
-      const manifest = JSON.parse(content);
-      expect(manifest.name).toBe('claude-vibe-flow');
-      expect(manifest.version).toBe('1.0.0');
+  describe('.claude Directory', () => {
+    it('should have .claude directory', () => {
+      expect(fs.existsSync(claudeDir)).toBe(true);
     });
   });
 
-  describe('Agents Directory', () => {
-    it('should have agents directory at root with 3 agents', () => {
-      const agentsDir = path.join(projectRoot, 'agents');
+  describe('Agents', () => {
+    it('should have agents directory with 3 agents', () => {
+      const agentsDir = path.join(claudeDir, 'agents');
       expect(fs.existsSync(agentsDir)).toBe(true);
 
       const agents = fs.readdirSync(agentsDir).filter((f) => f.endsWith('.md'));
@@ -33,9 +23,9 @@ describe('Plugin Structure Validation', () => {
     });
   });
 
-  describe('Commands Directory', () => {
-    it('should have commands directory at root with 4 commands', () => {
-      const commandsDir = path.join(projectRoot, 'commands');
+  describe('Commands', () => {
+    it('should have commands directory with 4 commands', () => {
+      const commandsDir = path.join(claudeDir, 'commands');
       expect(fs.existsSync(commandsDir)).toBe(true);
 
       const commands = fs.readdirSync(commandsDir).filter((f) => f.endsWith('.md'));
@@ -44,9 +34,9 @@ describe('Plugin Structure Validation', () => {
     });
   });
 
-  describe('Skills Directory', () => {
-    it('should have skills directory at root with 2 skills', () => {
-      const skillsDir = path.join(projectRoot, 'skills');
+  describe('Skills', () => {
+    it('should have skills directory with 2 skills', () => {
+      const skillsDir = path.join(claudeDir, 'skills');
       expect(fs.existsSync(skillsDir)).toBe(true);
 
       const skills = fs.readdirSync(skillsDir);
@@ -55,35 +45,38 @@ describe('Plugin Structure Validation', () => {
     });
 
     it('test-enforcer should have SKILL.md', () => {
-      const skillPath = path.join(projectRoot, 'skills', 'test-enforcer', 'SKILL.md');
+      const skillPath = path.join(claudeDir, 'skills', 'test-enforcer', 'SKILL.md');
       expect(fs.existsSync(skillPath)).toBe(true);
     });
 
     it('verify-before-commit should have SKILL.md', () => {
-      const skillPath = path.join(projectRoot, 'skills', 'verify-before-commit', 'SKILL.md');
+      const skillPath = path.join(claudeDir, 'skills', 'verify-before-commit', 'SKILL.md');
       expect(fs.existsSync(skillPath)).toBe(true);
     });
   });
 
-  describe('Hooks Directory', () => {
-    it('should have hooks directory at root', () => {
-      const hooksDir = path.join(projectRoot, 'hooks');
-      expect(fs.existsSync(hooksDir)).toBe(true);
-    });
-
+  describe('Hooks', () => {
     it('should have hooks.json', () => {
-      const hooksPath = path.join(projectRoot, 'hooks', 'hooks.json');
+      const hooksPath = path.join(claudeDir, 'hooks.json');
       expect(fs.existsSync(hooksPath)).toBe(true);
 
       const content = fs.readFileSync(hooksPath, 'utf-8');
       const hooks = JSON.parse(content);
       expect(hooks.hooks).toBeDefined();
     });
+
+    it('should reference correct script paths', () => {
+      const hooksPath = path.join(claudeDir, 'hooks.json');
+      const content = fs.readFileSync(hooksPath, 'utf-8');
+      
+      expect(content).toContain('.claude/scripts/');
+      expect(content).not.toContain('${CLAUDE_PLUGIN_ROOT}');
+    });
   });
 
-  describe('Scripts Directory', () => {
-    it('should have scripts directory at root with 4 scripts', () => {
-      const scriptsDir = path.join(projectRoot, 'scripts');
+  describe('Scripts', () => {
+    it('should have scripts directory with 4 scripts', () => {
+      const scriptsDir = path.join(claudeDir, 'scripts');
       expect(fs.existsSync(scriptsDir)).toBe(true);
 
       const scripts = fs.readdirSync(scriptsDir).filter((f) => f.endsWith('.sh'));
@@ -98,9 +91,19 @@ describe('Plugin Structure Validation', () => {
   });
 
   describe('Old Structure Removed', () => {
-    it('should NOT have .claude directory', () => {
-      const claudeDir = path.join(projectRoot, '.claude');
-      expect(fs.existsSync(claudeDir)).toBe(false);
+    it('should NOT have .claude-plugin directory', () => {
+      const pluginDir = path.join(projectRoot, '.claude-plugin');
+      expect(fs.existsSync(pluginDir)).toBe(false);
+    });
+
+    it('should NOT have root-level agents directory', () => {
+      const agentsDir = path.join(projectRoot, 'agents');
+      expect(fs.existsSync(agentsDir)).toBe(false);
+    });
+
+    it('should NOT have root-level commands directory', () => {
+      const commandsDir = path.join(projectRoot, 'commands');
+      expect(fs.existsSync(commandsDir)).toBe(false);
     });
 
     it('should NOT have outputStyles directory', () => {
@@ -109,28 +112,26 @@ describe('Plugin Structure Validation', () => {
     });
   });
 
-  describe('Package.json Updates', () => {
+  describe('Package.json', () => {
     it('should have version 1.0.0', () => {
       const pkgPath = path.join(projectRoot, 'package.json');
       const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
       expect(pkg.version).toBe('1.0.0');
     });
 
-    it('should have plugin directories in files array', () => {
+    it('should have .claude in files array', () => {
       const pkgPath = path.join(projectRoot, 'package.json');
       const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
-      expect(pkg.files).toContain('.claude-plugin');
-      expect(pkg.files).toContain('agents');
-      expect(pkg.files).toContain('commands');
-      expect(pkg.files).toContain('skills');
-      expect(pkg.files).toContain('hooks');
-      expect(pkg.files).toContain('scripts');
+      expect(pkg.files).toContain('.claude');
     });
 
-    it('should NOT have old .claude in files array', () => {
+    it('should NOT have old directories in files array', () => {
       const pkgPath = path.join(projectRoot, 'package.json');
       const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
-      expect(pkg.files).not.toContain('.claude');
+      expect(pkg.files).not.toContain('.claude-plugin');
+      expect(pkg.files).not.toContain('agents');
+      expect(pkg.files).not.toContain('commands');
+      expect(pkg.files).not.toContain('hooks');
     });
   });
 });

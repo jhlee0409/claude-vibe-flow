@@ -11,15 +11,7 @@ const TARBALL_URL = `https://github.com/${REPO}/archive/${BRANCH}.tar.gz`;
 const MIN_NODE_VERSION = 20;
 const RECOMMENDED_NODE_VERSION = 22;
 
-const INSTALL_ITEMS = [
-  ".claude-plugin",
-  "agents",
-  "commands",
-  "skills",
-  "hooks",
-  "scripts",
-  ".mcp.json",
-] as const;
+const INSTALL_ITEMS = [".claude", ".mcp.json"] as const;
 
 enum ErrorCode {
   SUCCESS = 0,
@@ -133,14 +125,14 @@ function checkNodeVersion(): void {
 function showHelp(): void {
   console.log(`Usage: npx claude-vibe-flow
 
-Installs Claude Vibe Flow plugin into your project:
-  - .claude-plugin/ (plugin manifest)
-  - agents/ (planner, reviewer, debugger)
-  - commands/ (/plan, /review, /ship, /check)
-  - skills/ (test-enforcer, verify-before-commit)
-  - hooks/ (SessionStart, Stop, PostToolUse)
-  - scripts/ (test runner, framework detection)
-  - .mcp.json (MCP servers auto-configured)
+Installs Claude Vibe Flow into your project:
+  .claude/
+  ├── agents/     (planner, reviewer, debugger)
+  ├── commands/   (/plan, /review, /ship, /check)
+  ├── skills/     (test-enforcer, verify-before-commit)
+  ├── scripts/    (test runner, framework detection)
+  └── hooks.json  (SessionStart, Stop, PostToolUse)
+  .mcp.json       (MCP servers config)
 
 Features:
   - 3 agents (planner, reviewer, debugger)
