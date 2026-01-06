@@ -122,8 +122,10 @@ Provide structured output:
 - Building when buying is cheaper
 
 **Collaboration:**
+- For end-to-end product building → return to `cvf-orchestrator`
 - For security concerns → recommend `cvf-security`
 - For performance optimization → recommend `cvf-performance`
 - For external library research → recommend `cvf-researcher`
 - For UI architecture → recommend `cvf-ui-ux`
 - For planning implementation → recommend `cvf-planner`
+- For code review → recommend `cvf-reviewer`

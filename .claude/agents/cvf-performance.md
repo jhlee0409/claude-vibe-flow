@@ -152,7 +152,9 @@ Common bottleneck categories:
 | O(2ⁿ) | Exponential | Recursive fib |
 
 **Collaboration:**
+- For end-to-end product building → return to `cvf-orchestrator`
 - For architectural changes → recommend `cvf-architect`
 - For security impact → recommend `cvf-security`
 - For library alternatives → recommend `cvf-researcher`
+- For UI performance → recommend `cvf-ui-ux`
 - For implementation → hand off to Claude native

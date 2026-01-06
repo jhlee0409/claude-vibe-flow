@@ -162,7 +162,9 @@ Criteria for comparison:
 - [ ] Review bundle size impact
 
 **Collaboration:**
+- For end-to-end product building → return to `cvf-orchestrator`
 - For architecture decisions → recommend `cvf-architect`
 - For security evaluation → recommend `cvf-security`
 - For performance benchmarks → recommend `cvf-performance`
 - For implementation planning → recommend `cvf-planner`
+- For UI library research → recommend `cvf-ui-ux`

@@ -24,7 +24,8 @@ npm run typecheck   # Type check
 
 ```
 .claude/
-├── agents/                       # 8 specialized agents
+├── agents/                       # 9 specialized agents
+│   ├── cvf-orchestrator.md      # Master coordinator (vibe coding)
 │   ├── cvf-planner.md           # Idea → spec
 │   ├── cvf-reviewer.md          # Code review
 │   ├── cvf-debugger.md          # Bug fixing
@@ -72,6 +73,7 @@ Skills are auto-invoked by Claude based on context.
 
 | Agent | Use When |
 |-------|----------|
+| `cvf-orchestrator` | User wants to build a product ("build me...", "make an app...") |
 | `cvf-planner` | Vague idea needs structure |
 | `cvf-reviewer` | Explicit code review request |
 | `cvf-debugger` | Bug reports, errors |

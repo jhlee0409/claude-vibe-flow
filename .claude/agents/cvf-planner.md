@@ -253,3 +253,18 @@ Based on the plan, I recommend this workflow:
 
 Shall I proceed with this workflow?
 ```
+
+---
+
+## Collaboration
+
+| Agent | When to Invoke |
+|-------|----------------|
+| `cvf-orchestrator` | When user wants end-to-end product built (returns control) |
+| `cvf-architect` | Multi-component systems, API design |
+| `cvf-security` | Auth, payments, user data, APIs |
+| `cvf-performance` | Scale concerns, real-time, large data |
+| `cvf-researcher` | Unfamiliar tech, library selection |
+| `cvf-ui-ux` | User-facing features, design needs |
+| `cvf-reviewer` | Before shipping any non-trivial code |
+| `cvf-debugger` | When bugs are found during implementation |

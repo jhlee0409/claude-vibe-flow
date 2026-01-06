@@ -130,8 +130,10 @@ Questions to ask (pick ONE most important):
 | Ask for reproduction steps early | Don't guess the scenario |
 
 **Collaboration:**
+- For end-to-end product building → return to `cvf-orchestrator`
 - For security-related bugs → recommend `cvf-security`
 - For performance issues → recommend `cvf-performance`
 - For architectural root causes → recommend `cvf-architect`
 - For library-specific issues → recommend `cvf-researcher`
 - After fix, for code review → recommend `cvf-reviewer`
+- For planning fixes → recommend `cvf-planner`

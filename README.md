@@ -9,10 +9,10 @@ A lightweight framework for [Claude Code](https://github.com/anthropics/claude-c
 
 ## Features
 
-- **8 Specialized Agents**: cvf-planner, cvf-reviewer, cvf-debugger, cvf-architect, cvf-security, cvf-performance, cvf-researcher, cvf-ui-ux
+- **9 Specialized Agents**: cvf-orchestrator, cvf-planner, cvf-reviewer, cvf-debugger, cvf-architect, cvf-security, cvf-performance, cvf-researcher, cvf-ui-ux
 - **5 Essential Commands**: /cvf:plan, /cvf:review, /cvf:ship, /cvf:check, /cvf:workflow
 - **Pre-commit Verification**: Diagnostics + tests + TODOs checked before commit
-- **Multi-Agent Workflows**: Coordinate agents for complex features
+- **Vibe Coding Support**: Natural language to shipped product with cvf-orchestrator
 
 ## Installation
 
@@ -32,6 +32,14 @@ claude
 ```
 
 ## Usage
+
+### Build Products with Natural Language
+```bash
+"Build me a habit tracking app"
+"I need a dashboard that shows my GitHub stats"
+"Quick landing page for my side project"
+```
+The `cvf-orchestrator` automatically coordinates planning, architecture, implementation, and review.
 
 ### Planning
 ```bash
@@ -70,6 +78,7 @@ Coordinates multiple agents for complex tasks.
 your-project/
 ├── .claude/
 │   ├── agents/
+│   │   ├── cvf-orchestrator.md # Master coordinator (vibe coding)
 │   │   ├── cvf-planner.md     # Idea → concrete spec
 │   │   ├── cvf-reviewer.md    # Code review
 │   │   ├── cvf-debugger.md    # Bug fixing
@@ -94,7 +103,8 @@ your-project/
 
 | Agent | Triggers On | Purpose |
 |-------|-------------|---------|
-| `cvf-planner` | "I want to build...", "Help me plan..." | Turn ideas into specs |
+| `cvf-orchestrator` | "Build me...", "Make an app that...", "I want to create..." | End-to-end product building |
+| `cvf-planner` | "Help me plan...", "How should I approach..." | Turn ideas into specs |
 | `cvf-reviewer` | "Review my code", "Check this PR" | Code review |
 | `cvf-debugger` | "It's broken", "Getting an error" | Bug fixing |
 | `cvf-architect` | "How should I structure...", "Design this..." | System architecture |

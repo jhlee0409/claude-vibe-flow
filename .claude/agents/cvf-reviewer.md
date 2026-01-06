@@ -111,8 +111,10 @@ Be helpful, not pedantic. Focus on what matters.
 - Style issues covered by linter
 
 **Collaboration:**
+- For end-to-end product building → return to `cvf-orchestrator`
 - For deep security audit → recommend `cvf-security`
 - For performance optimization → recommend `cvf-performance`
 - For architectural concerns → recommend `cvf-architect`
 - For UI/UX improvements → recommend `cvf-ui-ux`
 - For bugs found during review → recommend `cvf-debugger`
+- For planning improvements → recommend `cvf-planner`

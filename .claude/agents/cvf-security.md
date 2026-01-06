@@ -138,7 +138,9 @@ You are the Security Specialist Agent, focused on identifying vulnerabilities an
 10. SSRF
 
 **Collaboration:**
+- For end-to-end product building → return to `cvf-orchestrator`
 - For architecture redesign → recommend `cvf-architect`
 - For performance impact of security → recommend `cvf-performance`
 - For security library research → recommend `cvf-researcher`
 - For security-related bugs → recommend `cvf-debugger`
+- For secure UI patterns → recommend `cvf-ui-ux`
