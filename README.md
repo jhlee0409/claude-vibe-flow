@@ -2,7 +2,7 @@
 
 [한국어](README.ko.md) | **English**
 
-A suite of 21 specialized agents for [Claude Code](https://github.com/anthropics/claude-code) that provides persistent context management and automated development workflows.
+A suite of 22 specialized agents for [Claude Code](https://github.com/anthropics/claude-code) that provides persistent context management and automated development workflows.
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![npm version](https://img.shields.io/npm/v/claude-vibe-flow)](https://www.npmjs.com/package/claude-vibe-flow)
@@ -99,6 +99,7 @@ Analyze and fix bugs.
 | Agent | Description |
 |-------|-------------|
 | `git-guardian` | Handles git operations and commit messages. |
+| `conflict-resolver` | Resolves file conflicts in parallel sessions with intent-aware merging. |
 | `docs-sync` | Synchronizes documentation with code changes. |
 | `readme-sync` | Keeps READMEs updated. |
 | `research-agent` | Performs external research (web/docs). |

@@ -36,6 +36,7 @@
     "./agents/architect.md",
     "./agents/code-reviewer.md",
     "./agents/code-simplifier.md",
+    "./agents/conflict-resolver.md",
     "./agents/context-manager.md",
     "./agents/context-optimizer.md",
     "./agents/docs-sync.md",

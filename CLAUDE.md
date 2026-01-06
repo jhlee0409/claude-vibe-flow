@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-A universal agent and command plugin for Claude Code. Provides persistent context management, automated development workflows, and 21 specialized agents for vibe coding.
+A universal agent and command plugin for Claude Code. Provides persistent context management, automated development workflows, and 22 specialized agents for vibe coding.
 
 **Version**: 1.1.0  
 **Node.js**: >= 20.0.0 (22+ recommended)  
@@ -12,10 +12,10 @@ A universal agent and command plugin for Claude Code. Provides persistent contex
 ```
 claude-vibe-flow/
 ├── .claude-plugin/
-│   └── plugin.json             # Plugin definition (21 agents, 13 commands)
+│   └── plugin.json             # Plugin definition (22 agents, 13 commands)
 ├── hooks/
 │   └── hooks.json              # Hook settings (verification loop)
-├── agents/                     # 21 specialized agents
+├── agents/                     # 22 specialized agents
 ├── commands/                   # 13 slash commands (including modes)
 ├── skills/                     # Skills (research)
 ├── outputStyles/               # Quality styles (3 patterns)
@@ -67,6 +67,25 @@ Claude's training data is up to January 2025, but the actual date may differ.
 3. **When mentioning "latest", "current"** → Judge based on env date
 4. **When writing documents** → Extract date from env
 
+### 🔍 Research Auto-Apply (MUST)
+
+**All research/search queries MUST automatically include the current year from `<env>`.**
+
+사용자가 명시적으로 연도를 지정하지 않아도, 다음 상황에서 자동으로 `<env>`의 연도를 쿼리에 추가:
+
+| Trigger Keywords | Auto-Append |
+|------------------|-------------|
+| "최신", "latest", "recent" | `{year}` (e.g., "2026") |
+| "best practices", "권장사항" | `{year}` |
+| "how to", "방법" (for evolving tech) | `{year}` |
+| Library/framework docs lookup | `{year}` or check version compatibility |
+| "트렌드", "trend" | `{year}` |
+
+**Exceptions** (don't append year):
+- Historical queries ("React 16 migration")
+- Specific version requests ("Next.js 14 docs")
+- Timeless concepts ("Big O notation")
+
 ### Example
 
 ```
@@ -79,6 +98,9 @@ Today's date: 2026-01-06
 
 ❌ Wrong: "React best practices" search
 ✅ Correct: "React best practices 2026" search
+
+❌ Wrong: User says "Next.js 최신 기능 알려줘" → Search "Next.js features"
+✅ Correct: Auto-append → Search "Next.js features 2026" or "Next.js 15 features 2026"
 ```
 
 ---
@@ -175,7 +197,7 @@ Edit/Write → lsp_diagnostics → Fix if errors → Re-verify → Proceed when 
 
 ---
 
-## 🤖 Agent List (21 agents)
+## 🤖 Agent List (22 agents)
 
 ### Core Orchestration
 | Agent | Description |
@@ -210,6 +232,7 @@ Edit/Write → lsp_diagnostics → Fix if errors → Re-verify → Proceed when 
 | Agent | Description |
 |-------|-------------|
 | `git-guardian` | Git workflow automation (`vibe/*` branching) |
+| `conflict-resolver` | Parallel session file conflict resolution with intent-aware merging |
 | `issue-fixer` | Bug fixing through root cause analysis |
 | `research-agent` | Version-aware documentation lookup |
 | `agent-manager` | Agent ecosystem health and synchronization |

@@ -189,8 +189,8 @@ describe('Agent Structure Validation', () => {
   });
 
   describe('Agent Count Verification', () => {
-    it('should have exactly 21 agents (as documented)', () => {
-      expect(agentFiles.length).toBe(21);
+    it('should have exactly 22 agents (as documented)', () => {
+      expect(agentFiles.length).toBe(22);
     });
   });
 });
