@@ -33,7 +33,7 @@ description: |
   </example>
 model: inherit
 color: purple
-tools: ["Read", "Grep", "Glob", "WebFetch", "Bash"]
+tools: Read, Grep, Glob, WebFetch, Bash
 ---
 
 # Research Specialist Agent

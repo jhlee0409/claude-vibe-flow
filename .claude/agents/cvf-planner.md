@@ -42,7 +42,7 @@ description: |
   </example>
 model: inherit
 color: cyan
-tools: ["Read", "Grep", "Glob", "WebFetch"]
+tools: Read, Grep, Glob, WebFetch
 ---
 
 # Planner & Coordinator Agent

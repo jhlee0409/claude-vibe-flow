@@ -137,4 +137,86 @@ describe('Agent Structure Validation', () => {
       }
     });
   });
+
+  describe('Agent Routing Behavior', () => {
+    it('all agents should have example tags in description for auto-routing', () => {
+      const errors: string[] = [];
+
+      for (const agent of agentFiles) {
+        const description = agent.frontmatter.description;
+        if (typeof description === 'string') {
+          if (!description.includes('<example>')) {
+            errors.push(`${agent.fileName}: missing <example> tag in description`);
+          }
+          if (!description.includes('</example>')) {
+            errors.push(`${agent.fileName}: missing </example> closing tag in description`);
+          }
+        }
+      }
+
+      if (errors.length > 0) {
+        throw new Error(`Example tag validation failed:\n${errors.join('\n')}`);
+      }
+    });
+
+    it('tools field should be comma-separated string (not array)', () => {
+      const errors: string[] = [];
+
+      for (const agent of agentFiles) {
+        const tools = agent.frontmatter.tools;
+        if (tools !== undefined) {
+          if (Array.isArray(tools)) {
+            errors.push(`${agent.fileName}: tools should be comma-separated string, not array`);
+          } else if (typeof tools !== 'string') {
+            errors.push(`${agent.fileName}: tools should be a string`);
+          }
+        }
+      }
+
+      if (errors.length > 0) {
+        throw new Error(`Tools format validation failed:\n${errors.join('\n')}`);
+      }
+    });
+
+    it('orchestrator should have PROACTIVELY keyword for auto-invocation', () => {
+      const orchestrator = agentFiles.find((a) => a.fileName === 'cvf-orchestrator');
+      expect(orchestrator).toBeDefined();
+
+      const description = orchestrator!.frontmatter.description as string;
+      expect(description).toContain('PROACTIVELY');
+    });
+
+    it('each agent should have collaboration section in body', () => {
+      const errors: string[] = [];
+
+      for (const agent of agentFiles) {
+        if (!agent.body.includes('Collaboration')) {
+          errors.push(`${agent.fileName}: missing Collaboration section`);
+        }
+      }
+
+      if (errors.length > 0) {
+        throw new Error(`Collaboration section validation failed:\n${errors.join('\n')}`);
+      }
+    });
+
+    it('specialist agents should have MUST BE USED trigger in description', () => {
+      const specialistAgents = ['cvf-architect', 'cvf-security', 'cvf-performance', 'cvf-researcher', 'cvf-ui-ux'];
+      const errors: string[] = [];
+
+      for (const agentName of specialistAgents) {
+        const agent = agentFiles.find((a) => a.fileName === agentName);
+        if (agent) {
+          const description = agent.frontmatter.description as string;
+          if (!description.includes('MUST BE USED')) {
+            errors.push(`${agentName}: missing 'MUST BE USED' trigger phrase in description`);
+          }
+        }
+      }
+
+      if (errors.length > 0) {
+        throw new Error(`Trigger phrase validation failed:\n${errors.join('\n')}`);
+      }
+    });
+  });
 });

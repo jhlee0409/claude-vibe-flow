@@ -26,9 +26,9 @@ describe('CLI E2E Tests', () => {
         cwd: projectRoot,
       });
 
-      expect(result).toContain('3 agents');
-      expect(result).toContain('4 commands');
-      expect(result).toContain('Test enforcement');
+      expect(result).toContain('9 agents');
+      expect(result).toContain('5 commands');
+      expect(result).toContain('Pre-commit verification');
     });
 
     it('should display help with -h flag', () => {

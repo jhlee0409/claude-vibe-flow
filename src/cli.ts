@@ -127,18 +127,19 @@ function showHelp(): void {
 
 Installs Claude Vibe Flow into your project:
   .claude/
-  ├── agents/     (planner, reviewer, debugger)
-  ├── commands/   (/plan, /review, /ship, /check)
-  ├── skills/     (test-enforcer, verify-before-commit)
+  ├── agents/     (9 specialized agents)
+  ├── commands/   (5 workflow commands)
+  ├── skills/     (verify-before-commit)
   ├── scripts/    (test runner, framework detection)
-  └── hooks.json  (SessionStart, Stop, PostToolUse)
+  └── hooks.json  (SessionStart hook)
   .mcp.json       (MCP servers config)
 
 Features:
-  - 3 agents (planner, reviewer, debugger)
-  - 4 commands (/plan, /review, /ship, /check)
-  - Test enforcement (blocks session exit if tests not run)
-  - Pre-commit verification
+  - 9 agents: orchestrator, planner, reviewer, debugger, architect,
+              security, performance, researcher, ui-ux
+  - 5 commands: /cvf:plan, /cvf:review, /cvf:ship, /cvf:check, /cvf:workflow
+  - Pre-commit verification (diagnostics, tests, TODOs)
+  - Vibe coding support (natural language to shipped product)
 
 Options:
   --help, -h      Show this help message

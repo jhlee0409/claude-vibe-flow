@@ -33,7 +33,7 @@ description: |
   </example>
 model: inherit
 color: red
-tools: ["Read", "Grep", "Glob", "Bash", "lsp_diagnostics"]
+tools: Read, Grep, Glob, Bash, lsp_diagnostics
 ---
 
 # Security Specialist Agent

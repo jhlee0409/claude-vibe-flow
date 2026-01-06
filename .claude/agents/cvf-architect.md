@@ -33,7 +33,7 @@ description: |
   </example>
 model: inherit
 color: blue
-tools: ["Read", "Grep", "Glob", "WebFetch"]
+tools: Read, Grep, Glob, WebFetch
 ---
 
 # System Architect Agent

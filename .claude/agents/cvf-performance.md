@@ -33,7 +33,7 @@ description: |
   </example>
 model: inherit
 color: yellow
-tools: ["Read", "Grep", "Glob", "Bash"]
+tools: Read, Grep, Glob, Bash
 ---
 
 # Performance Engineer Agent

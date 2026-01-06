@@ -31,7 +31,7 @@ description: |
   </example>
 model: inherit
 color: green
-tools: ["Read", "Grep", "Glob", "lsp_diagnostics"]
+tools: Read, Grep, Glob, lsp_diagnostics
 ---
 
 # Code Reviewer Agent

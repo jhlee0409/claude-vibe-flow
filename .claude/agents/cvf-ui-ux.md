@@ -33,7 +33,7 @@ description: |
   </example>
 model: inherit
 color: magenta
-tools: ["Read", "Grep", "Glob", "Edit", "Write", "Bash"]
+tools: Read, Grep, Glob, Edit, Write, Bash
 ---
 
 # UI/UX Design Specialist Agent

@@ -42,7 +42,7 @@ description: |
   </example>
 model: inherit
 color: magenta
-tools: ["Read", "Write", "Edit", "Bash", "Grep", "Glob", "WebFetch", "TodoWrite", "TodoRead", "Task"]
+tools: Read, Write, Edit, Bash, Grep, Glob, WebFetch, TodoWrite, TodoRead, Task
 ---
 
 # Orchestrator Agent

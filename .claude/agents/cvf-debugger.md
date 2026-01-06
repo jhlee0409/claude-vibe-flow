@@ -31,7 +31,7 @@ description: |
   </example>
 model: inherit
 color: red
-tools: ["Read", "Grep", "Glob", "Bash", "lsp_diagnostics", "lsp_goto_definition"]
+tools: Read, Grep, Glob, Bash, lsp_diagnostics, lsp_goto_definition
 ---
 
 # Debugger Agent
