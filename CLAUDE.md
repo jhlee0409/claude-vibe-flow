@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-A lightweight framework for Claude Code that enforces test discipline and streamlines development workflows.
+A lightweight framework for Claude Code that streamlines development workflows with specialized agents and commands.
 
 **Version**: 1.0.0  
 **Node.js**: >= 20.0.0  
@@ -24,51 +24,45 @@ npm run typecheck   # Type check
 
 ```
 .claude/
-├── agents/                       # 3 specialized agents
-│   ├── planner.md               # Idea → spec
-│   ├── reviewer.md              # Code review
-│   └── debugger.md              # Bug fixing
+├── agents/                       # 8 specialized agents
+│   ├── cvf-planner.md           # Idea → spec
+│   ├── cvf-reviewer.md          # Code review
+│   ├── cvf-debugger.md          # Bug fixing
+│   ├── cvf-architect.md         # System architecture
+│   ├── cvf-security.md          # Security analysis
+│   ├── cvf-performance.md       # Performance optimization
+│   ├── cvf-researcher.md        # External research
+│   └── cvf-ui-ux.md             # UI/UX design
 ├── skills/                       # Model-invoked
-│   ├── test-enforcer/SKILL.md   # Runs tests after implementation
 │   └── verify-before-commit/SKILL.md
 ├── commands/                     # User-invoked
-│   ├── plan.md, review.md, ship.md, check.md
-├── scripts/                      # Hook scripts
-│   ├── check-tests-ran.sh       # Exit code 2 = block
+│   ├── cvf:plan.md, cvf:review.md, cvf:ship.md, cvf:check.md, cvf:workflow.md
+├── scripts/                      # Utility scripts
 │   ├── detect-test-framework.sh
 │   ├── load-context.sh
-│   └── run-tests.sh             # Test runner with auto-marker
-└── hooks.json                    # Deterministic enforcement
+│   └── run-tests.sh             # Optional test runner
+└── hooks.json                    # SessionStart hook
 ```
 
 ## Core Concept
 
 ```
-Claude implements → Skills remind → Hooks enforce
+Claude implements → Agents assist → Commands orchestrate
 ```
 
 - **Claude**: Does the implementation (native capability)
-- **Skills**: Remind to run tests after code changes
-- **Hooks**: Block session exit if tests weren't run
+- **Agents**: Specialized assistants for specific domains
+- **Commands**: User-invoked workflows
 
 ## Hooks
 
 | Hook | Trigger | Behavior |
 |------|---------|----------|
 | `SessionStart` | Session begins | Load context from `.claude-vibe-flow/` |
-| `PostToolUse` | After Edit/Write | Reminder to run tests |
-| `Stop` | Session exit attempt | **BLOCK** if tests not run (exit code 2) |
 
 ## Skills
 
 Skills are auto-invoked by Claude based on context.
-
-### test-enforcer
-- Triggers after: "implement", "add", "create", "fix", code changes
-- **Recommended**: Use `run-tests.sh` wrapper for automatic marker creation
-- Detects test framework
-- Runs tests
-- Creates marker file for Stop hook
 
 ### verify-before-commit
 - Triggers before: "commit", "push", "ship", "PR"
@@ -78,39 +72,33 @@ Skills are auto-invoked by Claude based on context.
 
 | Agent | Use When |
 |-------|----------|
-| `planner` | Vague idea needs structure |
-| `reviewer` | Explicit code review request |
-| `debugger` | Bug reports, errors |
+| `cvf-planner` | Vague idea needs structure |
+| `cvf-reviewer` | Explicit code review request |
+| `cvf-debugger` | Bug reports, errors |
+| `cvf-architect` | Architecture decisions, system design |
+| `cvf-security` | Security concerns, auth, vulnerabilities |
+| `cvf-performance` | Performance issues, optimization |
+| `cvf-researcher` | Library selection, best practices lookup |
+| `cvf-ui-ux` | UI design, styling, accessibility |
 
 ## Commands
 
 | Command | Action |
 |---------|--------|
-| `/plan "idea"` | Create implementation spec |
-| `/review` | Code review on changes |
-| `/ship` | Verify → commit → push → PR |
-| `/check` | Show verification status |
+| `/cvf:plan "idea"` | Create implementation spec |
+| `/cvf:review` | Code review on changes |
+| `/cvf:ship` | Verify → commit → push → PR |
+| `/cvf:check` | Show verification status |
+| `/cvf:workflow type "desc"` | Execute multi-agent workflow |
 
-## Test Enforcement Flow
-
-```
-1. User writes code (Edit/Write)
-2. PostToolUse hook: "Remember to run tests"
-3. test-enforcer skill: Detects framework, runs tests, creates marker
-4. User tries to exit
-5. Stop hook: Checks marker file
-   - Marker exists → Allow exit
-   - No marker + code changed → BLOCK (exit 2)
-```
-
-## Escape Hatches
+## Running Tests (Optional)
 
 ```bash
-# Skip test check for this session
-export SKIP_TEST_CHECK=1
+# Use the provided script
+bash .claude/scripts/run-tests.sh
 
-# Custom test command
-echo "npm run test:unit" > .claude-vibe-flow/test-command.txt
+# Or run directly
+npm test
 ```
 
 ## Development

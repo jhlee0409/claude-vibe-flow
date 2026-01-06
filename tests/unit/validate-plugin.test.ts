@@ -13,40 +13,44 @@ describe('Plugin Structure Validation', () => {
   });
 
   describe('Agents', () => {
-    it('should have agents directory with 3 agents', () => {
+    it('should have agents directory with 8 agents', () => {
       const agentsDir = path.join(claudeDir, 'agents');
       expect(fs.existsSync(agentsDir)).toBe(true);
 
       const agents = fs.readdirSync(agentsDir).filter((f) => f.endsWith('.md'));
-      expect(agents.length).toBe(3);
-      expect(agents.sort()).toEqual(['debugger.md', 'planner.md', 'reviewer.md']);
+      expect(agents.length).toBe(8);
+      expect(agents.sort()).toEqual([
+        'cvf-architect.md',
+        'cvf-debugger.md',
+        'cvf-performance.md',
+        'cvf-planner.md',
+        'cvf-researcher.md',
+        'cvf-reviewer.md',
+        'cvf-security.md',
+        'cvf-ui-ux.md',
+      ]);
     });
   });
 
   describe('Commands', () => {
-    it('should have commands directory with 4 commands', () => {
+    it('should have commands directory with 5 commands', () => {
       const commandsDir = path.join(claudeDir, 'commands');
       expect(fs.existsSync(commandsDir)).toBe(true);
 
       const commands = fs.readdirSync(commandsDir).filter((f) => f.endsWith('.md'));
-      expect(commands.length).toBe(4);
-      expect(commands.sort()).toEqual(['check.md', 'plan.md', 'review.md', 'ship.md']);
+      expect(commands.length).toBe(5);
+      expect(commands.sort()).toEqual(['cvf:check.md', 'cvf:plan.md', 'cvf:review.md', 'cvf:ship.md', 'cvf:workflow.md']);
     });
   });
 
   describe('Skills', () => {
-    it('should have skills directory with 2 skills', () => {
+    it('should have skills directory with 1 skill', () => {
       const skillsDir = path.join(claudeDir, 'skills');
       expect(fs.existsSync(skillsDir)).toBe(true);
 
       const skills = fs.readdirSync(skillsDir);
-      expect(skills.length).toBe(2);
-      expect(skills.sort()).toEqual(['test-enforcer', 'verify-before-commit']);
-    });
-
-    it('test-enforcer should have SKILL.md', () => {
-      const skillPath = path.join(claudeDir, 'skills', 'test-enforcer', 'SKILL.md');
-      expect(fs.existsSync(skillPath)).toBe(true);
+      expect(skills.length).toBe(1);
+      expect(skills.sort()).toEqual(['verify-before-commit']);
     });
 
     it('verify-before-commit should have SKILL.md', () => {
@@ -75,14 +79,13 @@ describe('Plugin Structure Validation', () => {
   });
 
   describe('Scripts', () => {
-    it('should have scripts directory with 4 scripts', () => {
+    it('should have scripts directory with 3 scripts', () => {
       const scriptsDir = path.join(claudeDir, 'scripts');
       expect(fs.existsSync(scriptsDir)).toBe(true);
 
       const scripts = fs.readdirSync(scriptsDir).filter((f) => f.endsWith('.sh'));
-      expect(scripts.length).toBe(4);
+      expect(scripts.length).toBe(3);
       expect(scripts.sort()).toEqual([
-        'check-tests-ran.sh',
         'detect-test-framework.sh',
         'load-context.sh',
         'run-tests.sh',

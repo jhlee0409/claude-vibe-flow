@@ -36,13 +36,13 @@ describe('Command Structure Validation', () => {
     });
   });
 
-  it('should have exactly 4 commands', () => {
-    expect(commandFiles.length).toBe(4);
+  it('should have exactly 5 commands', () => {
+    expect(commandFiles.length).toBe(5);
   });
 
-  it('should have plan, review, ship, check commands', () => {
+  it('should have cvf:plan, cvf:review, cvf:ship, cvf:check, cvf:workflow commands', () => {
     const commandNames = commandFiles.map((c) => c.fileName).sort();
-    expect(commandNames).toEqual(['check', 'plan', 'review', 'ship']);
+    expect(commandNames).toEqual(['cvf:check', 'cvf:plan', 'cvf:review', 'cvf:ship', 'cvf:workflow']);
   });
 
   describe('Frontmatter Validation', () => {

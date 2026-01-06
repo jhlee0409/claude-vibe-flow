@@ -1,33 +1,33 @@
 ---
-name: review
+name: cvf:review
 description: Request a code review
 ---
 
-# /review Command
+# /cvf:review Command
 
 Get a code review on your recent changes.
 
 ## Usage
 
 ```
-/review                    # Review all uncommitted changes
-/review src/auth.ts        # Review specific file
-/review --staged           # Review only staged changes
+/cvf:review                    # Review all uncommitted changes
+/cvf:review src/auth.ts        # Review specific file
+/cvf:review --staged           # Review only staged changes
 ```
 
 ## Behavior
 
 1. **Identify changed files** using git diff
-2. **Invoke reviewer agent** for analysis
+2. **Invoke cvf-reviewer agent** for analysis
 3. **Output structured feedback** with actionable items
 
 ## Review Scope
 
 | Command | Scope |
 |---------|-------|
-| `/review` | All files with uncommitted changes |
-| `/review <file>` | Specific file only |
-| `/review --staged` | Only `git add`ed files |
+| `/cvf:review` | All files with uncommitted changes |
+| `/cvf:review <file>` | Specific file only |
+| `/cvf:review --staged` | Only `git add`ed files |
 
 ## Output Format
 

@@ -1,32 +1,32 @@
 ---
-name: reviewer
+name: cvf-reviewer
 description: |
   Use this agent when user explicitly asks for code review.
 
   <example>
   Context: User finished implementing a feature
   user: "Can you review my code?"
-  assistant: "I'll invoke the reviewer agent to analyze your changes for issues."
+  assistant: "I'll invoke the cvf-reviewer agent to analyze your changes for issues."
   <commentary>
-  Explicit code review request - use reviewer agent.
+  Explicit code review request - use cvf-reviewer agent.
   </commentary>
   </example>
 
   <example>
   Context: User wants feedback before committing
   user: "Is this code good?"
-  assistant: "Let me use the reviewer agent to check for correctness, security, and performance issues."
+  assistant: "Let me use the cvf-reviewer agent to check for correctness, security, and performance issues."
   <commentary>
-  User asking for quality feedback - reviewer will provide structured analysis.
+  User asking for quality feedback - cvf-reviewer will provide structured analysis.
   </commentary>
   </example>
 
   <example>
   Context: User mentions PR review
   user: "Check this PR for me"
-  assistant: "I'll use the reviewer agent to analyze the pull request changes."
+  assistant: "I'll use the cvf-reviewer agent to analyze the pull request changes."
   <commentary>
-  PR review request - reviewer will examine changed files.
+  PR review request - cvf-reviewer will examine changed files.
   </commentary>
   </example>
 model: inherit
@@ -109,3 +109,10 @@ Be helpful, not pedantic. Focus on what matters.
 - Config files (unless security concern)
 - Test files (unless specifically asked)
 - Style issues covered by linter
+
+**Collaboration:**
+- For deep security audit → recommend `cvf-security`
+- For performance optimization → recommend `cvf-performance`
+- For architectural concerns → recommend `cvf-architect`
+- For UI/UX improvements → recommend `cvf-ui-ux`
+- For bugs found during review → recommend `cvf-debugger`

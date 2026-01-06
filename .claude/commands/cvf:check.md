@@ -1,18 +1,18 @@
 ---
-name: check
+name: cvf:check
 description: Show verification status
 ---
 
-# /check Command
+# /cvf:check Command
 
 Display current project verification status.
 
 ## Usage
 
 ```
-/check                     # Full status check
-/check --quick             # Just diagnostics
-/check --tests             # Focus on test status
+/cvf:check                     # Full status check
+/cvf:check --quick             # Just diagnostics
+/cvf:check --tests             # Focus on test status
 ```
 
 ## Output
@@ -72,7 +72,7 @@ Runs `lsp_diagnostics` on:
 
 ## Quick Check Mode
 
-`/check --quick` only runs diagnostics:
+`/cvf:check --quick` only runs diagnostics:
 
 ```markdown
 ## Quick Check
@@ -88,7 +88,7 @@ Runs `lsp_diagnostics` on:
 
 ## Test Focus Mode
 
-`/check --tests` focuses on test status:
+`/cvf:check --tests` focuses on test status:
 
 ```markdown
 ## Test Status

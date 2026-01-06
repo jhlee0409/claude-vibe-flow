@@ -36,13 +36,22 @@ describe('Agent Structure Validation', () => {
     });
   });
 
-  it('should have exactly 3 agents', () => {
-    expect(agentFiles.length).toBe(3);
+  it('should have exactly 8 agents', () => {
+    expect(agentFiles.length).toBe(8);
   });
 
-  it('should have planner, reviewer, debugger agents', () => {
+  it('should have all cvf agents', () => {
     const agentNames = agentFiles.map((a) => a.fileName).sort();
-    expect(agentNames).toEqual(['debugger', 'planner', 'reviewer']);
+    expect(agentNames).toEqual([
+      'cvf-architect',
+      'cvf-debugger',
+      'cvf-performance',
+      'cvf-planner',
+      'cvf-researcher',
+      'cvf-reviewer',
+      'cvf-security',
+      'cvf-ui-ux',
+    ]);
   });
 
   describe('Frontmatter Validation', () => {

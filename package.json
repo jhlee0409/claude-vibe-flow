@@ -2,9 +2,9 @@
   "name": "claude-vibe-flow",
   "version": "1.0.0",
   "description": "Lightweight vibe coding framework for Claude Code with test enforcement and streamlined workflows.",
-  "main": "dist/cli.js",
+  "main": "dist/src/cli.js",
   "bin": {
-    "claude-vibe-flow": "dist/cli.js"
+    "claude-vibe-flow": "dist/src/cli.js"
   },
   "engines": {
     "node": ">=20.0.0"

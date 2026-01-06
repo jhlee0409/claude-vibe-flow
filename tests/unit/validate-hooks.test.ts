@@ -17,12 +17,10 @@ interface HookMatcher {
 interface HooksConfig {
   hooks: {
     SessionStart?: HookMatcher[];
-    PostToolUse?: HookMatcher[];
-    Stop?: HookMatcher[];
   };
 }
 
-const VALID_HOOK_EVENTS = ['SessionStart', 'PostToolUse', 'Stop'];
+const VALID_HOOK_EVENTS = ['SessionStart'];
 const VALID_HOOK_TYPES = ['command', 'prompt'];
 
 describe('Hooks System Validation', () => {
@@ -53,9 +51,9 @@ describe('Hooks System Validation', () => {
       }
     });
 
-    it('should have exactly 3 hook events (SessionStart, Stop, PostToolUse)', () => {
+    it('should have exactly 1 hook event (SessionStart)', () => {
       const events = Object.keys(hooksConfig.hooks);
-      expect(events.sort()).toEqual(['PostToolUse', 'SessionStart', 'Stop']);
+      expect(events.sort()).toEqual(['SessionStart']);
     });
   });
 
@@ -121,45 +119,9 @@ describe('Hooks System Validation', () => {
     });
   });
 
-  describe('Stop Hook (Test Enforcement)', () => {
-    it('should exist', () => {
-      expect(hooksConfig.hooks.Stop).toBeDefined();
-    });
-
-    it('should reference check-tests-ran.sh for blocking', () => {
-      const stopHooks = hooksConfig.hooks.Stop || [];
-      const hasTestCheck = stopHooks.some((m) =>
-        m.hooks.some((h) => h.type === 'command' && h.command?.includes('check-tests-ran.sh'))
-      );
-      expect(hasTestCheck).toBe(true);
-    });
-  });
-
-  describe('PostToolUse Hook', () => {
-    it('should exist', () => {
-      expect(hooksConfig.hooks.PostToolUse).toBeDefined();
-    });
-
-    it('should have Edit|Write matcher', () => {
-      const postToolUseHooks = hooksConfig.hooks.PostToolUse || [];
-      const hasEditWriteMatcher = postToolUseHooks.some(
-        (m) => m.matcher.includes('Edit') && m.matcher.includes('Write')
-      );
-      expect(hasEditWriteMatcher).toBe(true);
-    });
-  });
-
   describe('Scripts Integration', () => {
     it('load-context.sh should exist and be executable bash script', () => {
       const scriptPath = path.join(claudeDir, 'scripts', 'load-context.sh');
-      expect(fs.existsSync(scriptPath)).toBe(true);
-
-      const content = fs.readFileSync(scriptPath, 'utf-8');
-      expect(content.startsWith('#!/bin/bash')).toBe(true);
-    });
-
-    it('check-tests-ran.sh should exist and be executable bash script', () => {
-      const scriptPath = path.join(claudeDir, 'scripts', 'check-tests-ran.sh');
       expect(fs.existsSync(scriptPath)).toBe(true);
 
       const content = fs.readFileSync(scriptPath, 'utf-8');
@@ -171,10 +133,9 @@ describe('Hooks System Validation', () => {
       expect(fs.existsSync(scriptPath)).toBe(true);
     });
 
-    it('check-tests-ran.sh should support exit code 2 for blocking', () => {
-      const scriptPath = path.join(claudeDir, 'scripts', 'check-tests-ran.sh');
-      const content = fs.readFileSync(scriptPath, 'utf-8');
-      expect(content).toContain('exit 2');
+    it('run-tests.sh should exist for optional test running', () => {
+      const scriptPath = path.join(claudeDir, 'scripts', 'run-tests.sh');
+      expect(fs.existsSync(scriptPath)).toBe(true);
     });
   });
 });

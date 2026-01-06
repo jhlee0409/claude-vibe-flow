@@ -24,11 +24,11 @@ git status --porcelain | sed 's/^...//' | sed 's/.* -> //' | sed 's/^"//;s/"$//'
 
 For each file, run `lsp_diagnostics`. Block if ANY errors exist.
 
-### 2. Tests (REQUIRED)
+### 2. Tests (RECOMMENDED)
 
-Verify tests were run this session:
-- Check marker file exists: `${TMPDIR:-/tmp}/claude-tests-ran-*`
-- If not, run tests now using test-enforcer skill
+If project has test framework:
+- Run tests using `bash .claude/scripts/run-tests.sh`
+- Report results but don't block commit
 
 ### 3. TODOs (REQUIRED)
 
@@ -61,13 +61,15 @@ If project has formatter configured:
 
 DO NOT proceed with commit if ANY:
 - `lsp_diagnostics` shows errors (warnings OK)
-- Tests have not been run
-- Tests are failing
 - Critical TODOs are `in_progress`
+
+## Non-Blocking (Warn Only)
+
+- Tests not run (user's choice)
+- Tests failing (warn, but allow if user confirms)
 
 ## Escape Hatch
 
 If user explicitly says "commit anyway" or "force commit":
 - Warn about skipped checks
 - Proceed with commit
-- Note: Stop hook may still block if tests weren't run

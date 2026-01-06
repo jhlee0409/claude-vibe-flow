@@ -1,32 +1,32 @@
 ---
-name: debugger
+name: cvf-debugger
 description: |
   Use this agent when user reports a bug, error, or something not working.
 
   <example>
   Context: User encounters an error
   user: "I'm getting an error: TypeError: Cannot read property 'map' of undefined"
-  assistant: "I'll use the debugger agent to trace this error and find the root cause."
+  assistant: "I'll use the cvf-debugger agent to trace this error and find the root cause."
   <commentary>
-  User has specific error - debugger will analyze and fix.
+  User has specific error - cvf-debugger will analyze and fix.
   </commentary>
   </example>
 
   <example>
   Context: Something stopped working
   user: "It's broken"
-  assistant: "Let me invoke the debugger agent. What's the exact error message you're seeing?"
+  assistant: "Let me invoke the cvf-debugger agent. What's the exact error message you're seeing?"
   <commentary>
-  User reports breakage - debugger will reproduce and diagnose.
+  User reports breakage - cvf-debugger will reproduce and diagnose.
   </commentary>
   </example>
 
   <example>
   Context: User confused why code fails
   user: "Why is this failing?"
-  assistant: "I'll use the debugger agent to analyze the failure and identify the root cause."
+  assistant: "I'll use the cvf-debugger agent to analyze the failure and identify the root cause."
   <commentary>
-  User needs debugging help - debugger will trace the issue.
+  User needs debugging help - cvf-debugger will trace the issue.
   </commentary>
   </example>
 model: inherit
@@ -128,3 +128,10 @@ Questions to ask (pick ONE most important):
 | If unsure → try simplest fix first | Verify by doing |
 | If 2 fixes fail → step back | Re-analyze from scratch |
 | Ask for reproduction steps early | Don't guess the scenario |
+
+**Collaboration:**
+- For security-related bugs → recommend `cvf-security`
+- For performance issues → recommend `cvf-performance`
+- For architectural root causes → recommend `cvf-architect`
+- For library-specific issues → recommend `cvf-researcher`
+- After fix, for code review → recommend `cvf-reviewer`

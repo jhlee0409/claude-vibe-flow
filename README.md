@@ -2,17 +2,17 @@
 
 [한국어](README.ko.md) | **English**
 
-A lightweight framework for [Claude Code](https://github.com/anthropics/claude-code) that enforces test discipline and streamlines development workflows.
+A lightweight framework for [Claude Code](https://github.com/anthropics/claude-code) that streamlines development workflows with specialized agents and commands.
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![npm version](https://img.shields.io/npm/v/claude-vibe-flow)](https://www.npmjs.com/package/claude-vibe-flow)
 
 ## Features
 
-- **Test Enforcement**: Session cannot exit if tests weren't run after code changes
-- **3 Focused Agents**: planner, reviewer, debugger
-- **4 Essential Commands**: /plan, /review, /ship, /check
+- **8 Specialized Agents**: cvf-planner, cvf-reviewer, cvf-debugger, cvf-architect, cvf-security, cvf-performance, cvf-researcher, cvf-ui-ux
+- **5 Essential Commands**: /cvf:plan, /cvf:review, /cvf:ship, /cvf:check, /cvf:workflow
 - **Pre-commit Verification**: Diagnostics + tests + TODOs checked before commit
+- **Multi-Agent Workflows**: Coordinate agents for complex features
 
 ## Installation
 
@@ -35,38 +35,34 @@ claude
 
 ### Planning
 ```bash
-/plan "Add user authentication"
+/cvf:plan "Add user authentication"
 ```
 Turns vague ideas into concrete specs with MVP scope.
 
 ### Code Review
 ```bash
-/review                    # Review all changes
-/review src/auth.ts        # Review specific file
+/cvf:review                    # Review all changes
+/cvf:review src/auth.ts        # Review specific file
 ```
 
 ### Ship (Commit + Push + PR)
 ```bash
-/ship                      # Verify → commit → push → PR
-/ship "feat: add auth"     # With custom message
+/cvf:ship                      # Verify → commit → push → PR
+/cvf:ship "feat: add auth"     # With custom message
 ```
 
 ### Check Status
 ```bash
-/check                     # Full verification status
+/cvf:check                     # Full verification status
 ```
 
-## Test Enforcement
-
-The core feature. When you change code:
-
-1. **Skill reminds**: After implementation, Claude runs tests
-2. **Hook blocks**: If you try to exit without running tests, session blocks
-
+### Multi-Step Workflow
 ```bash
-# Escape hatch (use sparingly)
-export SKIP_TEST_CHECK=1
+/cvf:workflow feature "Add user auth"   # Standard feature workflow
+/cvf:workflow secure "Payment flow"     # Security-focused workflow
+/cvf:workflow audit                     # Pre-release audit
 ```
+Coordinates multiple agents for complex tasks.
 
 ## Directory Structure
 
@@ -74,20 +70,23 @@ export SKIP_TEST_CHECK=1
 your-project/
 ├── .claude/
 │   ├── agents/
-│   │   ├── planner.md         # Idea → concrete spec
-│   │   ├── reviewer.md        # Code review
-│   │   └── debugger.md        # Bug fixing
+│   │   ├── cvf-planner.md     # Idea → concrete spec
+│   │   ├── cvf-reviewer.md    # Code review
+│   │   ├── cvf-debugger.md    # Bug fixing
+│   │   ├── cvf-architect.md   # System architecture
+│   │   ├── cvf-security.md    # Security analysis
+│   │   ├── cvf-performance.md # Performance optimization
+│   │   ├── cvf-researcher.md  # External research
+│   │   └── cvf-ui-ux.md       # UI/UX design
 │   ├── commands/
-│   │   ├── plan.md, review.md, ship.md, check.md
+│   │   ├── cvf:plan.md, cvf:review.md, cvf:ship.md, cvf:check.md, cvf:workflow.md
 │   ├── skills/
-│   │   ├── test-enforcer/SKILL.md
 │   │   └── verify-before-commit/SKILL.md
 │   ├── scripts/
-│   │   ├── check-tests-ran.sh      # Blocking hook
 │   │   ├── detect-test-framework.sh
 │   │   ├── load-context.sh
 │   │   └── run-tests.sh
-│   └── hooks.json              # SessionStart, Stop, PostToolUse
+│   └── hooks.json              # SessionStart hook
 └── .mcp.json                   # MCP servers config
 ```
 
@@ -95,22 +94,34 @@ your-project/
 
 | Agent | Triggers On | Purpose |
 |-------|-------------|---------|
-| `planner` | "I want to build...", "Help me plan..." | Turn ideas into specs |
-| `reviewer` | "Review my code", "Check this PR" | Code review |
-| `debugger` | "It's broken", "Getting an error" | Bug fixing |
+| `cvf-planner` | "I want to build...", "Help me plan..." | Turn ideas into specs |
+| `cvf-reviewer` | "Review my code", "Check this PR" | Code review |
+| `cvf-debugger` | "It's broken", "Getting an error" | Bug fixing |
+| `cvf-architect` | "How should I structure...", "Design this..." | System architecture |
+| `cvf-security` | "Is this secure?", "Adding auth..." | Security analysis |
+| `cvf-performance` | "This is slow", "Optimize..." | Performance tuning |
+| `cvf-researcher` | "What library should I use?", "Best practices for..." | External research |
+| `cvf-ui-ux` | "Design a component", "Make this look better" | UI/UX design |
 
 ## Commands
 
 | Command | Description |
 |---------|-------------|
-| `/plan` | Plan a new feature |
-| `/review` | Request code review |
-| `/ship` | Commit + push + create PR |
-| `/check` | Show verification status |
+| `/cvf:plan` | Plan a new feature |
+| `/cvf:review` | Request code review |
+| `/cvf:ship` | Commit + push + create PR |
+| `/cvf:check` | Show verification status |
+| `/cvf:workflow` | Execute multi-agent workflow |
 
-## Supported Test Frameworks
+## Running Tests (Optional)
 
-Auto-detected:
+Tests can be run manually when needed:
+
+```bash
+bash .claude/scripts/run-tests.sh
+```
+
+Auto-detected frameworks:
 - **Node.js**: Jest, Vitest, Mocha
 - **Python**: Pytest
 - **Go**: go test

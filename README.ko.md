@@ -2,17 +2,17 @@
 
 **한국어** | [English](README.md)
 
-테스트 규율을 강제하고 개발 워크플로우를 간소화하는 [Claude Code](https://github.com/anthropics/claude-code) 경량 프레임워크.
+전문 에이전트와 명령어로 개발 워크플로우를 간소화하는 [Claude Code](https://github.com/anthropics/claude-code) 경량 프레임워크.
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![npm version](https://img.shields.io/npm/v/claude-vibe-flow)](https://www.npmjs.com/package/claude-vibe-flow)
 
 ## 주요 기능
 
-- **테스트 강제**: 코드 변경 후 테스트를 실행하지 않으면 세션 종료 불가
-- **3개의 집중 에이전트**: planner, reviewer, debugger
-- **4개의 필수 명령어**: /plan, /review, /ship, /check
+- **8개의 전문 에이전트**: cvf-planner, cvf-reviewer, cvf-debugger, cvf-architect, cvf-security, cvf-performance, cvf-researcher, cvf-ui-ux
+- **5개의 필수 명령어**: /cvf:plan, /cvf:review, /cvf:ship, /cvf:check, /cvf:workflow
 - **커밋 전 검증**: 진단 + 테스트 + TODO 확인
+- **멀티 에이전트 워크플로우**: 복잡한 기능을 위한 에이전트 조율
 
 ## 설치
 
@@ -35,38 +35,34 @@ claude
 
 ### 기획
 ```bash
-/plan "사용자 인증 추가"
+/cvf:plan "사용자 인증 추가"
 ```
 막연한 아이디어를 MVP 범위가 있는 구체적인 스펙으로 변환합니다.
 
 ### 코드 리뷰
 ```bash
-/review                    # 모든 변경 사항 리뷰
-/review src/auth.ts        # 특정 파일 리뷰
+/cvf:review                    # 모든 변경 사항 리뷰
+/cvf:review src/auth.ts        # 특정 파일 리뷰
 ```
 
 ### 배포 (커밋 + 푸시 + PR)
 ```bash
-/ship                      # 검증 → 커밋 → 푸시 → PR
-/ship "feat: add auth"     # 커스텀 메시지와 함께
+/cvf:ship                      # 검증 → 커밋 → 푸시 → PR
+/cvf:ship "feat: add auth"     # 커스텀 메시지와 함께
 ```
 
 ### 상태 확인
 ```bash
-/check                     # 전체 검증 상태
+/cvf:check                     # 전체 검증 상태
 ```
 
-## 테스트 강제
-
-핵심 기능입니다. 코드를 변경할 때:
-
-1. **스킬이 알림**: 구현 후, Claude가 테스트를 실행합니다
-2. **훅이 차단**: 테스트를 실행하지 않고 종료하려 하면 세션이 차단됩니다
-
+### 멀티스텝 워크플로우
 ```bash
-# 탈출구 (아껴서 사용하세요)
-export SKIP_TEST_CHECK=1
+/cvf:workflow feature "사용자 인증"   # 표준 기능 워크플로우
+/cvf:workflow secure "결제 플로우"    # 보안 중심 워크플로우
+/cvf:workflow audit                   # 릴리스 전 감사
 ```
+복잡한 작업을 위해 여러 에이전트를 조율합니다.
 
 ## 디렉토리 구조
 
@@ -74,20 +70,23 @@ export SKIP_TEST_CHECK=1
 your-project/
 ├── .claude/
 │   ├── agents/
-│   │   ├── planner.md         # 아이디어 → 구체적 스펙
-│   │   ├── reviewer.md        # 코드 리뷰
-│   │   └── debugger.md        # 버그 수정
+│   │   ├── cvf-planner.md     # 아이디어 → 구체적 스펙
+│   │   ├── cvf-reviewer.md    # 코드 리뷰
+│   │   ├── cvf-debugger.md    # 버그 수정
+│   │   ├── cvf-architect.md   # 시스템 아키텍처
+│   │   ├── cvf-security.md    # 보안 분석
+│   │   ├── cvf-performance.md # 성능 최적화
+│   │   ├── cvf-researcher.md  # 외부 리서치
+│   │   └── cvf-ui-ux.md       # UI/UX 디자인
 │   ├── commands/
-│   │   ├── plan.md, review.md, ship.md, check.md
+│   │   ├── cvf:plan.md, cvf:review.md, cvf:ship.md, cvf:check.md, cvf:workflow.md
 │   ├── skills/
-│   │   ├── test-enforcer/SKILL.md
 │   │   └── verify-before-commit/SKILL.md
 │   ├── scripts/
-│   │   ├── check-tests-ran.sh      # 차단 훅
 │   │   ├── detect-test-framework.sh
 │   │   ├── load-context.sh
 │   │   └── run-tests.sh
-│   └── hooks.json              # SessionStart, Stop, PostToolUse
+│   └── hooks.json              # SessionStart 훅
 └── .mcp.json                   # MCP 서버 설정
 ```
 
@@ -95,22 +94,34 @@ your-project/
 
 | 에이전트 | 트리거 | 목적 |
 |-------|-------------|---------|
-| `planner` | "만들고 싶어...", "기획 도와줘..." | 아이디어를 스펙으로 |
-| `reviewer` | "코드 리뷰해줘", "PR 확인해줘" | 코드 리뷰 |
-| `debugger` | "안 돼", "에러 발생" | 버그 수정 |
+| `cvf-planner` | "만들고 싶어...", "기획 도와줘..." | 아이디어를 스펙으로 |
+| `cvf-reviewer` | "코드 리뷰해줘", "PR 확인해줘" | 코드 리뷰 |
+| `cvf-debugger` | "안 돼", "에러 발생" | 버그 수정 |
+| `cvf-architect` | "어떻게 구조를...", "설계해줘..." | 시스템 아키텍처 |
+| `cvf-security` | "보안 괜찮아?", "인증 추가..." | 보안 분석 |
+| `cvf-performance` | "느려", "최적화해줘..." | 성능 튜닝 |
+| `cvf-researcher` | "어떤 라이브러리?", "베스트 프랙티스..." | 외부 리서치 |
+| `cvf-ui-ux` | "컴포넌트 디자인", "더 예쁘게..." | UI/UX 디자인 |
 
 ## 명령어
 
 | 명령어 | 설명 |
 |---------|-------------|
-| `/plan` | 새 기능 기획 |
-| `/review` | 코드 리뷰 요청 |
-| `/ship` | 커밋 + 푸시 + PR 생성 |
-| `/check` | 검증 상태 표시 |
+| `/cvf:plan` | 새 기능 기획 |
+| `/cvf:review` | 코드 리뷰 요청 |
+| `/cvf:ship` | 커밋 + 푸시 + PR 생성 |
+| `/cvf:check` | 검증 상태 표시 |
+| `/cvf:workflow` | 멀티 에이전트 워크플로우 실행 |
 
-## 지원 테스트 프레임워크
+## 테스트 실행 (선택)
 
-자동 감지:
+필요할 때 수동으로 테스트를 실행할 수 있습니다:
+
+```bash
+bash .claude/scripts/run-tests.sh
+```
+
+자동 감지 프레임워크:
 - **Node.js**: Jest, Vitest, Mocha
 - **Python**: Pytest
 - **Go**: go test

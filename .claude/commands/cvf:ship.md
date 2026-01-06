@@ -1,18 +1,18 @@
 ---
-name: ship
+name: cvf:ship
 description: Commit, push, and create PR in one command
 ---
 
-# /ship Command
+# /cvf:ship Command
 
 One-shot: verify → commit → push → create PR.
 
 ## Usage
 
 ```
-/ship                      # Ship all changes
-/ship "feat: add dark mode" # Ship with custom commit message
-/ship --draft              # Create draft PR
+/cvf:ship                      # Ship all changes
+/cvf:ship "feat: add dark mode" # Ship with custom commit message
+/cvf:ship --draft              # Create draft PR
 ```
 
 ## Workflow
@@ -98,7 +98,7 @@ gh pr create --fill --draft
 
 If you need to bypass verification:
 ```
-/ship --force
+/cvf:ship --force
 ```
 
 **Warning**: This skips pre-flight checks. Use sparingly.
