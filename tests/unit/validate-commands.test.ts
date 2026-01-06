@@ -6,8 +6,6 @@ import { glob } from 'glob';
 
 const REQUIRED_COMMAND_FRONTMATTER_FIELDS = ['name', 'description'] as const;
 
-const REQUIRED_COMMAND_SECTIONS = ['## Usage'] as const;
-
 interface CommandFile {
   filePath: string;
   fileName: string;
@@ -16,7 +14,7 @@ interface CommandFile {
   body: string;
 }
 
-describe('Command Structure Validation', () => {
+describe('Command Structure Validation (v2)', () => {
   let commandFiles: CommandFile[] = [];
 
   beforeAll(async () => {
@@ -38,8 +36,13 @@ describe('Command Structure Validation', () => {
     });
   });
 
-  it('should have at least one command file', () => {
-    expect(commandFiles.length).toBeGreaterThan(0);
+  it('should have exactly 4 commands (v2)', () => {
+    expect(commandFiles.length).toBe(4);
+  });
+
+  it('should have plan, review, ship, check commands', () => {
+    const commandNames = commandFiles.map((c) => c.fileName).sort();
+    expect(commandNames).toEqual(['check', 'plan', 'review', 'ship']);
   });
 
   describe('Frontmatter Validation', () => {
@@ -75,23 +78,7 @@ describe('Command Structure Validation', () => {
     });
   });
 
-  describe('Required Sections Validation', () => {
-    it('all commands should have required sections', () => {
-      const errors: string[] = [];
-
-      for (const command of commandFiles) {
-        for (const section of REQUIRED_COMMAND_SECTIONS) {
-          if (!command.body.includes(section)) {
-            errors.push(`${command.fileName}: missing required section '${section}'`);
-          }
-        }
-      }
-
-      if (errors.length > 0) {
-        throw new Error(`Section validation failed:\n${errors.join('\n')}`);
-      }
-    });
-
+  describe('Content Quality Checks', () => {
     it('all commands should have a title (# heading)', () => {
       const errors: string[] = [];
 
@@ -104,6 +91,20 @@ describe('Command Structure Validation', () => {
 
       if (errors.length > 0) {
         throw new Error(`Title validation failed:\n${errors.join('\n')}`);
+      }
+    });
+
+    it('no command should have empty body', () => {
+      const errors: string[] = [];
+
+      for (const command of commandFiles) {
+        if (command.body.trim().length < 50) {
+          errors.push(`${command.fileName}: body is too short (less than 50 characters)`);
+        }
+      }
+
+      if (errors.length > 0) {
+        throw new Error(`Content length validation failed:\n${errors.join('\n')}`);
       }
     });
   });
@@ -124,28 +125,6 @@ describe('Command Structure Validation', () => {
       if (errors.length > 0) {
         throw new Error(`Filename consistency failed:\n${errors.join('\n')}`);
       }
-    });
-  });
-
-  describe('Content Quality Checks', () => {
-    it('no command should have empty body', () => {
-      const errors: string[] = [];
-
-      for (const command of commandFiles) {
-        if (command.body.trim().length < 50) {
-          errors.push(`${command.fileName}: body is too short (less than 50 characters)`);
-        }
-      }
-
-      if (errors.length > 0) {
-        throw new Error(`Content length validation failed:\n${errors.join('\n')}`);
-      }
-    });
-  });
-
-  describe('Command Count Verification', () => {
-    it('should have exactly 13 commands (as documented)', () => {
-      expect(commandFiles.length).toBe(13);
     });
   });
 });

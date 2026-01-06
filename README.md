@@ -2,138 +2,138 @@
 
 [한국어](README.ko.md) | **English**
 
-A suite of 22 specialized agents for [Claude Code](https://github.com/anthropics/claude-code) that provides persistent context management and automated development workflows.
+A lightweight framework for [Claude Code](https://github.com/anthropics/claude-code) that enforces test discipline and streamlines development workflows.
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![npm version](https://img.shields.io/npm/v/claude-vibe-flow)](https://www.npmjs.com/package/claude-vibe-flow)
 
 ## Features
 
-- **Context Persistence**: Saves project state to `.claude-vibe-flow/` and auto-loads it when starting a new Claude Code session via [SessionStart hook](https://github.com/anthropics/claude-code).
-- **Agent Orchestration**: Routes complex requests to specialized agents (Architecture, Implementation, Testing) instead of a single generalist model.
-- **Workflow Automation**: Standardized pipelines for feature development, refactoring, and bug fixing.
-
-> **Note**: Context is stored in markdown files and auto-injected at session start. If context doesn't load automatically, run `/claude-vibe-flow:resume`.
+- **Test Enforcement**: Session cannot exit if tests weren't run after code changes
+- **3 Focused Agents**: planner, reviewer, debugger
+- **4 Essential Commands**: /plan, /review, /ship, /check
+- **Pre-commit Verification**: Diagnostics + tests + TODOs checked before commit
 
 ## Installation
 
-### For New Projects (Template)
-
-[![Use this template](https://img.shields.io/badge/Use%20this-Template-2ea44f?style=for-the-badge)](https://github.com/jhlee0409/claude-vibe-flow/generate)
-
-Or click **"Use this template"** on GitHub, then:
-```bash
-cd my-app
-claude
-```
-
-### For Existing Projects (CLI)
+### For Existing Projects
 ```bash
 cd your-project
 npx claude-vibe-flow
 claude
 ```
 
+### For New Projects
+```bash
+mkdir my-app && cd my-app
+git init
+npx claude-vibe-flow
+claude
+```
+
 ## Usage
 
-Run these commands inside **Claude Code**.
-
-### Initialization
-Sets up the `.claude-vibe-flow` directory for context storage.
+### Planning
 ```bash
-/claude-vibe-flow:init
+/plan "Add user authentication"
+```
+Turns vague ideas into concrete specs with MVP scope.
+
+### Code Review
+```bash
+/review                    # Review all changes
+/review src/auth.ts        # Review specific file
 ```
 
-### Development
-Start a new feature with the full agent pipeline (Idea -> Plan -> Architect -> Implement).
+### Ship (Commit + Push + PR)
 ```bash
-/claude-vibe-flow:vibe "Add simple JWT authentication"
+/ship                      # Verify → commit → push → PR
+/ship "feat: add auth"     # With custom message
 ```
 
-### Maintenance
-Refresh the context map after manual file changes.
+### Check Status
 ```bash
-/claude-vibe-flow:sync-context
+/check                     # Full verification status
 ```
 
-Analyze and fix bugs.
+## Test Enforcement
+
+The core feature. When you change code:
+
+1. **Skill reminds**: After implementation, Claude runs tests
+2. **Hook blocks**: If you try to exit without running tests, session blocks
+
 ```bash
-/claude-vibe-flow:fix-bug "Error: undefined property 'user'"
+# Escape hatch (use sparingly)
+export SKIP_TEST_CHECK=1
+```
+
+## Directory Structure
+
+Uses official Claude Code Plugin format:
+
+```
+your-project/
+├── .claude-plugin/
+│   └── plugin.json         # Plugin manifest (required)
+├── agents/
+│   ├── planner.md         # Idea → concrete spec
+│   ├── reviewer.md        # Code review
+│   └── debugger.md        # Bug fixing
+├── skills/
+│   ├── test-enforcer/SKILL.md      # Auto-runs tests after implementation
+│   └── verify-before-commit/SKILL.md  # Pre-commit checks
+├── commands/
+│   ├── plan.md            # /plan command
+│   ├── review.md          # /review command
+│   ├── ship.md            # /ship command
+│   └── check.md           # /check command
+├── hooks/
+│   └── hooks.json         # SessionStart, Stop (blocking), PostToolUse
+└── scripts/
+    ├── check-tests-ran.sh      # Blocking hook script
+    ├── detect-test-framework.sh
+    ├── load-context.sh
+    └── run-tests.sh            # Test runner with auto-marker
 ```
 
 ## Agents
 
-### Core Orchestration
-| Agent | Description |
-|-------|-------------|
-| `vibe-orchestrator` | Routes user requests to the appropriate agents. |
-| `idea-shaper` | Transforms vague ideas into validated, actionable specifications. |
-| `planner` | Clarifies requirements through Socratic dialogue. |
-| `architect` | Makes technical design decisions. |
-| `vibe-implementer` | Implements code changes based on specs. |
-
-### Frontend Specialists
-| Agent | Description |
-|-------|-------------|
-| `frontend-implementer` | Frontend implementation (React 19, Svelte 5, Vue 3.5, WCAG 2.2). |
-| `ui-ux-designer` | UI/UX design systems, accessibility audits, design tokens. |
-
-### Quality & Maintenance
-| Agent | Description |
-|-------|-------------|
-| `test-generator` | Generates unit and integration tests. |
-| `code-reviewer` | Reviews code for quality and security issues. |
-| `issue-fixer` | Analyzes and resolves bugs. |
-| `spec-validator` | Validates specifications against requirements. |
-| `test-quality-validator` | Checks test coverage and quality. |
-
-### Context & Management
-| Agent | Description |
-|-------|-------------|
-| `context-manager` | Maintains the persistent context graph. |
-| `context-optimizer` | Optimizes context usage for token limits. |
-| `task-manager` | Tracks task progress and status. |
-| `agent-manager` | Manages agent interaction and lifecycle. |
-
-### Utilities
-| Agent | Description |
-|-------|-------------|
-| `git-guardian` | Handles git operations and commit messages. |
-| `conflict-resolver` | Resolves file conflicts in parallel sessions with intent-aware merging. |
-| `docs-sync` | Synchronizes documentation with code changes. |
-| `readme-sync` | Keeps READMEs updated. |
-| `research-agent` | Performs external research (web/docs). |
-| `code-simplifier` | Reduces code complexity while preserving behavior. |
+| Agent | Triggers On | Purpose |
+|-------|-------------|---------|
+| `planner` | "I want to build...", "Help me plan..." | Turn ideas into specs |
+| `reviewer` | "Review my code", "Check this PR" | Code review |
+| `debugger` | "It's broken", "Getting an error" | Bug fixing |
 
 ## Commands
 
-### Workflow Commands
 | Command | Description |
 |---------|-------------|
-| `/claude-vibe-flow:init` | Initializes the Vibe Flow environment. |
-| `/claude-vibe-flow:vibe` | Unified command: idea → plan → implement (full pipeline). |
-| `/claude-vibe-flow:vibe --idea` | Idea validation only. |
-| `/claude-vibe-flow:vibe --plan` | Requirements and architecture only. |
-| `/claude-vibe-flow:vibe --implement` | Direct implementation only. |
-| `/claude-vibe-flow:fix-bug` | Analyzes and fixes a specified bug. |
-| `/claude-vibe-flow:refactor` | Refactors code without changing behavior. |
-| `/claude-vibe-flow:sync-context` | Synchronizes the context map. |
-| `/claude-vibe-flow:resume` | Manually loads context from previous session. |
-| `/claude-vibe-flow:check` | Verifies installation (use `--setup` or `--mcp` flags). |
-| `/claude-vibe-flow:ask` | Asks a question about the codebase. |
-| `/claude-vibe-flow:commit-push-pr` | Commit, push, and create PR in one command. |
+| `/plan` | Plan a new feature |
+| `/review` | Request code review |
+| `/ship` | Commit + push + create PR |
+| `/check` | Show verification status |
 
-### Mode Commands
-| Command | Description |
-|---------|-------------|
-| `/claude-vibe-flow:verify` | Enables Verification mode - thorough checks after every edit. |
-| `/claude-vibe-flow:fast` | Enables FastVibe mode - rapid prototyping with minimal checks. |
-| `/claude-vibe-flow:deep` | Enables DeepWork mode - complex tasks with detailed planning. |
-| `/claude-vibe-flow:action` | Enables Action mode - extreme bias toward action, anti-paralysis. |
+## Supported Test Frameworks
+
+Auto-detected:
+- **Node.js**: Jest, Vitest, Mocha
+- **Python**: Pytest
+- **Go**: go test
+- **Rust**: cargo test
+- **Ruby**: RSpec, Minitest
+
+Custom: Create `.claude-vibe-flow/test-command.txt` with your test command.
+
+## MCP Servers
+
+Pre-configured in `.mcp.json`:
+- **Context7**: Documentation lookup
+- **GitHub**: Issues and PRs (requires `GITHUB_TOKEN`)
 
 ## Contributing
 
-Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 

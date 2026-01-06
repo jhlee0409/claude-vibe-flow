@@ -13,12 +13,12 @@ const RECOMMENDED_NODE_VERSION = 22;
 
 const INSTALL_ITEMS = [
   ".claude-plugin",
-  ".mcp.json",
   "agents",
   "commands",
-  "hooks",
   "skills",
-  "outputStyles",
+  "hooks",
+  "scripts",
+  ".mcp.json",
 ] as const;
 
 enum ErrorCode {
@@ -133,12 +133,20 @@ function checkNodeVersion(): void {
 function showHelp(): void {
   console.log(`Usage: npx claude-vibe-flow
 
-Installs Claude Vibe Flow into your project:
+Installs Claude Vibe Flow plugin into your project:
+  - .claude-plugin/ (plugin manifest)
+  - agents/ (planner, reviewer, debugger)
+  - commands/ (/plan, /review, /ship, /check)
+  - skills/ (test-enforcer, verify-before-commit)
+  - hooks/ (SessionStart, Stop, PostToolUse)
+  - scripts/ (test runner, framework detection)
   - .mcp.json (MCP servers auto-configured)
-  - agents/ (17 specialized AI agents)
-  - commands/ (slash commands)
-  - hooks/ (verification loop hooks)
-  - skills/, outputStyles/
+
+Features:
+  - 3 agents (planner, reviewer, debugger)
+  - 4 commands (/plan, /review, /ship, /check)
+  - Test enforcement (blocks session exit if tests not run)
+  - Pre-commit verification
 
 Options:
   --help, -h      Show this help message
@@ -274,10 +282,10 @@ function runInstall(): void {
 
 Next steps:
   1. Run Claude Code:  claude
-  2. Initialize:       /claude-vibe-flow:init
-  3. Start building:   /claude-vibe-flow:new-feature "Your feature"
+  2. Start planning:   /plan "Your feature idea"
+  3. Ship when ready:  /ship
 
-MCP servers (Context7, GitHub, Sequential Thinking) will auto-start.
+MCP servers (Context7, GitHub) will auto-start.
 `);
 }
 

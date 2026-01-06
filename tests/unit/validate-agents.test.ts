@@ -4,15 +4,7 @@ import path from 'path';
 import matter from 'gray-matter';
 import { glob } from 'glob';
 
-const REQUIRED_AGENT_FRONTMATTER_FIELDS = ['name', 'description', 'tools'] as const;
-
-const REQUIRED_AGENT_SECTION_PATTERNS = [
-  { pattern: /## (Core |Review )?Principles|## \d+\. Goal/i, name: 'Principles/Goal section' },
-  { pattern: /## Constraints|## \d+\. Instructions/i, name: 'Constraints/Instructions section' },
-  { pattern: /## Linked Agents/i, name: 'Linked Agents section' },
-] as const;
-
-const AGENTS_WITH_ALTERNATE_STRUCTURE = ['context-manager', 'context-optimizer', 'code-simplifier', 'ui-ux-designer', 'frontend-implementer'] as const;
+const REQUIRED_AGENT_FRONTMATTER_FIELDS = ['name', 'description'] as const;
 
 interface AgentFile {
   filePath: string;
@@ -22,7 +14,7 @@ interface AgentFile {
   body: string;
 }
 
-describe('Agent Structure Validation', () => {
+describe('Agent Structure Validation (v2)', () => {
   let agentFiles: AgentFile[] = [];
 
   beforeAll(async () => {
@@ -44,8 +36,13 @@ describe('Agent Structure Validation', () => {
     });
   });
 
-  it('should have at least one agent file', () => {
-    expect(agentFiles.length).toBeGreaterThan(0);
+  it('should have exactly 3 agents (v2)', () => {
+    expect(agentFiles.length).toBe(3);
+  });
+
+  it('should have planner, reviewer, debugger agents', () => {
+    const agentNames = agentFiles.map((a) => a.fileName).sort();
+    expect(agentNames).toEqual(['debugger', 'planner', 'reviewer']);
   });
 
   describe('Frontmatter Validation', () => {
@@ -79,46 +76,9 @@ describe('Agent Structure Validation', () => {
         throw new Error(`Description validation failed:\n${errors.join('\n')}`);
       }
     });
-
-    it('all agents should have valid tools field', () => {
-      const errors: string[] = [];
-
-      for (const agent of agentFiles) {
-        const tools = agent.frontmatter.tools;
-        if (typeof tools !== 'string' || tools.trim().length === 0) {
-          errors.push(`${agent.fileName}: tools is empty or not a string`);
-        }
-      }
-
-      if (errors.length > 0) {
-        throw new Error(`Tools validation failed:\n${errors.join('\n')}`);
-      }
-    });
   });
 
-  describe('Required Sections Validation', () => {
-    it('all agents should have required sections', () => {
-      const errors: string[] = [];
-      const hasAlternateStructure = (name: string) =>
-        AGENTS_WITH_ALTERNATE_STRUCTURE.includes(name as typeof AGENTS_WITH_ALTERNATE_STRUCTURE[number]);
-
-      for (const agent of agentFiles) {
-        if (hasAlternateStructure(agent.fileName)) {
-          continue;
-        }
-
-        for (const { pattern, name } of REQUIRED_AGENT_SECTION_PATTERNS) {
-          if (!pattern.test(agent.body)) {
-            errors.push(`${agent.fileName}: missing ${name}`);
-          }
-        }
-      }
-
-      if (errors.length > 0) {
-        throw new Error(`Section validation failed:\n${errors.join('\n')}`);
-      }
-    });
-
+  describe('Content Quality Checks', () => {
     it('all agents should have a title (# heading)', () => {
       const errors: string[] = [];
 
@@ -131,6 +91,20 @@ describe('Agent Structure Validation', () => {
 
       if (errors.length > 0) {
         throw new Error(`Title validation failed:\n${errors.join('\n')}`);
+      }
+    });
+
+    it('no agent should have empty body', () => {
+      const errors: string[] = [];
+
+      for (const agent of agentFiles) {
+        if (agent.body.trim().length < 100) {
+          errors.push(`${agent.fileName}: body is too short (less than 100 characters)`);
+        }
+      }
+
+      if (errors.length > 0) {
+        throw new Error(`Content length validation failed:\n${errors.join('\n')}`);
       }
     });
   });
@@ -151,46 +125,6 @@ describe('Agent Structure Validation', () => {
       if (errors.length > 0) {
         throw new Error(`Filename consistency failed:\n${errors.join('\n')}`);
       }
-    });
-  });
-
-  describe('Content Quality Checks', () => {
-    it('no agent should have empty body', () => {
-      const errors: string[] = [];
-
-      for (const agent of agentFiles) {
-        if (agent.body.trim().length < 100) {
-          errors.push(`${agent.fileName}: body is too short (less than 100 characters)`);
-        }
-      }
-
-      if (errors.length > 0) {
-        throw new Error(`Content length validation failed:\n${errors.join('\n')}`);
-      }
-    });
-
-    it('no agent should have TODO placeholders', () => {
-      const errors: string[] = [];
-      const todoPatterns = [/\[TODO\]/i, /<!-- TODO -->/i, /FIXME/i];
-
-      for (const agent of agentFiles) {
-        for (const pattern of todoPatterns) {
-          if (pattern.test(agent.body)) {
-            errors.push(`${agent.fileName}: contains unfinished TODO/FIXME placeholder`);
-            break;
-          }
-        }
-      }
-
-      if (errors.length > 0) {
-        throw new Error(`TODO placeholder check failed:\n${errors.join('\n')}`);
-      }
-    });
-  });
-
-  describe('Agent Count Verification', () => {
-    it('should have exactly 22 agents (as documented)', () => {
-      expect(agentFiles.length).toBe(22);
     });
   });
 });

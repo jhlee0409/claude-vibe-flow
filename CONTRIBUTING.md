@@ -1,113 +1,116 @@
 # Contributing to Claude Vibe Flow
 
-First off, thanks for taking the time to contribute! Flow with the vibe. 🌊
+Thanks for your interest in contributing!
 
 ## Requirements
 
-### Node.js Compatibility
+### Node.js
 
 | Version | Status |
 |---------|--------|
-| Node.js 18+ | ✅ Recommended |
-| Node.js 16-17 | ⚠️ Supported (warning shown) |
-| Node.js < 16 | ❌ Not supported |
+| Node.js 22+ | Recommended |
+| Node.js 20-21 | Supported |
+| Node.js < 20 | Not supported |
 
 ```bash
 node --version  # Check your version
-nvm use 18      # Switch to Node 18 (if using nvm)
+nvm use 22      # Switch to Node 22 (if using nvm)
 ```
 
-## Core Philosophy
+## Project Structure
 
-1. **Vibe Code Only**: We prioritize "Flow" over "Feature". Does this change make the developer feel more powerful?
-2. **MCP First**: If you are adding a capability, try to use an MCP server instead of a complex script.
-3. **No Context Dump**: Agents must use `Context7` or `Context Manager` to read files. Do not dump 100 files into the context window.
+```
+.claude-plugin/
+└── plugin.json         # Plugin manifest
+agents/                 # 3 specialized agents
+commands/               # 4 user commands
+skills/                 # 2 skills
+hooks/
+└── hooks.json          # Hook definitions
+scripts/                # Shell scripts for hooks
+```
 
 ## How to Contribute
 
-1. **Fork the repo** and create your branch from `main`.
-2. **Add your Feature/Agent**.
+1. **Fork the repo** and create your branch from `main`
+2. **Add your changes**:
    - Agents go in `agents/`
    - Commands go in `commands/`
-   - Skills go in `skills/`
-3. **Update `plugin.json`** if you added new agents/commands.
-4. **Run Validation**.
-   ```bash
-   claude plugin validate ./
-   ```
-5. **Submit a Pull Request**.
+   - Skills go in `skills/<name>/SKILL.md`
+3. **Update `.claude-plugin/plugin.json`** if needed
+4. **Run tests**: `npm test`
+5. **Submit a Pull Request**
 
-## Developing Agents
+## File Formats
 
-### File Format
+### Agent Format
 
 ```markdown
 ---
 name: your-agent-name
-description: One-line description of what this agent does.
-tools: Read, Write, Bash, Glob, Grep
+description: |
+  Use this agent when...
+  
+  <example>
+  Context: ...
+  user: "..."
+  assistant: "..."
+  <commentary>...</commentary>
+  </example>
 model: inherit
+color: cyan
+tools: ["Read", "Grep", "Glob", "Bash"]
 ---
 
 # Agent Title
 
 You are a specialist in [domain].
 
-## When to Trigger
-- [Condition 1]
-- [Condition 2]
-
 ## Workflow
 1. [Step 1]
 2. [Step 2]
 ```
 
-### Best Practices
+### Skill Format
 
-- Always specify `tools:` explicitly
-- Use `model: inherit` unless you need a specific model
-- Keep descriptions actionable and clear
-- Reference other agents when handoff is needed
+```markdown
+---
+name: skill-name
+version: 1.0.0
+description: |
+  This skill should be used when...
+allowed-tools: Bash, Read
+---
 
-## Developing Commands
+# Skill Title
 
-Commands are user-facing entry points. They should:
-
-1. Have a clear, memorable name
-2. Include usage examples
-3. Delegate to appropriate agents
-
-## Testing Your Changes
-
-```bash
-# Run unit tests
-npm test
-
-# Type checking
-npm run typecheck
-
-# Validate plugin structure
-claude plugin validate ./
-
-# Test locally
-claude --plugin-dir ./
-
-# Verbose test output
-npm run validate
+Instructions for the skill...
 ```
 
-### Test Coverage
+### Command Format
 
-| Test Suite | Description |
-|------------|-------------|
-| `validate-agents.test.ts` | Agent markdown structure validation |
-| `validate-commands.test.ts` | Command markdown structure validation |
-| `validate-plugin.test.ts` | plugin.json integrity checks |
-| `validate-hooks.test.ts` | Hook system integration tests |
-| `cli-e2e.test.ts` | CLI installation E2E tests |
+```markdown
+---
+name: command-name
+description: Brief description
+---
+
+# /command Command
+
+Documentation for the command...
+```
+
+## Testing
+
+```bash
+npm test              # Run all tests
+npm run test:watch    # Watch mode
+npm run typecheck     # Type check
+npm run build         # Build CLI
+```
 
 ## Code Style
 
-- Use clear, descriptive names
-- Keep agent files focused on one responsibility
-- Document any non-obvious behavior
+- Keep files focused on one responsibility
+- Document non-obvious behavior
+- Follow existing patterns in the codebase

@@ -1,62 +1,7 @@
 {
   "name": "claude-vibe-flow",
-  "version": "1.1.0",
-  "description": "Full vibe coding framework for Claude Code with verification loops, mode system, and agent pipelines.",
-  "author": {
-    "name": "jack",
-    "email": "relee6203@gmail.com"
-  },
-  "repository": "https://github.com/jhlee0409/claude-vibe-flow",
-  "license": "MIT",
-  "keywords": [
-    "claude-code",
-    "vibe-coding",
-    "agents",
-    "workflow",
-    "productivity",
-    "research"
-  ],
-  "commands": [
-    "./commands/vibe.md",
-    "./commands/fix-bug.md",
-    "./commands/refactor.md",
-    "./commands/init.md",
-    "./commands/resume.md",
-    "./commands/sync-context.md",
-    "./commands/commit-push-pr.md",
-    "./commands/ask.md",
-    "./commands/check.md",
-    "./commands/verify.md",
-    "./commands/fast.md",
-    "./commands/deep.md",
-    "./commands/action.md"
-  ],
-  "agents": [
-    "./agents/agent-manager.md",
-    "./agents/architect.md",
-    "./agents/code-reviewer.md",
-    "./agents/code-simplifier.md",
-    "./agents/conflict-resolver.md",
-    "./agents/context-manager.md",
-    "./agents/context-optimizer.md",
-    "./agents/docs-sync.md",
-    "./agents/frontend-implementer.md",
-    "./agents/git-guardian.md",
-    "./agents/idea-shaper.md",
-    "./agents/issue-fixer.md",
-    "./agents/planner.md",
-    "./agents/vibe-orchestrator.md",
-    "./agents/readme-sync.md",
-    "./agents/research-agent.md",
-    "./agents/spec-validator.md",
-    "./agents/task-manager.md",
-    "./agents/test-generator.md",
-    "./agents/test-quality-validator.md",
-    "./agents/ui-ux-designer.md",
-    "./agents/vibe-implementer.md"
-  ],
-  "skills": [
-    "./skills/research.md"
-  ],
-  "outputStyles": "./outputStyles/"
+  "version": "1.0.0",
+  "description": "Test enforcement and vibe coding framework for 0→1 makers",
+  "author": "jhlee0409",
+  "repository": "https://github.com/jhlee0409/claude-vibe-flow"
 }

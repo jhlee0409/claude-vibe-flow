@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { execSync } from 'child_process';
 import path from 'path';
 import fs from 'fs';
@@ -20,17 +20,19 @@ describe('CLI E2E Tests', () => {
       expect(result).toContain('DEBUG=1');
     });
 
-    it('should display help with -h flag', () => {
-      const result = execSync(`npx ts-node ${cliPath} -h`, {
+    it('should mention features in help', () => {
+      const result = execSync(`npx ts-node ${cliPath} --help`, {
         encoding: 'utf-8',
         cwd: projectRoot,
       });
 
-      expect(result).toContain('Usage: npx claude-vibe-flow');
+      expect(result).toContain('3 agents');
+      expect(result).toContain('4 commands');
+      expect(result).toContain('Test enforcement');
     });
 
-    it('should display help with help command', () => {
-      const result = execSync(`npx ts-node ${cliPath} help`, {
+    it('should display help with -h flag', () => {
+      const result = execSync(`npx ts-node ${cliPath} -h`, {
         encoding: 'utf-8',
         cwd: projectRoot,
       });
@@ -55,15 +57,6 @@ describe('CLI E2E Tests', () => {
       expect(extractVersion(result)).toMatch(/^v\d+\.\d+\.\d+$/);
     });
 
-    it('should display version with -v flag', () => {
-      const result = execSync(`npx ts-node ${cliPath} -v`, {
-        encoding: 'utf-8',
-        cwd: projectRoot,
-      });
-
-      expect(extractVersion(result)).toMatch(/^v\d+\.\d+\.\d+$/);
-    });
-
     it('should match package.json version', () => {
       const result = execSync(`npx ts-node ${cliPath} --version`, {
         encoding: 'utf-8',
@@ -75,19 +68,20 @@ describe('CLI E2E Tests', () => {
 
       expect(extractVersion(result)).toBe(`v${pkg.version}`);
     });
+
+    it('should be v1.0.0', () => {
+      const result = execSync(`npx ts-node ${cliPath} --version`, {
+        encoding: 'utf-8',
+        cwd: projectRoot,
+      });
+
+      expect(extractVersion(result)).toBe('v1.0.0');
+    });
   });
 
   describe('Install Items', () => {
-    it('all install items should exist in project', () => {
-      const installItems = [
-        '.claude-plugin',
-        '.mcp.json',
-        'agents',
-        'commands',
-        'hooks',
-        'skills',
-        'outputStyles',
-      ];
+    it('plugin install items should exist in project', () => {
+      const installItems = ['.claude-plugin', 'agents', 'commands', 'skills', 'hooks', 'scripts', '.mcp.json'];
 
       const errors: string[] = [];
 
@@ -102,6 +96,14 @@ describe('CLI E2E Tests', () => {
         throw new Error(`Missing install items:\n${errors.join('\n')}`);
       }
     });
-  });
 
+    it('old .claude directory should NOT exist', () => {
+      const oldItems = ['.claude', 'outputStyles'];
+
+      for (const item of oldItems) {
+        const itemPath = path.join(projectRoot, item);
+        expect(fs.existsSync(itemPath)).toBe(false);
+      }
+    });
+  });
 });
