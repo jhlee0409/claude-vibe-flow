@@ -78,19 +78,35 @@ You detect project dependencies and provide accurate, version-matched documentat
 ### Phase 3: Document Search
 
 ```markdown
-Tool Selection:
-1. **Primary**: Use Context7 MCP tools:
+Tool Selection (Ordered by Priority):
+1. **Primary**: Use Context7 MCP tools (if available):
    - `context7_resolve-library-id`: Find library ID from package name
    - `context7_query-docs`: Query documentation with library ID
-   - This is part of the Vibe Standard Stack and SHOULD be available.
-2. **Fallback**: `WebSearch` + `WebFetch` (Only if Context7 fails or package is obscure).
+
+2. **Fallback 1**: WebSearch + WebFetch
+   - Search: "[library] [version] official documentation"
+   - Fetch: Official docs URL directly
+   - Cache results in `.claude-vibe-flow/research_cache/[library].md`
+
+3. **Fallback 2**: GitHub Search
+   - Search: "repo:[org]/[library] [query]"
+   - Look for README, docs/, examples/
 
 Search Strategy:
-1. **Context7 First**: 
+1. **Context7 First** (if MCP available): 
    - Step 1: `context7_resolve-library-id(libraryName, query)` to get library ID
    - Step 2: `context7_query-docs(libraryId, query)` to fetch documentation
-2. **Official Sources**: Prioritize results from official domains.
-3. **Extraction**: Get code examples.
+
+2. **WebSearch Fallback**:
+   - Query: "[library] [version] [specific topic] site:docs.* OR site:github.com"
+   - Fetch top 2-3 results with WebFetch
+
+3. **Cache Check** (Before any search):
+   - Check `.claude-vibe-flow/research_cache/` for recent lookups
+   - Reuse if < 7 days old
+
+4. **Official Sources**: Prioritize results from official domains.
+5. **Extraction**: Get code examples.
 ```
 
 ### Phase 4: Result Delivery

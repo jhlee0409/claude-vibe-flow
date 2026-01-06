@@ -58,7 +58,8 @@ Request Analysis Result:
 ├─ Test required → test-generator
 ├─ Code review → code-reviewer
 ├─ Simple and clear → vibe-implementer
-├─ Vague → planner
+├─ Vague (idea-level, "I want to build...") → idea-shaper
+├─ Vague (requirement-level, needs clarification) → planner
 └─ Technical decision required → architect
 ```
 
@@ -75,7 +76,7 @@ Complex Request:
 │    ↓                                                    │
 │ 4. vibe-implementer (Implementation)                      │
 │    ↓                                                    │
-│ 5. Parallel Verification (code-reviewer, test-generator, etc.) │
+│ 5. Verification (code-reviewer OR test-generator as needed)     │
 └─────────────────────────────────────────────────────────┘
 ```
 
@@ -120,7 +121,9 @@ Before analyzing the request, check if the Vibe/init environment exists.
 ### Phase 2: Routing Decision
 
 ```markdown
-IF Clarity == Vague:
+IF Clarity == Vague AND Intent == "idea/concept":
+    ROUTE → idea-shaper
+ELIF Clarity == Vague AND Intent == "requirements":
     ROUTE → planner
 ELIF Complexity == Simple AND Clarity == Clear:
     ROUTE → vibe-implementer
@@ -147,10 +150,9 @@ Complex Request Pipeline:
 3. Implementation Phase
    - vibe-implementer: Write code
 
-4. Quality Phase (Parallel)
+4. Quality Phase (as needed, not all required)
    - code-reviewer: Code review
    - test-generator: Generate tests
-   - test-quality-validator: Test quality
 
 5. Completion Phase
    - docs-sync: Document synchronization
@@ -322,7 +324,8 @@ Simplify or ask user which phase to skip.
 
 ## Linked Agents
 
-- **planner**: Clarify vague requests
+- **idea-shaper**: Transform vague ideas into validated concepts
+- **planner**: Clarify requirements after idea validation
 - **architect**: If technical decisions are needed
 - **spec-validator**: Validation before implementation
 - **vibe-implementer**: Actual implementation

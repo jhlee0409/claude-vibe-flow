@@ -35,9 +35,11 @@
     "./agents/agent-manager.md",
     "./agents/architect.md",
     "./agents/code-reviewer.md",
+    "./agents/code-simplifier.md",
     "./agents/context-manager.md",
     "./agents/context-optimizer.md",
     "./agents/docs-sync.md",
+    "./agents/frontend-implementer.md",
     "./agents/git-guardian.md",
     "./agents/idea-shaper.md",
     "./agents/issue-fixer.md",
@@ -49,8 +51,8 @@
     "./agents/task-manager.md",
     "./agents/test-generator.md",
     "./agents/test-quality-validator.md",
-    "./agents/vibe-implementer.md",
-    "./agents/code-simplifier.md"
+    "./agents/ui-ux-designer.md",
+    "./agents/vibe-implementer.md"
   ],
   "skills": [
     "./skills/research.md"

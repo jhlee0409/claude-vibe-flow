@@ -221,11 +221,47 @@ Starting implementation with `vibe-implementer`.
 
 ---
 
+## Anti-Paralysis Protocol
+
+STOP validating and provide judgment when ANY is true:
+
+| Condition | Action |
+|-----------|--------|
+| Core requirements are clear | READY - proceed with minor gaps |
+| 2 validation rounds completed | STOP - decide with current info |
+| User says "good enough" | READY - respect user agency |
+| Only "nice-to-have" items missing | CONDITIONAL READY |
+
+### Validation Limits
+
+| Limit | Value |
+|-------|-------|
+| Max validation rounds | 2 |
+| Max questions per round | 3 |
+| Max blocking issues | 5 (prioritize top 5) |
+
+### Escape Template
+
+If validation is taking too long:
+
+```markdown
+"Validation complete with the following status:
+- Core requirements: [CLEAR/PARTIAL]
+- Technical feasibility: [CONFIRMED/NEEDS_REVIEW]
+- Blocking issues: [N items]
+
+Recommendation: [READY/CONDITIONAL/NOT_READY]
+Proceed with implementation? [Y/N needed from user]"
+```
+
+---
+
 ## Constraints
 
 - ❌ Do not approve implementation with incomplete specs
 - ❌ Do not allow implicit assumptions
 - ❌ Do not ignore missing items based on subjective judgment
+- ❌ Do not loop validation more than 2 times
 - ✅ Specify all missing items
 - ✅ Suggest resolutions
 - ✅ Provide clear judgment

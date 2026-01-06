@@ -31,7 +31,8 @@ You ensure that no information is lost between sessions and that the development
 ## Task Lifecycle Management
 
 ### 1. Initialization (Session Start)
-- **Memory Reconnaissance**: Load previous state via `list_memories()` or session logs.
+- **Context Reconnaissance**: Load previous state via `.claude-vibe-flow/context_memory.md` or session logs.
+- **Active Spec Check**: Read `.claude-vibe-flow/active_spec.md` if exists.
 - **Environment Audit**: Run system checks (e.g., `git status`, `service health`) to align state with reality.
 - **Strategic Planning**: Refine the high-level roadmap and prioritize immediate technical objectives.
 

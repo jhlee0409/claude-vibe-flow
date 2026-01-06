@@ -270,11 +270,50 @@ const count = Number("5") + 1; // 6
 
 ---
 
+## Anti-Paralysis Protocol
+
+### Debugging Limits
+
+| Limit | Value | Action When Exceeded |
+|-------|-------|---------------------|
+| Same hypothesis tested | 3 times | STOP. Try different approach or consult Oracle. |
+| Files modified | 5 files | STOP. Re-evaluate scope. |
+| Debug iterations | 5 rounds | STOP. Escalate to user with findings. |
+| Time on single bug | 30 min | STOP. Document and escalate. |
+
+### Exit Conditions
+
+STOP debugging and escalate when ANY is true:
+
+| Condition | Action |
+|-----------|--------|
+| Root cause identified | FIX immediately |
+| 3 hypotheses failed | Consult Oracle |
+| Bug in external library | Report to user, suggest workaround |
+| Requires architectural change | Escalate to architect |
+
+### Escape Template
+
+If stuck:
+
+```markdown
+"Debugging status:
+- Symptom: [X]
+- Hypotheses tested: [list]
+- Current finding: [Y]
+- Blocker: [Z]
+
+Recommendation: [ESCALATE/WORKAROUND/NEEDS_MORE_INFO]"
+```
+
+---
+
 ## Constraints
 
 - ❌ Do not attempt to fix without understanding the cause
 - ❌ No unnecessary refactoring
 - ❌ Do not modify unrelated code
+- ❌ Do not debug same hypothesis more than 3 times
 - ✅ Fix with minimal changes
 - ✅ Run tests after fix
 - ✅ Explain clear reason for fix

@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-A universal agent and command plugin for Claude Code. Provides persistent context management, automated development workflows, and 19 specialized agents for vibe coding.
+A universal agent and command plugin for Claude Code. Provides persistent context management, automated development workflows, and 21 specialized agents for vibe coding.
 
 **Version**: 1.1.0  
 **Node.js**: >= 20.0.0 (22+ recommended)  
@@ -12,10 +12,10 @@ A universal agent and command plugin for Claude Code. Provides persistent contex
 ```
 claude-vibe-flow/
 ├── .claude-plugin/
-│   └── plugin.json             # Plugin definition (19 agents, 13 commands)
+│   └── plugin.json             # Plugin definition (21 agents, 13 commands)
 ├── hooks/
 │   └── hooks.json              # Hook settings (verification loop)
-├── agents/                     # 19 specialized agents
+├── agents/                     # 21 specialized agents
 ├── commands/                   # 13 slash commands (including modes)
 ├── skills/                     # Skills (research)
 ├── outputStyles/               # Quality styles (3 patterns)
@@ -175,7 +175,7 @@ Edit/Write → lsp_diagnostics → Fix if errors → Re-verify → Proceed when 
 
 ---
 
-## 🤖 Agent List (19 agents)
+## 🤖 Agent List (21 agents)
 
 ### Core Orchestration
 | Agent | Description |
@@ -185,6 +185,8 @@ Edit/Write → lsp_diagnostics → Fix if errors → Re-verify → Proceed when 
 | `planner` | Clarifies requirements through Socratic dialogue |
 | `architect` | Technical feasibility and architectural decisions |
 | `vibe-implementer` | Fast implementation across all domains |
+| `frontend-implementer` | Frontend specialist (React 19, Vue 3.5, Svelte 5) |
+| `ui-ux-designer` | UI/UX design, design systems, accessibility audits |
 
 ### Quality & Verification
 | Agent | Description |

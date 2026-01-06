@@ -91,6 +91,41 @@ Tests are written but marked as **UNVERIFIED** until execution.
 
 ---
 
+## Framework Auto-Detection
+
+### Detection Logic
+
+```markdown
+1. Check package.json for JS/TS projects:
+   - "jest" → npm test / npx jest
+   - "vitest" → npm test / npx vitest
+   - "mocha" → npm test / npx mocha
+   - "@playwright/test" → npx playwright test
+
+2. Check requirements.txt / pyproject.toml for Python:
+   - "pytest" → pytest
+   - "unittest" → python -m unittest
+
+3. Check go.mod for Go:
+   - Present → go test ./...
+
+4. Check Cargo.toml for Rust:
+   - Present → cargo test
+
+5. Fallback: Ask user for test command
+```
+
+### Framework-Specific Templates
+
+| Framework | Test File Pattern | Run Command |
+|-----------|------------------|-------------|
+| Jest | `*.test.ts`, `*.spec.ts` | `npx jest` |
+| Vitest | `*.test.ts`, `*.spec.ts` | `npx vitest run` |
+| Pytest | `test_*.py`, `*_test.py` | `pytest` |
+| Go | `*_test.go` | `go test ./...` |
+
+---
+
 ## Polyglot Test Examples
 
 ### Logic Unit Test (Generic Pattern)

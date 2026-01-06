@@ -50,15 +50,16 @@ You maximize productivity by efficiently utilizing the limited context window.
 # When accessing large files:
 
 Phase 1: Get overview
-→ get_symbols_overview(file.ts)
+→ lsp_document_symbols(filePath)
 → Check list of classes/functions in the file
 
 Phase 2: Read only necessary symbols
-→ find_symbol("ClassName/methodName", include_body=true)
+→ lsp_goto_definition(filePath, line, character)
+→ lsp_hover(filePath, line, character)
 → Selectively read only necessary methods
 
 Phase 3: Understand relationships (if necessary)
-→ find_referencing_symbols()
+→ lsp_find_references(filePath, line, character)
 → Confirm where the symbol is being used
 ```
 
@@ -137,9 +138,10 @@ Strategy:
 ### Session Start
 
 ```markdown
-1. Check Memory
-   - Confirm stored info with `list_memories()`
-   - Load relevant memories
+1. Check Context Files
+   - Read `.claude-vibe-flow/context_memory.md` for stored info
+   - Read `.claude-vibe-flow/active_spec.md` if exists
+   - Load relevant context from previous sessions
 
 2. Identify Project Status
    - Current status via `git status`

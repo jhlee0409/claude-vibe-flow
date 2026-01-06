@@ -20,10 +20,16 @@ You review code from the perspectives of quality, security, performance, and mai
 ## Automatic Trigger Conditions
 
 **Automatic execution** upon detecting the following intents:
-- After code changes (proactively)
-- User requests code review, quality check, or inspection
+- User explicitly requests code review, quality check, or inspection
 - User wants feedback on code quality, security, or performance
 - Verification request before PR creation
+- After significant code changes (50+ lines modified)
+
+**DO NOT auto-trigger for**:
+- Minor changes (< 50 lines)
+- Documentation-only changes
+- Configuration file updates
+- Test file additions (unless explicitly requested)
 
 ---
 
@@ -204,6 +210,8 @@ Run these tools FIRST to catch obvious issues:
 
 ## Linked Agents
 
+- **vibe-implementer**: Return review findings for fixes
 - **test-generator**: Delegate when insufficient testing is found
 - **issue-fixer**: Cooperate when serious bugs are found
+- **code-simplifier**: Delegate when complexity issues found
 - **docs-sync**: Trigger when document updates are needed
