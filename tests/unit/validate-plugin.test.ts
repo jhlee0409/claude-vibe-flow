@@ -13,13 +13,14 @@ describe('Plugin Structure Validation', () => {
   });
 
   describe('Agents', () => {
-    it('should have agents directory with 9 agents', () => {
+    it('should have agents directory with 10 agents', () => {
       const agentsDir = path.join(claudeDir, 'agents');
       expect(fs.existsSync(agentsDir)).toBe(true);
 
       const agents = fs.readdirSync(agentsDir).filter((f) => f.endsWith('.md'));
-      expect(agents.length).toBe(9);
+      expect(agents.length).toBe(10);
       expect(agents.sort()).toEqual([
+        'cvf-applier.md',
         'cvf-architect.md',
         'cvf-debugger.md',
         'cvf-orchestrator.md',

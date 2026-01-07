@@ -9,7 +9,7 @@
 
 ## 주요 기능
 
-- **9개의 전문 에이전트**: cvf-orchestrator, cvf-planner, cvf-reviewer, cvf-debugger, cvf-architect, cvf-security, cvf-performance, cvf-researcher, cvf-ui-ux
+- **10개의 전문 에이전트**: cvf-orchestrator, cvf-planner, cvf-applier, cvf-reviewer, cvf-debugger, cvf-architect, cvf-security, cvf-performance, cvf-researcher, cvf-ui-ux
 - **5개의 필수 명령어**: /cvf:plan, /cvf:review, /cvf:ship, /cvf:check, /cvf:workflow
 - **커밋 전 검증**: 진단 + 테스트 + TODO 확인
 - **바이브 코딩 지원**: cvf-orchestrator로 자연어를 완성된 프로덕트로
@@ -80,6 +80,7 @@ your-project/
 │   ├── agents/
 │   │   ├── cvf-orchestrator.md # 마스터 코디네이터 (바이브 코딩)
 │   │   ├── cvf-planner.md     # 아이디어 → 구체적 스펙
+│   │   ├── cvf-applier.md     # 확정된 대안 적용
 │   │   ├── cvf-reviewer.md    # 코드 리뷰
 │   │   ├── cvf-debugger.md    # 버그 수정
 │   │   ├── cvf-architect.md   # 시스템 아키텍처
@@ -105,6 +106,7 @@ your-project/
 |-------|-------------|---------|
 | `cvf-orchestrator` | "만들어줘...", "앱 만들고 싶어...", "만들어야 해..." | 엔드투엔드 프로덕트 빌드 |
 | `cvf-planner` | "기획 도와줘...", "어떻게 접근해야..." | 아이디어를 스펙으로 |
+| `cvf-applier` | "이걸로 해줘", "이걸로 진행해", "B 옵션으로" | 확정된 대안 분석 후 적용 |
 | `cvf-reviewer` | "코드 리뷰해줘", "PR 확인해줘" | 코드 리뷰 |
 | `cvf-debugger` | "안 돼", "에러 발생" | 버그 수정 |
 | `cvf-architect` | "어떻게 구조를...", "설계해줘..." | 시스템 아키텍처 |

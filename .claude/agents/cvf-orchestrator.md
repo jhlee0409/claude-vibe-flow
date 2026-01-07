@@ -370,6 +370,7 @@ Should I proceed with this, or do you prefer the other option?
 | Agent | When Orchestrator Should Invoke |
 |-------|--------------------------------|
 | `cvf-planner` | Complex features needing structured spec |
+| `cvf-applier` | User confirms a proposed alternative |
 | `cvf-architect` | Multi-component systems, API design |
 | `cvf-security` | Auth, payments, user data, APIs |
 | `cvf-performance` | Scale concerns, real-time, large data |

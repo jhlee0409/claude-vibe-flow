@@ -36,13 +36,14 @@ describe('Agent Structure Validation', () => {
     });
   });
 
-  it('should have exactly 9 agents', () => {
-    expect(agentFiles.length).toBe(9);
+  it('should have exactly 10 agents', () => {
+    expect(agentFiles.length).toBe(10);
   });
 
   it('should have all cvf agents', () => {
     const agentNames = agentFiles.map((a) => a.fileName).sort();
     expect(agentNames).toEqual([
+      'cvf-applier',
       'cvf-architect',
       'cvf-debugger',
       'cvf-orchestrator',

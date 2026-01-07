@@ -9,7 +9,7 @@ A lightweight framework for [Claude Code](https://github.com/anthropics/claude-c
 
 ## Features
 
-- **9 Specialized Agents**: cvf-orchestrator, cvf-planner, cvf-reviewer, cvf-debugger, cvf-architect, cvf-security, cvf-performance, cvf-researcher, cvf-ui-ux
+- **10 Specialized Agents**: cvf-orchestrator, cvf-planner, cvf-applier, cvf-reviewer, cvf-debugger, cvf-architect, cvf-security, cvf-performance, cvf-researcher, cvf-ui-ux
 - **5 Essential Commands**: /cvf:plan, /cvf:review, /cvf:ship, /cvf:check, /cvf:workflow
 - **Pre-commit Verification**: Diagnostics + tests + TODOs checked before commit
 - **Vibe Coding Support**: Natural language to shipped product with cvf-orchestrator
@@ -80,6 +80,7 @@ your-project/
 │   ├── agents/
 │   │   ├── cvf-orchestrator.md # Master coordinator (vibe coding)
 │   │   ├── cvf-planner.md     # Idea → concrete spec
+│   │   ├── cvf-applier.md     # Apply confirmed alternatives
 │   │   ├── cvf-reviewer.md    # Code review
 │   │   ├── cvf-debugger.md    # Bug fixing
 │   │   ├── cvf-architect.md   # System architecture
@@ -105,6 +106,7 @@ your-project/
 |-------|-------------|---------|
 | `cvf-orchestrator` | "Build me...", "Make an app that...", "I want to create..." | End-to-end product building |
 | `cvf-planner` | "Help me plan...", "How should I approach..." | Turn ideas into specs |
+| `cvf-applier` | "이걸로 해줘", "Apply this", "Go with option B" | Apply confirmed alternatives with analysis |
 | `cvf-reviewer` | "Review my code", "Check this PR" | Code review |
 | `cvf-debugger` | "It's broken", "Getting an error" | Bug fixing |
 | `cvf-architect` | "How should I structure...", "Design this..." | System architecture |

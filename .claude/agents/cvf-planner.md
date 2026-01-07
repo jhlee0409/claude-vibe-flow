@@ -261,6 +261,7 @@ Shall I proceed with this workflow?
 | Agent | When to Invoke |
 |-------|----------------|
 | `cvf-orchestrator` | When user wants end-to-end product built (returns control) |
+| `cvf-applier` | When user confirms a proposed alternative |
 | `cvf-architect` | Multi-component systems, API design |
 | `cvf-security` | Auth, payments, user data, APIs |
 | `cvf-performance` | Scale concerns, real-time, large data |
