@@ -26,7 +26,7 @@ describe('CLI E2E Tests', () => {
         cwd: projectRoot,
       });
 
-      expect(result).toContain('9 agents');
+      expect(result).toContain('10 agents');
       expect(result).toContain('5 commands');
       expect(result).toContain('Pre-commit verification');
     });
