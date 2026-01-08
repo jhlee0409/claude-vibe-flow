@@ -3,6 +3,9 @@
 import { execSync } from "child_process";
 import path from "path";
 import fs from "fs";
+import readline from "readline";
+import { analyzeProject } from "./analyzer";
+import { generateClaudeMd, generateNewProjectClaudeMd } from "./generator";
 
 const REPO = "jhlee0409/claude-vibe-flow";
 const BRANCH = "main";
@@ -73,32 +76,6 @@ function handleError(error: unknown, tempDir?: string): never {
 
 type Command = "help" | "--help" | "-h" | "--version" | "-v" | undefined;
 
-function main(): void {
-  try {
-    checkNodeVersion();
-
-    console.log("🌊 Claude Vibe Flow\n");
-
-    const command = process.argv[2] as Command;
-
-    switch (command) {
-      case "help":
-      case "--help":
-      case "-h":
-        showHelp();
-        break;
-      case "--version":
-      case "-v":
-        showVersion();
-        break;
-      default:
-        runInstall();
-    }
-  } catch (error) {
-    handleError(error);
-  }
-}
-
 function checkNodeVersion(): void {
   const currentVersion = parseInt(process.versions.node.split(".")[0], 10);
 
@@ -133,6 +110,7 @@ Installs Claude Vibe Flow into your project:
   ├── scripts/    (test runner, framework detection)
   └── hooks.json  (SessionStart hook)
   .mcp.json       (MCP servers config)
+  CLAUDE.md       (Project context for Claude)
 
 Features:
   - 10 agents: orchestrator, planner, applier, reviewer, debugger,
@@ -140,6 +118,7 @@ Features:
   - 5 commands: /cvf:plan, /cvf:review, /cvf:ship, /cvf:check, /cvf:workflow
   - Pre-commit verification (diagnostics, tests, TODOs)
   - Vibe coding support (natural language to shipped product)
+  - Auto-generated CLAUDE.md based on codebase analysis
 
 Options:
   --help, -h      Show this help message
@@ -189,17 +168,81 @@ function checkDependencies(): void {
 function cleanupTempDir(tempDir: string): void {
   try {
     fs.rmSync(tempDir, { recursive: true, force: true });
-  } catch (_cleanupError) {
-    void _cleanupError;
+  } catch {
+    void 0;
   }
 }
 
-function runInstall(): void {
+function askQuestion(query: string): Promise<string> {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+
+  return new Promise((resolve) => {
+    rl.question(query, (answer) => {
+      rl.close();
+      resolve(answer.trim().toLowerCase());
+    });
+  });
+}
+
+async function askProjectType(): Promise<"existing" | "new"> {
+  console.log("📋 Project Setup\n");
+  console.log("   1. Existing project (analyze codebase)");
+  console.log("   2. New project (start fresh)\n");
+
+  const answer = await askQuestion("   Choose (1 or 2): ");
+
+  if (answer === "2" || answer === "new" || answer === "n") {
+    return "new";
+  }
+  return "existing";
+}
+
+function generateClaudeMdFile(cwd: string, projectType: "existing" | "new"): void {
+  const claudeMdPath = path.join(cwd, "CLAUDE.md");
+
+  if (fs.existsSync(claudeMdPath)) {
+    console.log("   ⚠️  CLAUDE.md (exists, skipped)");
+    return;
+  }
+
+  let content: string;
+
+  if (projectType === "existing") {
+    console.log("   🔍 Analyzing codebase...");
+    const projectInfo = analyzeProject(cwd);
+    content = generateClaudeMd(projectInfo);
+    console.log(`   ✅ CLAUDE.md (generated from ${projectInfo.techStack.language.join(", ")} project)`);
+  } else {
+    const projectName = path.basename(cwd);
+    content = generateNewProjectClaudeMd(projectName);
+    console.log("   ✅ CLAUDE.md (template for new project)");
+  }
+
+  try {
+    fs.writeFileSync(claudeMdPath, content, "utf-8");
+  } catch (error) {
+    throw createError(
+      ErrorCode.FILE_SYSTEM_ERROR,
+      "Failed to write CLAUDE.md",
+      `Check write permissions: ls -la ${cwd}`,
+      { path: claudeMdPath, error: String(error) }
+    );
+  }
+}
+
+async function runInstall(): Promise<void> {
   console.log("📦 Installing Claude Vibe Flow...\n");
 
   checkDependencies();
 
   const cwd = process.cwd();
+  const projectType = await askProjectType();
+
+  console.log("");
+
   const tempDir = `/tmp/claude-vibe-flow-${Date.now()}`;
 
   try {
@@ -268,18 +311,47 @@ function runInstall(): void {
     }
   }
 
+  generateClaudeMdFile(cwd, projectType);
+
   cleanupTempDir(tempDir);
 
   console.log(`
-✨ Done! (${installed} installed, ${skipped} skipped)
+✨ Done! (${installed + 1} installed, ${skipped} skipped)
 
 Next steps:
-  1. Run Claude Code:  claude
-  2. Start planning:   /plan "Your feature idea"
-  3. Ship when ready:  /ship
+  1. Review CLAUDE.md and customize for your project
+  2. Run Claude Code:  claude
+  3. Start planning:   /cvf:plan "Your feature idea"
+  4. Ship when ready:  /cvf:ship
 
 MCP servers (Context7, GitHub) will auto-start.
 `);
 }
 
-main();
+async function main(): Promise<void> {
+  try {
+    checkNodeVersion();
+
+    console.log("🌊 Claude Vibe Flow\n");
+
+    const command = process.argv[2] as Command;
+
+    switch (command) {
+      case "help":
+      case "--help":
+      case "-h":
+        showHelp();
+        break;
+      case "--version":
+      case "-v":
+        showVersion();
+        break;
+      default:
+        await runInstall();
+    }
+  } catch (error) {
+    handleError(error);
+  }
+}
+
+main().catch((error) => handleError(error));
