@@ -127,3 +127,63 @@ docs/               # Migration docs
 npm test                    # All tests
 npm run test:watch          # Watch mode
 ```
+
+---
+
+## 🚨 Implementation Protocol (MANDATORY DELEGATION)
+
+> **모든 코드 변경은 `cvf-applier` 에이전트를 통해 실행해야 한다.**
+
+### 강제 위임 규칙
+
+| 조건 | 행동 |
+|------|------|
+| 2+ 파일 변경 | **MUST** invoke `cvf-applier` |
+| 타입/인터페이스 변경 | **MUST** invoke `cvf-applier` |
+| API 수정 | **MUST** invoke `cvf-applier` |
+| 인증/보안 코드 | **MUST** invoke `cvf-applier` |
+| 데이터베이스/데이터 변경 | **MUST** invoke `cvf-applier` |
+| 사용자 확정 ("이걸로 해줘", "apply this") | **MUST** invoke `cvf-applier` |
+
+### 예외 (직접 처리 가능)
+
+**모든 조건을 충족해야 함:**
+- 단일 파일만 변경
+- 10줄 미만 변경
+- 타입/인터페이스 변경 없음
+- 테스트 파일 업데이트 불필요
+- 순수 코스메틱 (오타, 주석)
+
+**예외 시에도 `lsp_diagnostics` 검증 필수.**
+
+### 프로토콜 상세
+
+전체 구현 프로토콜은 `.claude/agents/cvf-applier.md` 참조:
+- Phase 0: Checkpoint (안전망)
+- Phase 1: Impact Analysis (영향 분석)
+- Phase 2: Risk Assessment (리스크 평가 & Go/No-Go)
+- Phase 3: Implementation Plan (구현 계획)
+- Phase 4: Incremental Implementation (증분 구현)
+- Phase 5: Verification Gates (검증 게이트)
+- Phase 6: Completion Report (완료 보고)
+
+### 핵심 규칙 요약
+
+```
+CHECKPOINT → ANALYZE → ASSESS → PLAN → IMPLEMENT → VERIFY
+```
+
+| 규칙 | 내용 |
+|------|------|
+| **Zero Assumptions** | 확인 안 되면 가정하지 말고 확인하라 |
+| **Incremental** | 한 번에 최대 3개 파일, 각 파일마다 검증 |
+| **No Type Suppression** | `as any`, `@ts-ignore`, `@ts-expect-error` 금지 |
+| **3-Strike Rollback** | 3회 연속 실패 시 체크포인트로 롤백 |
+| **Evidence Required** | 완료 보고 시 검증 결과 증거 필수 |
+
+### 위반 시
+
+프로토콜 위반 발견 시:
+1. 즉시 작업 중단
+2. 사용자에게 솔직히 알림
+3. `cvf-applier` 재호출로 정상 플로우 복귀

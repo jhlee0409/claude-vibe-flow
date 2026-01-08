@@ -202,7 +202,7 @@ describe('Agent Structure Validation', () => {
     });
 
     it('specialist agents should have MUST BE USED trigger in description', () => {
-      const specialistAgents = ['cvf-architect', 'cvf-security', 'cvf-performance', 'cvf-researcher', 'cvf-ui-ux'];
+      const specialistAgents = ['cvf-applier', 'cvf-architect', 'cvf-security', 'cvf-performance', 'cvf-researcher', 'cvf-ui-ux'];
       const errors: string[] = [];
 
       for (const agentName of specialistAgents) {
