@@ -180,7 +180,7 @@ CHECKPOINT → ANALYZE → ASSESS → PLAN → IMPLEMENT → VERIFY
 | **No Type Suppression** | `as any`, `@ts-ignore`, `@ts-expect-error` 금지 |
 | **3-Strike Rollback** | 3회 연속 실패 시 체크포인트로 롤백 |
 | **Evidence Required** | 완료 보고 시 검증 결과 증거 필수 |
-| **Use ASCII Flow Diagrams** | 프로세스·플로우·계획 설명 시 상자·선(│, ─, ┌┐└┘, ▼, ▲, ◀, ▶)을 활용한 텍스트 다이어그램으로 단계·계층을 명확히 표기 |
+| **Use ASCII Flow Diagrams** | 프로세스·플로우·계획 설명 시 Unicode 박스 드로잉(┌─┐, └─┘, │, ▼, ▲, ◀, ▶)만 사용하고(+- 금지), 상자 내부에는 직관적 이모지 라벨을 우선 배치하며, 단계·계층이 한눈에 보이도록 정렬·화살표 흐름을 유지하고 모바일에서도 읽히도록 폭을 과도하게 늘리지 말 것 |
 
 ### 위반 시
 
