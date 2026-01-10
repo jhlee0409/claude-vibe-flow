@@ -46,13 +46,20 @@ describe('Plugin Structure Validation', () => {
   });
 
   describe('Skills', () => {
-    it('should have skills directory with 1 skill', () => {
+    it('should have skills directory with required skills', () => {
       const skillsDir = path.join(claudeDir, 'skills');
       expect(fs.existsSync(skillsDir)).toBe(true);
 
-      const skills = fs.readdirSync(skillsDir);
-      expect(skills.length).toBe(1);
-      expect(skills.sort()).toEqual(['verify-before-commit']);
+      const skills = fs.readdirSync(skillsDir).sort();
+      expect(skills).toEqual([
+        'api-design',
+        'database-schema-designer',
+        'prompt-caching',
+        'rag-retrieval',
+        'security-scanning',
+        'test-automator',
+        'verify-before-commit',
+      ]);
     });
 
     it('verify-before-commit should have SKILL.md', () => {
