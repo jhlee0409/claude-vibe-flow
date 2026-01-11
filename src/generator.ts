@@ -1,14 +1,84 @@
 import type { ProjectInfo } from "./analyzer";
 
+// [NEW] Framework Core Rules (XML Structure for High Performance)
+export function generateCvfCoreMd(version: string): string {
+  return `<!-- .claude/CVF_CORE.md -->
+<!-- 
+  🌊 CLAUDE VIBE FLOW CORE RULES
+  Version: ${version}
+  This file is auto-generated. DO NOT EDIT. 
+  Your custom rules should go in CLAUDE.md.
+-->
+
+<system_role>
+You are an expert AI software engineer using the Claude Vibe Flow framework.
+Your goal is to deliver high-quality, production-ready code by orchestrating specialized agents.
+</system_role>
+
+<agent_routing_table>
+| User Intent | Trigger Keywords | Agent to Invoke |
+|-------------|------------------|-----------------|
+| Build Product | "build me", "create app", "make a..." | cvf-orchestrator |
+| Plan Feature | "plan", "how to", "design" | cvf-planner |
+| Fix Bug | "error", "fix", "broken", "debug" | cvf-debugger |
+| Apply Change | "apply this", "go ahead", "do it" | cvf-applier (MANDATORY for code changes) |
+| Review Code | "review", "check this" | cvf-reviewer |
+| Architecture | "structure", "pattern", "system design" | cvf-architect |
+| Security | "auth", "secure", "vulnerability" | cvf-security |
+| Performance | "slow", "optimize", "speed up" | cvf-performance |
+| UI/UX | "style", "design", "layout", "css" | cvf-ui-ux |
+| Research | "library", "docs", "best practice" | cvf-researcher |
+</agent_routing_table>
+
+<coding_standards>
+  <ui_text_rule>
+    MUST be in English. (Buttons, Toasts, Labels, Errors, Placeholders).
+    Korean is allowed ONLY in comments and documentation.
+  </ui_text_rule>
+  <type_safety>
+    NEVER use \`as any\`, \`@ts-ignore\`, or \`@ts-expect-error\`.
+    Fix the root cause or refactor.
+  </type_safety>
+  <verification>
+    ALWAYS run \`lsp_diagnostics\` on changed files.
+    Verify with tests if available.
+  </verification>
+  <security>
+    No hardcoded secrets. Use environment variables.
+    Validate inputs. Encode outputs.
+  </security>
+</coding_standards>
+
+<workflow_protocol>
+  <step name="Checkpoint">
+    Use /rewind (double ESC) or git stash before risky changes.
+  </step>
+  <step name="Implementation">
+    Use cvf-applier for all logic changes > 10 lines or involving multiple files.
+    Protocol: Checkpoint -> Analyze -> Assess -> Plan -> Implement -> Verify.
+  </step>
+  <step name="Verification">
+    1. lsp_diagnostics (Zero errors)
+    2. Typecheck / Lint
+    3. Tests (Pass)
+  </step>
+</workflow_protocol>
+
+<memory_management>
+  If \`.claude/LESSONS.md\` exists, read it to avoid repeating past mistakes.
+  Update it when you learn something new about this project.
+</memory_management>
+`;
+}
+
 export function generateClaudeMd(info: ProjectInfo): string {
   const sections = [
     generateHeader(info),
     generateTechStack(info),
     generateQuickReference(info),
     generateDirectoryStructure(info),
-    generateCodeConventions(info),
-    generateCommonPitfalls(),
-    generateImplementationProtocol(),
+    generateUserConventions(),
+    generateLinkToCore(),
   ];
 
   return sections.join("\n\n---\n\n");
@@ -17,9 +87,24 @@ export function generateClaudeMd(info: ProjectInfo): string {
 function generateHeader(info: ProjectInfo): string {
   return `# CLAUDE.md - ${info.name}
 
+> **Note**: This is your project context. Add your team's rules here.
+> Core framework rules are loaded from \`.claude/CVF_CORE.md\`.
+
 ## Project Overview
 
 ${info.description}`;
+}
+
+function generateLinkToCore(): string {
+  return `## 🌊 Framework Rules
+
+Core rules (Agents, Workflow, Standards) are defined in:
+- **[.claude/CVF_CORE.md](.claude/CVF_CORE.md)**
+
+To update the framework:
+\`\`\`bash
+npx claude-vibe-flow --upgrade
+\`\`\``;
 }
 
 function generateTechStack(info: ProjectInfo): string {
@@ -101,109 +186,19 @@ function generateDirectoryStructure(info: ProjectInfo): string {
   return lines.join("\n");
 }
 
-function generateCodeConventions(info: ProjectInfo): string {
-  const { techStack } = info;
-  const lines = ["## Code Conventions", ""];
+function generateUserConventions(): string {
+  return `## User Conventions
 
-  for (const lang of techStack.language) {
-    lines.push(`### ${lang}`, "");
-
-    switch (lang) {
-      case "TypeScript":
-        lines.push(
-          "- Strict mode enabled",
-          "- No `any` type - use proper types or `unknown`",
-          "- Prefer interfaces over type aliases for object shapes",
-          ""
-        );
-        break;
-      case "JavaScript":
-        lines.push(
-          "- Use modern ES6+ syntax",
-          "- Prefer const over let",
-          ""
-        );
-        break;
-      case "Python":
-        lines.push(
-          "- Type hints required for function signatures",
-          "- Follow PEP 8 style guide",
-          "- Use `uv` for package management (not pip directly)",
-          ""
-        );
-        break;
-      case "Go":
-        lines.push(
-          "- Follow Effective Go guidelines",
-          "- Always check errors explicitly",
-          "- Use context.Context for cancellation",
-          ""
-        );
-        break;
-      case "Rust":
-        lines.push(
-          "- Use Result<T, E> for error handling",
-          "- Prefer iterators over explicit loops",
-          "- Run `cargo clippy` before commit",
-          ""
-        );
-        break;
-      default:
-        lines.push("[TODO: Add conventions]", "");
-    }
-  }
-
-  return lines.join("\n").trim();
-}
-
-function generateCommonPitfalls(): string {
-  return `## Common Pitfalls
-
-| Area | Avoid | Instead |
-|------|-------|---------|
-| Type Safety | \`as any\`, \`@ts-ignore\` | Proper type definitions |
-| Error Handling | Empty catch blocks | Log or handle errors |
-| Async | Sequential awaits | \`Promise.all\` for parallel |
-| Testing | Testing implementation details | Test behavior/outcomes |
-
-[Add project-specific pitfalls as discovered]`;
-}
-
-function generateImplementationProtocol(): string {
-  return `## 🎯 Implementation Protocol
-
-### Before Making Changes
-
-1. **Analyze Impact**: Check affected files with \`grep\`/\`glob\`
-2. **Verify Tests Exist**: Identify related test files
-3. **Check Patterns**: Read similar code for conventions
-
-### During Implementation
-
-1. **Small Batches**: Max 3 files at a time
-2. **Verify Each Change**: Run \`lsp_diagnostics\` after each file
-3. **Test Frequently**: Run tests every 3 files
-
-### Before Completing
-
-\`\`\`
-□ lsp_diagnostics shows 0 errors
-□ All tests pass (npm test / pytest / go test)
-□ New code follows existing patterns
-□ No \`as any\` or \`@ts-ignore\` added
-\`\`\`
-
-### On Failure
-
-\`\`\`
-Error occurs → Stop immediately → Analyze root cause → Minimal fix → Re-verify
-                      ↓
-              Do NOT proceed to next task
-\`\`\``;
+[Add your team's specific coding conventions here]
+- e.g. "Use snake_case for database columns"
+- e.g. "Always write tests for utils"`;
 }
 
 export function generateNewProjectClaudeMd(projectName: string): string {
   return `# CLAUDE.md - ${projectName}
+
+> **Note**: This is your project context. Add your team's rules here.
+> Core framework rules are loaded from \`.claude/CVF_CORE.md\`.
 
 ## Project Overview
 
@@ -228,54 +223,8 @@ export function generateNewProjectClaudeMd(projectName: string): string {
 
 ---
 
-## Directory Structure
+## User Conventions
 
-\`\`\`
-[Will be populated as project grows]
-\`\`\`
-
----
-
-## Code Conventions
-
-[TODO: Define as patterns emerge]
-
----
-
-## Common Pitfalls
-
-| Area | Avoid | Instead |
-|------|-------|---------|
-| Type Safety | \`as any\`, \`@ts-ignore\` | Proper type definitions |
-| Error Handling | Empty catch blocks | Log or handle errors |
-
----
-
-## 🎯 Implementation Protocol
-
-### Before Making Changes
-
-1. **Analyze Impact**: Check affected files with \`grep\`/\`glob\`
-2. **Verify Tests Exist**: Identify related test files
-3. **Check Patterns**: Read similar code for conventions
-
-### During Implementation
-
-1. **Small Batches**: Max 3 files at a time
-2. **Verify Each Change**: Run \`lsp_diagnostics\` after each file
-3. **Test Frequently**: Run tests every 3 files
-
-### Before Completing
-
-\`\`\`
-□ lsp_diagnostics shows 0 errors
-□ All tests pass
-□ New code follows existing patterns
-\`\`\`
-
-### On Failure
-
-\`\`\`
-Error occurs → Stop immediately → Analyze root cause → Minimal fix → Re-verify
-\`\`\``;
+[Add your team's specific coding conventions here]
+`;
 }
