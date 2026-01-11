@@ -2,7 +2,7 @@
 
 **한국어** | [English](README.md)
 
-전문 에이전트와 명령어로 개발 워크플로우를 간소화하는 [Claude Code](https://github.com/anthropics/claude-code) 경량 프레임워크.
+전문 에이전트, 명령어, 스킬로 개발 워크플로우를 간소화하는 [Claude Code](https://github.com/anthropics/claude-code) 경량 프레임워크.
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![npm version](https://img.shields.io/npm/v/claude-vibe-flow)](https://www.npmjs.com/package/claude-vibe-flow)
@@ -11,8 +11,10 @@
 
 - **10개의 전문 에이전트**: cvf-orchestrator, cvf-planner, cvf-applier, cvf-reviewer, cvf-debugger, cvf-architect, cvf-security, cvf-performance, cvf-researcher, cvf-ui-ux
 - **5개의 필수 명령어**: /cvf:plan, /cvf:review, /cvf:ship, /cvf:check, /cvf:workflow
+- **7개의 티어드 스킬**: 프로그레시브 로딩 스킬 (Discovery→Overview→Specific→Generate) - api-design, database-schema-designer, test-automator, security-scanning, prompt-caching, rag-retrieval, verify-before-commit
 - **커밋 전 검증**: 진단 + 테스트 + TODO 확인
 - **바이브 코딩 지원**: cvf-orchestrator로 자연어를 완성된 프로덕트로
+- **안전망**: 브랜치 가드, 사전 커밋 게이트, TODO 스톱, 체크포인트 시스템
 
 ## 설치
 
@@ -66,9 +68,14 @@ claude
 
 ### 멀티스텝 워크플로우
 ```bash
-/cvf:workflow feature "사용자 인증"   # 표준 기능 워크플로우
-/cvf:workflow secure "결제 플로우"    # 보안 중심 워크플로우
-/cvf:workflow audit                   # 릴리스 전 감사
+/cvf:workflow starter-webapp "React TS 웹앵앱 부트스트랩"   # 전체 웹앱 워크플로우
+/cvf:workflow feature "사용자 프로필 페이지 추가"          # 기능 개발
+/cvf:workflow secure "결제 플로우 처리"                  # 보안 중심
+/cvf:workflow perf "느린 쿼리 최적화"                    # 성능 튜닝
+/cvf:workflow ui "설정 페이지 리디자인"                   # UI/UX 작업
+/cvf:workflow research "인증 라이브러리 비교"            # 외부 리서치
+/cvf:workflow audit                                     # 릴리스 전 감사
+/cvf:workflow debug "로그인 버그 수정"                   # 버그 수정
 ```
 복잡한 작업을 위해 여러 에이전트를 조율합니다.
 
@@ -77,26 +84,49 @@ claude
 ```
 your-project/
 ├── .claude/
-│   ├── agents/
-│   │   ├── cvf-orchestrator.md # 마스터 코디네이터 (바이브 코딩)
-│   │   ├── cvf-planner.md     # 아이디어 → 구체적 스펙
-│   │   ├── cvf-applier.md     # 확정된 대안 적용
-│   │   ├── cvf-reviewer.md    # 코드 리뷰
-│   │   ├── cvf-debugger.md    # 버그 수정
-│   │   ├── cvf-architect.md   # 시스템 아키텍처
-│   │   ├── cvf-security.md    # 보안 분석
-│   │   ├── cvf-performance.md # 성능 최적화
-│   │   ├── cvf-researcher.md  # 외부 리서치
-│   │   └── cvf-ui-ux.md       # UI/UX 디자인
-│   ├── commands/
-│   │   ├── cvf:plan.md, cvf:review.md, cvf:ship.md, cvf:check.md, cvf:workflow.md
-│   ├── skills/
-│   │   └── verify-before-commit/SKILL.md
-│   ├── scripts/
-│   │   ├── detect-test-framework.sh
-│   │   ├── load-context.sh
-│   │   └── run-tests.sh
-│   └── hooks.json              # SessionStart 훅
+│   ├── agents/                  # 10개의 전문 에이전트
+│   │   ├── cvf-orchestrator.md  # 마스터 코디네이터 (바이브 코딩)
+│   │   ├── cvf-planner.md       # 아이디어 → 구체적 스펙
+│   │   ├── cvf-applier.md       # 확정된 대안 적용
+│   │   ├── cvf-reviewer.md      # 코드 리뷰
+│   │   ├── cvf-debugger.md      # 버그 수정
+│   │   ├── cvf-architect.md     # 시스템 아키텍처
+│   │   ├── cvf-security.md      # 보안 분석
+│   │   ├── cvf-performance.md   # 성능 최적화
+│   │   ├── cvf-researcher.md    # 외부 리서치
+│   │   └── cvf-ui-ux.md         # UI/UX 디자인
+│   ├── commands/                # 5개 슬래시 명령어
+│   │   ├── cvf:plan.md          # 새 기능 기획
+│   │   ├── cvf:review.md        # 코드 리뷰 요청
+│   │   ├── cvf:ship.md          # 커밋 + 푸시 + PR
+│   │   ├── cvf:check.md         # 검증 상태 표시
+│   │   └── cvf:workflow.md      # 멀티 에이전트 워크플로우 실행
+│   ├── skills/                  # 7개의 티어드 스킬 (프로그레시브 로딩)
+│   │   ├── api-design/          # API 설계 패턴
+│   │   ├── database-schema-designer/  # 데이터베이스 설계
+│   │   ├── test-automator/      # 테스트 자동화
+│   │   ├── security-scanning/   # 보안 분석
+│   │   ├── prompt-caching/      # 프롬프트 최적화
+│   │   ├── rag-retrieval/       # RAG 구현
+│   │   └── verify-before-commit/    # 커밋 전 검증
+│   ├── scripts/                 # 안전망 스크립트
+│   │   ├── branch-guard.sh      # 메인 브랜치 보호
+│   │   ├── pre-commit-gate.sh   # 커밋 전 검증
+│   │   ├── todo-stop.sh         # 열린 TODO가 있으면 커밋 차단
+│   │   ├── load-context.sh      # 세션 컨텍스트 로드
+│   │   └── run-tests.sh         # 테스트 실행
+│   └── hooks.json               # SessionStart 훅
+├── .github/
+│   ├── ISSUE_TEMPLATE/          # 이슈 템플릿
+│   └── workflows/
+│       └── ci.yml               # CI/CD 워크플로우
+├── docs/                        # 프로젝트 문서
+│   ├── active-spec-protocol.md  # 스펙 관리 규칙
+│   ├── architecture-critical-analysis.md  # 아키텍처 결정
+│   ├── migration-plan-v2.md    # 마이그레이션 가이드
+│   └── v2-critical-review.md   # v2 리뷰 요약
+├── CLAUDE.md                    # 프레임워크 지침 (한국어)
+├── CONTRIBUTING.md             # 기여 가이드라인
 └── .mcp.json                   # MCP 서버 설정
 ```
 
@@ -125,6 +155,45 @@ your-project/
 | `/cvf:check` | 검증 상태 표시 |
 | `/cvf:workflow` | 멀티 에이전트 워크플로우 실행 |
 
+## 스킬 (프로그레시브 로딩)
+
+스킬은 토큰 절약을 위해 프로그레시브 로딩을 사용합니다 - 필요할 때만 상세 레퍼런스를 로드합니다.
+
+| 스킬 | 목적 | 트리거 |
+|-------|---------|---------|
+| `api-design` | REST/GraphQL API 설계 패턴 | API 엔드포인트 생성 |
+| `database-schema-designer` | 데이터베이스 모델링 및 관계 | 데이터베이스 설계 |
+| `test-automator` | 자동화 테스트 생성 | 테스트 워크플로우 |
+| `security-scanning` | 보안 취약점 분석 | 보안 우려 |
+| `prompt-caching` | 프롬프트 최적화 기법 | 성능 튜닝 |
+| `rag-retrieval` | RAG 구현 패턴 | AI/검색 기능 |
+| `verify-before-commit` | 커밋 전 검증 게이트 | 커밋/푸시/PR 작업 |
+
+각 스킬은 4개의 티어를 가집니다:
+- **Discovery**: 사용 조건 및 트리거
+- **Overview**: 핵심 워크플로우 및 체크리스트
+- **Specific**: 상세 가이드 (요청 시 로드)
+- **Generate**: 스크립트 및 템플릿 (요청 시 로드)
+
+## 안전망
+
+### 브랜치 가드
+- `main` 브랜치를 직접 커밋으로부터 보호
+- `feature/*` 또는 `checkpoint/*` 브랜치 사용 제안
+
+### 사전 커밋 게이트
+- 커밋 전 `typecheck → test → lint` 실행
+- 게이트 실패 시 커밋 차단
+- `ALLOW_UNSAFE=1` 사용으로 우회 가능 (권장하지 않음)
+
+### TODO 스톱
+- 열린 TODO가 있으면 커밋 차단
+- 배포 전 작업 완료 보장
+
+### 체크포인트 시스템
+- `/rewind` (ESC ESC) 또는 `git stash`로 체크포인트 생성
+- 실험이 잘못될 경우 안전한 롤백
+
 ## 테스트 실행 (선택)
 
 필요할 때 수동으로 테스트를 실행할 수 있습니다:
@@ -147,6 +216,22 @@ bash .claude/scripts/run-tests.sh
 `.mcp.json`에 사전 구성됨:
 - **Context7**: 문서 조회
 - **GitHub**: 이슈 및 PR (`GITHUB_TOKEN` 필요)
+
+## 개발
+
+```bash
+# 의존성 설치
+npm install
+
+# TypeScript 빌드
+npm run build
+
+# 테스트 실행
+npm test
+
+# 타입 체크
+npm run typecheck
+```
 
 ## 기여하기
 

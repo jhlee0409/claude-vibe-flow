@@ -2,7 +2,7 @@
 
 [한국어](README.ko.md) | **English**
 
-A lightweight framework for [Claude Code](https://github.com/anthropics/claude-code) that streamlines development workflows with specialized agents and commands.
+A lightweight framework for [Claude Code](https://github.com/anthropics/claude-code) that streamlines development workflows with specialized agents, commands, and skills.
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![npm version](https://img.shields.io/npm/v/claude-vibe-flow)](https://www.npmjs.com/package/claude-vibe-flow)
@@ -11,8 +11,10 @@ A lightweight framework for [Claude Code](https://github.com/anthropics/claude-c
 
 - **10 Specialized Agents**: cvf-orchestrator, cvf-planner, cvf-applier, cvf-reviewer, cvf-debugger, cvf-architect, cvf-security, cvf-performance, cvf-researcher, cvf-ui-ux
 - **5 Essential Commands**: /cvf:plan, /cvf:review, /cvf:ship, /cvf:check, /cvf:workflow
+- **7 Tiered Skills**: Progressive loading skills (Discovery→Overview→Specific→Generate) for api-design, database-schema-designer, test-automator, security-scanning, prompt-caching, rag-retrieval, verify-before-commit
 - **Pre-commit Verification**: Diagnostics + tests + TODOs checked before commit
 - **Vibe Coding Support**: Natural language to shipped product with cvf-orchestrator
+- **Safety Nets**: Branch guard, pre-commit gate, TODO stop, checkpoint system
 
 ## Installation
 
@@ -66,9 +68,14 @@ Turns vague ideas into concrete specs with MVP scope.
 
 ### Multi-Step Workflow
 ```bash
-/cvf:workflow feature "Add user auth"   # Standard feature workflow
-/cvf:workflow secure "Payment flow"     # Security-focused workflow
-/cvf:workflow audit                     # Pre-release audit
+/cvf:workflow starter-webapp "Bootstrap React TS webapp"    # Full webapp workflow
+/cvf:workflow feature "Add user profile page"             # Feature development
+/cvf:workflow secure "Handle payment flow"                 # Security-focused
+/cvf:workflow perf "Optimize slow queries"                  # Performance tuning
+/cvf:workflow ui "Redesign settings page"                 # UI/UX work
+/cvf:workflow research "Compare auth libraries"            # External research
+/cvf:workflow audit                                       # Pre-release audit
+/cvf:workflow debug "Fix login bug"                       # Bug fixing
 ```
 Coordinates multiple agents for complex tasks.
 
@@ -77,26 +84,49 @@ Coordinates multiple agents for complex tasks.
 ```
 your-project/
 ├── .claude/
-│   ├── agents/
-│   │   ├── cvf-orchestrator.md # Master coordinator (vibe coding)
-│   │   ├── cvf-planner.md     # Idea → concrete spec
-│   │   ├── cvf-applier.md     # Apply confirmed alternatives
-│   │   ├── cvf-reviewer.md    # Code review
-│   │   ├── cvf-debugger.md    # Bug fixing
-│   │   ├── cvf-architect.md   # System architecture
-│   │   ├── cvf-security.md    # Security analysis
-│   │   ├── cvf-performance.md # Performance optimization
-│   │   ├── cvf-researcher.md  # External research
-│   │   └── cvf-ui-ux.md       # UI/UX design
-│   ├── commands/
-│   │   ├── cvf:plan.md, cvf:review.md, cvf:ship.md, cvf:check.md, cvf:workflow.md
-│   ├── skills/
-│   │   └── verify-before-commit/SKILL.md
-│   ├── scripts/
-│   │   ├── detect-test-framework.sh
-│   │   ├── load-context.sh
-│   │   └── run-tests.sh
-│   └── hooks.json              # SessionStart hook
+│   ├── agents/                  # 10 specialized agents
+│   │   ├── cvf-orchestrator.md  # Master coordinator (vibe coding)
+│   │   ├── cvf-planner.md       # Idea → concrete spec
+│   │   ├── cvf-applier.md       # Apply confirmed alternatives
+│   │   ├── cvf-reviewer.md      # Code review
+│   │   ├── cvf-debugger.md      # Bug fixing
+│   │   ├── cvf-architect.md     # System architecture
+│   │   ├── cvf-security.md      # Security analysis
+│   │   ├── cvf-performance.md   # Performance optimization
+│   │   ├── cvf-researcher.md    # External research
+│   │   └── cvf-ui-ux.md         # UI/UX design
+│   ├── commands/                # 5 slash commands
+│   │   ├── cvf:plan.md          # Plan new features
+│   │   ├── cvf:review.md        # Request code review
+│   │   ├── cvf:ship.md          # Commit + push + PR
+│   │   ├── cvf:check.md         # Show verification status
+│   │   └── cvf:workflow.md      # Execute multi-agent workflows
+│   ├── skills/                  # 7 tiered skills (progressive loading)
+│   │   ├── api-design/          # API design patterns
+│   │   ├── database-schema-designer/  # Database design
+│   │   ├── test-automator/      # Test automation
+│   │   ├── security-scanning/   # Security analysis
+│   │   ├── prompt-caching/      # Prompt optimization
+│   │   ├── rag-retrieval/       # RAG implementation
+│   │   └── verify-before-commit/    # Pre-commit verification
+│   ├── scripts/                 # Safety net scripts
+│   │   ├── branch-guard.sh      # Protect main branch
+│   │   ├── pre-commit-gate.sh   # Verify before commit
+│   │   ├── todo-stop.sh         # Block commits with open TODOs
+│   │   ├── load-context.sh      # Load session context
+│   │   └── run-tests.sh         # Run tests
+│   └── hooks.json               # SessionStart hook
+├── .github/
+│   ├── ISSUE_TEMPLATE/          # Issue templates
+│   └── workflows/
+│       └── ci.yml               # CI/CD workflow
+├── docs/                        # Project documentation
+│   ├── active-spec-protocol.md  # Spec management rules
+│   ├── architecture-critical-analysis.md  # Architecture decisions
+│   ├── migration-plan-v2.md    # Migration guide
+│   └── v2-critical-review.md   # v2 review summary
+├── CLAUDE.md                    # Framework instructions (Korean)
+├── CONTRIBUTING.md             # Contribution guidelines
 └── .mcp.json                   # MCP servers config
 ```
 
@@ -125,6 +155,45 @@ your-project/
 | `/cvf:check` | Show verification status |
 | `/cvf:workflow` | Execute multi-agent workflow |
 
+## Skills (Progressive Loading)
+
+Skills use progressive loading to save tokens - only load detailed references when needed.
+
+| Skill | Purpose | Trigger |
+|-------|---------|---------|
+| `api-design` | REST/GraphQL API design patterns | API endpoint creation |
+| `database-schema-designer` | Database modeling and relationships | Database design |
+| `test-automator` | Automated test generation | Testing workflows |
+| `security-scanning` | Security vulnerability analysis | Security concerns |
+| `prompt-caching` | Prompt optimization techniques | Performance tuning |
+| `rag-retrieval` | RAG implementation patterns | AI/Search features |
+| `verify-before-commit` | Pre-commit verification gates | Commit/push/PR operations |
+
+Each skill has 4 tiers:
+- **Discovery**: Usage conditions and triggers
+- **Overview**: Core workflow and checklists
+- **Specific**: Detailed guides (loaded on demand)
+- **Generate**: Scripts and templates (loaded on demand)
+
+## Safety Nets
+
+### Branch Guard
+- Protects `main` branch from direct commits
+- Suggests `feature/*` or `checkpoint/*` branches
+
+### Pre-commit Gate
+- Runs `typecheck → test → lint` before commit
+- Fails if any gate fails
+- Use `ALLOW_UNSAFE=1` to bypass (not recommended)
+
+### TODO Stop
+- Blocks commits if open TODOs exist
+- Ensures tasks are completed before shipping
+
+### Checkpoint System
+- Use `/rewind` (ESC ESC) or `git stash` to create checkpoints
+- Safe rollback when experiments go wrong
+
 ## Running Tests (Optional)
 
 Tests can be run manually when needed:
@@ -147,6 +216,22 @@ Custom: Create `.claude-vibe-flow/test-command.txt` with your test command.
 Pre-configured in `.mcp.json`:
 - **Context7**: Documentation lookup
 - **GitHub**: Issues and PRs (requires `GITHUB_TOKEN`)
+
+## Development
+
+```bash
+# Install dependencies
+npm install
+
+# Build TypeScript
+npm run build
+
+# Run tests
+npm test
+
+# Type check
+npm run typecheck
+```
 
 ## Contributing
 
