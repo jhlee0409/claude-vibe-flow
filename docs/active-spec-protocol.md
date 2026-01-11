@@ -6,6 +6,24 @@ This document defines the rules for managing `.claude-vibe-flow/active_spec.md` 
 
 The `active_spec.md` file serves as a shared blackboard for task coordination. Each agent has specific ownership and access rules.
 
+## Version & Metadata
+- **Spec Version**: 1.1.0
+- **Last Reviewed**: 2026-01-10
+- **Maintainer**: cvf-planner (spec), cvf-architect (design), cvf-applier (implementation), cvf-reviewer (approval)
+- **Hook Integration**: Stop hook enforces completion + diagnostics; SessionStart loads context
+
+## Policies & Hooks
+- **Branch Guard**: work on feature/checkpoint branches; main is protected
+- **Pre-flight**: before editing, run `/cvf:check` (verify diagnostics + TODOs)
+- **Checkpoint**: use `/rewind` (double ESC) or git stash/branch before risky edits
+- **UI Text**: All user-facing strings must be English; comments/docs may be Korean
+
+## Maintenance Commands (Info/Verify/Update)
+- `/cvf:check` — verify active spec state, diagnostics, TODOs before edits
+- `/cvf:plan "<task>"` — gather/refresh goal & requirements (Info)
+- `/cvf:workflow audit` — run audit workflow to refresh design/implementation notes (Update)
+- `/cvf:ship` — verify → commit → push → PR (uses verify-before-commit skill)
+
 ## File Structure
 
 ```markdown
@@ -134,6 +152,7 @@ Before modifying `active_spec.md`, verify:
 - [ ] I own this section
 - [ ] I read the current content first
 - [ ] My preconditions are met (previous sections exist)
+- [ ] I ran `/cvf:check` or diagnostics on related files
 - [ ] I will update the timestamp
 - [ ] I will NOT modify other agents' sections
 
@@ -152,3 +171,13 @@ The Stop hook validates:
 1. If `todowrite` was used, all items must be complete
 2. If code was modified, `lsp_diagnostics` must be clean
 3. If `active_spec.md` exists and was modified, all agent rules must be followed
+
+### Automation & Guardrails
+- Branch guard: `.claude/scripts/branch-guard.sh` (예: main 보호, feature/* 권장)
+- Pre-commit gate: `.claude/scripts/pre-commit-gate.sh` → `typecheck → test → lint` 순 실행, 실패 시 차단. `ALLOW_UNSAFE=1` 사용 시 결과 보고 필수
+- TODO stop: `.claude/scripts/todo-stop.sh` – 열려있는 TODO 있으면 중단
+- Prompt keywords: "build", "apply this", "optimize", "auth" 등은 관련 에이전트 자동 제안
+- Version metadata: `~/.claude/.cvf-version.json`에 최근 버전/검사 시점 기록
+- Update policy: 24h 자동 점검 권고, 수동 `/cvf:check` 또는 `/cvf:workflow audit`
+- cvf info/verify/update: `/cvf:check`(상태), `/cvf:workflow audit`(사전 점검), `/cvf:ship` 전 `verify-before-commit` 스킬로 게이트 확인
+- Checkpoint: `/rewind`(ESC ESC) 또는 `git stash push -u -m "checkpoint: ..."` 후 진행

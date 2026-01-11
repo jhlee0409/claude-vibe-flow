@@ -1,189 +1,143 @@
 # CLAUDE.md - claude-vibe-flow
 
-## Project Overview
+> 모든 설명/주석/문서는 **한글**, UI 텍스트는 **영어**로 유지합니다.
 
-A lightweight framework for Claude Code that streamlines development workflows with specialized agents and commands.
+## 1) Project Overview
+- Claude Code용 경량 프레임워크: 에이전트·커맨드·스킬로 아이디어→아키텍처→구현→검증 자동화
+- **Version**: 1.0.0 · **Node.js**: >= 20 · **Repo**: https://github.com/jhlee0409/claude-vibe-flow
+- 주요 자산: 10 에이전트, 5 명령어, 다계층 스킬(프로그레시브 로딩), 훅/스크립트 기반 안전망
 
-**Version**: 1.0.0  
-**Node.js**: >= 20.0.0  
-**Repository**: https://github.com/jhlee0409/claude-vibe-flow
-
-## Quick Reference
-
+## 2) Quick Reference (필수 커맨드)
 ```bash
-# Installation
-npx claude-vibe-flow
-
-# Development
-npm run build        # Compile TypeScript
-npm test            # Run tests
-npm run typecheck   # Type check
+npm run build        # Build TypeScript
+npm run typecheck    # tsconfig 기반 타입 체크
+npm test             # Vitest 단위/통합 테스트
+npm run lint         # ESLint (있다면 실행)
 ```
+- 설치: `npx claude-vibe-flow`
+- 테스트 스크립트: `bash .claude/scripts/run-tests.sh`
 
-## Architecture
-
+## 3) Directory Map (요약)
 ```
 .claude/
-├── agents/                       # 10 specialized agents
-│   ├── cvf-orchestrator.md      # Master coordinator (vibe coding)
-│   ├── cvf-planner.md           # Idea → spec
-│   ├── cvf-applier.md           # Apply confirmed alternatives
-│   ├── cvf-reviewer.md          # Code review
-│   ├── cvf-debugger.md          # Bug fixing
-│   ├── cvf-architect.md         # System architecture
-│   ├── cvf-security.md          # Security analysis
-│   ├── cvf-performance.md       # Performance optimization
-│   ├── cvf-researcher.md        # External research
-│   └── cvf-ui-ux.md             # UI/UX design
-├── skills/                       # Model-invoked
-│   └── verify-before-commit/SKILL.md
-├── commands/                     # User-invoked
-│   ├── cvf:plan.md, cvf:review.md, cvf:ship.md, cvf:check.md, cvf:workflow.md
-├── scripts/                      # Utility scripts
-│   ├── detect-test-framework.sh
-│   ├── load-context.sh
-│   └── run-tests.sh             # Optional test runner
-└── hooks.json                    # SessionStart hook
+  agents/      # 10 specialized agents
+  commands/    # /cvf:* 명령어 정의
+  skills/      # tiered skills (Discovery→Overview→Specific→Generate)
+  scripts/     # detect-test-framework.sh, load-context.sh, run-tests.sh
+  hooks.json   # SessionStart 등 훅 설정
+src/            # cli.ts 등
+tests/unit/     # Vitest 테스트
+docs/           # 프로토콜/마이그레이션 문서
 ```
+- 추가 문서: docs/active-spec-protocol.md, architecture-critical-analysis.md, migration-plan-v2.md, v2-critical-review.md
 
-## Core Concept
+## 4) Agents & Skills (Progressive Loading)
+- 에이전트: cvf-orchestrator, cvf-planner, cvf-applier, cvf-reviewer, cvf-debugger, cvf-architect, cvf-security, cvf-performance, cvf-researcher, cvf-ui-ux
+- 명령어: /cvf:plan, /cvf:review, /cvf:ship, /cvf:check, /cvf:workflow
+- 스킬(티어): Discovery→Overview→Specific→Generate
+  - api-design, database-schema-designer, test-automator, security-scanning, prompt-caching, rag-retrieval, verify-before-commit
+- 프로그레시브 로딩 원칙: 필요 시점에만 상세 문서/레퍼런스/스크립트 로드하여 토큰 절약
 
-```
-Claude implements → Agents assist → Commands orchestrate
-```
+## 5) Golden Rules
+- UI 텍스트는 항상 **영어** (버튼/라벨/에러/토스트/placeholder). 주석·문서는 한글 허용
+- 타입 억제 금지: `as any`, `@ts-ignore`, `@ts-expect-error` 사용 불가
+- cvf-applier 트리거: 2+ 파일, 타입/인터페이스, API, 보안/데이터, 사용자 확정 문구("이걸로 해줘", "apply this" 등)
+- 프런트엔드 시각/레이아웃 변경은 `cvf-ui-ux` 에이전트로 위임 (접근성/영문 UI 확인)
+- 체크포인트 후 작업: `/rewind`(ESC ESC) 또는 `git stash push -u -m "checkpoint: ..."`
 
-- **Claude**: Does the implementation (native capability)
-- **Agents**: Specialized assistants for specific domains
-- **Commands**: User-invoked workflows
+## 6) Workflow Patterns
+- **Starter Webapp**: planner → researcher → ui-ux → architect → implement → reviewer
+  - Scaffold → UI/접근성 → 아키텍처 결정 → 구현 → 리뷰, 전 단계 UI 영어 확인
+- **Bugfix**: debugger → (security/performance 필요 시) → reviewer, 재현 로그 우선, 최소 변경
+- **Secure**: planner → security → architect → implement → security → reviewer
+  - 입력 검증, 비밀 외부화, least privilege, 출력 인코딩, audit 체크
+- 워크플로 실행: `/cvf:workflow <type> "desc"` (starter-webapp/feature/secure/perf/ui/research/audit/debug)
 
-## Hooks
+## 7) Testing & Verification
+- 변경 파일마다 `lsp_diagnostics` 실행 (문서형 파일도 시도 후 결과 기록)
+- 표준 게이트: `npm run typecheck` → `npm test` → `npm run lint` → `npm run build`(필요 시)
+- verify-before-commit 스킬: ship/commit/push/PR 전 게이트 자동 확인
+- 테스트 없는 경우: 테스트 전략/커버리지 계획을 노트에 남김
 
-| Hook | Trigger | Behavior |
-|------|---------|----------|
-| `SessionStart` | Session begins | Load context from `.claude-vibe-flow/` |
+## 8) Hooks & Safety Nets
+- Branch Guard: main 보호, feature/* 또는 checkpoint/* 권장 (`.claude/scripts/branch-guard.sh`)
+- Pre-commit Gate: `.claude/scripts/pre-commit-gate.sh` → `typecheck → test → lint`, 실패 시 차단. `ALLOW_UNSAFE=1` 사용 시 결과 보고 필수
+- TODO Stop: `.claude/scripts/todo-stop.sh` – 열려있는 TODO 있으면 중단
+- SessionStart: `.claude/scripts/load-context.sh` 로 컨텍스트 로드
+- Prompt Keywords: "build", "apply this", "optimize", "auth" 등 시 관련 에이전트 자동 제안
+- Checkpoint: `/rewind`(ESC ESC) 또는 stash/branch로 안전망 확보 후 진행
 
-## Skills
+## 9) Update Policy
+- 자동 권고: 24h마다 버전/훅/스킬 변경사항 점검
+- 수동 점검: `/cvf:check` 또는 `/cvf:workflow audit`
+- 버전 메타: `~/.claude/.cvf-version.json`에 최근 검사 시점/버전 기록
+- 갱신 흐름: /cvf:check → 필요 시 /cvf:plan 또는 /cvf:workflow audit → 변경 적용 → verify-before-commit 후 ship
 
-Skills are auto-invoked by Claude based on context.
+## 10) Security & Secrets
+- 비밀/토큰/자격증명은 코드/로그에 금지, env/secret manager 사용
+- 입력 검증 + 출력 인코딩 필수, SQL은 파라미터 바인딩, XSS 방지
+- 최소 권한(least privilege)·역할 기반 접근, 민감 로그 최소화
+- 보안 터치 시 `cvf-security`로 이중 점검, `npm audit`/SAST 권장
 
-### verify-before-commit
-- Triggers before: "commit", "push", "ship", "PR"
-- Checks: diagnostics, tests, TODOs, formatting
+## 11) UI Text Guidelines (영어 전용)
+- Buttons: "Confirm", "Cancel", "Save", "Delete"
+- Toasts: "Changes saved successfully", "An error occurred"
+- Placeholders: "Enter email", "Enter password"
+- Errors: "This field is required", "Please try again"
+- 주석/문서 예시: 한글 가능. UI 문자열은 항상 영어 유지
 
-## Agents
+## 12) Commit / PR Discipline
+- 커밋 전: `lsp_diagnostics` + typecheck + test + lint 모두 통과
+- 금지: force push main, 타입 억제, 큰 배치(>3파일/50라인) 변경
+- PR: 요약, 위험, 검증 결과, 스크린샷(필요 시) 포함; UI 영어 여부 확인
+- verify-before-commit 스킬로 게이트 확인 후 `/cvf:ship` 사용
 
-| Agent | Use When |
-|-------|----------|
-| `cvf-orchestrator` | User wants to build a product ("build me...", "make an app...") |
-| `cvf-planner` | Vague idea needs structure |
-| `cvf-applier` | User confirms alternative ("이걸로 해줘", "apply this", "go with option B") |
-| `cvf-reviewer` | Explicit code review request |
-| `cvf-debugger` | Bug reports, errors |
-| `cvf-architect` | Architecture decisions, system design |
-| `cvf-security` | Security concerns, auth, vulnerabilities |
-| `cvf-performance` | Performance issues, optimization |
-| `cvf-researcher` | Library selection, best practices lookup |
-| `cvf-ui-ux` | UI design, styling, accessibility |
+## 13) Anchor Comments (권장)
+- 목적/이유/엣지케이스를 간결히 한글로 남김
+- UI 텍스트는 영어로 유지, 주석은 한글 가능
+- 예시: `// 에러 처리: 재시도 3회 후 fallback 응답 반환`
 
-## Commands
+## 14) Additional Docs (@docs 참조)
+- `docs/active-spec-protocol.md`: active_spec 관리 규칙 및 훅 연계
+- `docs/architecture-critical-analysis.md`: 아키텍처 판단 기준
+- `docs/migration-plan-v2.md`: v2 마이그레이션 계획
+- `docs/v2-critical-review.md`: v2 리뷰 및 리스크 요약
+- README.md / README.ko.md: 프로젝트 개요 및 사용법
 
-| Command | Action |
-|---------|--------|
-| `/cvf:plan "idea"` | Create implementation spec |
-| `/cvf:review` | Code review on changes |
-| `/cvf:ship` | Verify → commit → push → PR |
-| `/cvf:check` | Show verification status |
-| `/cvf:workflow type "desc"` | Execute multi-agent workflow |
+## 15) Implementation Protocol (cvf-applier 필수)
+- 모든 코드 변경 시 cvf-applier 단계 준수 (Checkpoint→Analyze→Assess→Plan→Implement→Verify)
+- 예외(직접 처리 가능): 단일 파일, 10줄 미만, 타입/인터페이스/테스트 영향 없음, 순수 코스메틱
+- 실패 3회 연속 시 체크포인트로 롤백, 증거 남기기
+- 한 번에 최대 3파일, 파일당 ~50라인 이내 증분 변경 권장
 
-## Running Tests (Optional)
+## 16) Workflow Snippets (UI 영어 예시)
+- Starter Webapp: `/cvf:workflow starter-webapp "Bootstrap React TS webapp"`
+- Feature: `/cvf:workflow feature "Add user profile page"`
+- Secure: `/cvf:workflow secure "Handle payment flow"`
+- Checkpoint: `/rewind` → "Restore checkpoint? (Y/n)"
 
-```bash
-# Use the provided script
-bash .claude/scripts/run-tests.sh
+## 17) Troubleshooting 패턴
+- 오류/버그 보고: `cvf-debugger` 호출, 재현 절차 기록, 최소 변경 우선
+- 성능 문제: `cvf-performance` 호출, 측정→가설→완화 순서
+- 외부 라이브러리/베스트프랙티스: `cvf-researcher` 호출
 
-# Or run directly
-npm test
-```
+## 18) Skills Progressive Tiers (요약)
+- Discovery: 사용 조건·트리거를 짧게 식별
+- Overview: 핵심 워크플로, 체크리스트, 출력 포맷
+- Specific: references/* 세부 가이드 (조건부 로드)
+- Generate: scripts/assets 예시·템플릿 (필요 시 실행)
+- 스킬 위치: `.claude/skills/<name>/SKILL.md` (필수), references/examples/scrips는 필요 시 추가
 
-## Development
+## 19) Hooks & Scripts 링크
+- Branch guard: `.claude/scripts/branch-guard.sh`
+- Pre-commit gate: `.claude/scripts/pre-commit-gate.sh` (typecheck→test→lint, ALLOW_UNSAFE=1 보고)
+- TODO stop: `.claude/scripts/todo-stop.sh`
+- Context loader: `.claude/scripts/load-context.sh`
+- Test runner: `.claude/scripts/run-tests.sh`
 
-### File Structure
-
-```
-src/cli.ts          # npx installer
-tests/unit/         # Vitest tests
-docs/               # Migration docs
-```
-
-### Adding Features
-
-1. Skills go in `.claude/skills/<name>/SKILL.md`
-2. Commands go in `.claude/commands/<name>.md`
-3. Agents go in `.claude/agents/<name>.md`
-
-### Testing
-
-```bash
-npm test                    # All tests
-npm run test:watch          # Watch mode
-```
-
----
-
-## 🚨 Implementation Protocol (MANDATORY DELEGATION)
-
-> **모든 코드 변경은 `cvf-applier` 에이전트를 통해 실행해야 한다.**
-
-### 강제 위임 규칙
-
-| 조건 | 행동 |
-|------|------|
-| 2+ 파일 변경 | **MUST** invoke `cvf-applier` |
-| 타입/인터페이스 변경 | **MUST** invoke `cvf-applier` |
-| API 수정 | **MUST** invoke `cvf-applier` |
-| 인증/보안 코드 | **MUST** invoke `cvf-applier` |
-| 데이터베이스/데이터 변경 | **MUST** invoke `cvf-applier` |
-| 사용자 확정 ("이걸로 해줘", "apply this") | **MUST** invoke `cvf-applier` |
-
-### 예외 (직접 처리 가능)
-
-**모든 조건을 충족해야 함:**
-- 단일 파일만 변경
-- 10줄 미만 변경
-- 타입/인터페이스 변경 없음
-- 테스트 파일 업데이트 불필요
-- 순수 코스메틱 (오타, 주석)
-
-**예외 시에도 `lsp_diagnostics` 검증 필수.**
-
-### 프로토콜 상세
-
-전체 구현 프로토콜은 `.claude/agents/cvf-applier.md` 참조:
-- Phase 0: Checkpoint (안전망)
-- Phase 1: Impact Analysis (영향 분석)
-- Phase 2: Risk Assessment (리스크 평가 & Go/No-Go)
-- Phase 3: Implementation Plan (구현 계획)
-- Phase 4: Incremental Implementation (증분 구현)
-- Phase 5: Verification Gates (검증 게이트)
-- Phase 6: Completion Report (완료 보고)
-
-### 핵심 규칙 요약
-
-```
-CHECKPOINT → ANALYZE → ASSESS → PLAN → IMPLEMENT → VERIFY
-```
-
-| 규칙 | 내용 |
-|------|------|
-| **Zero Assumptions** | 확인 안 되면 가정하지 말고 확인하라 |
-| **Incremental** | 한 번에 최대 3개 파일, 각 파일마다 검증 |
-| **No Type Suppression** | `as any`, `@ts-ignore`, `@ts-expect-error` 금지 |
-| **3-Strike Rollback** | 3회 연속 실패 시 체크포인트로 롤백 |
-| **Evidence Required** | 완료 보고 시 검증 결과 증거 필수 |
-
-### 위반 시
-
-프로토콜 위반 발견 시:
-1. 즉시 작업 중단
-2. 사용자에게 솔직히 알림
-3. `cvf-applier` 재호출로 정상 플로우 복귀
+## 20) Checklist Before Ship
+- [ ] lsp_diagnostics: 변경 파일 0 errors
+- [ ] typecheck / lint / test / build (필요 시) 완료
+- [ ] UI 텍스트 영어만 사용 확인
+- [ ] TODO 리스트 모두 완료/취소
+- [ ] 체크포인트/스토리 정리, 필요한 경우 PR 설명에 검증 결과 포함

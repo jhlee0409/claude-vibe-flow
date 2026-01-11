@@ -28,6 +28,7 @@ Execute coordinated multi-agent workflows for complex tasks.
 
 | Type | Description | Agent Chain |
 |------|-------------|-------------|
+| `starter-webapp` | Greenfield app: scaffold, UI, arch, tests | planner → researcher → ui-ux → architect → implement → reviewer |
 | `feature` | Standard feature development | planner → architect → implement → reviewer |
 | `secure` | Security-sensitive feature | planner → security → architect → implement → security → reviewer |
 | `perf` | Performance-critical feature | planner → architect → implement → performance → reviewer |
@@ -117,6 +118,72 @@ If a workflow is interrupted:
 1. Check for existing state in `.claude-vibe-flow/workflow-state.json`
 2. Offer to resume from last completed phase
 3. Maintain context from previous phases
+4. For emergency rollback, use `/rewind` (double ESC) to create/apply checkpoint (maps to `git stash push -u -m "checkpoint: ..."`)
+
+## Example: Starter Webapp Workflow
+
+```bash
+/cvf:workflow starter-webapp "Bootstrap React TS webapp"
+```
+
+**Execution (UI text must be English; use /rewind before scaffold for safety):**
+
+```
+═══════════════════════════════════════════════════════
+  Workflow: starter-webapp
+  Description: Bootstrap React TS webapp
+═══════════════════════════════════════════════════════
+
+Phase 1/6: Planning (cvf-planner)
+────────────────────────────────────────────────────────
+Goal:
+- [ ] Define MVP routes (/, /auth, /dashboard)
+- [ ] Choose template source and license
+- [ ] Identify hosting/build target
+
+Phase 2/6: Research (cvf-researcher)
+────────────────────────────────────────────────────────
+Findings:
+- Template candidates: vite-react-template, react-typescript-starter
+- UI strings must be English
+- Accessibility: include focus styles + aria-labels
+
+Phase 3/6: UI/UX (cvf-ui-ux)
+────────────────────────────────────────────────────────
+Baseline kit:
+- [ ] Layout shell (header/sidebar/content)
+- [ ] Primary/secondary button styles (English labels)
+- [ ] Form inputs with aria labels and error text in English
+
+Phase 4/6: Architecture (cvf-architect)
+────────────────────────────────────────────────────────
+Decisions:
+- Vite + React + TS
+- State: minimal context + hooks
+- Routing: react-router
+- Build: npm run build
+
+Phase 5/6: Implementation
+────────────────────────────────────────────────────────
+[Implementation progress...]
+- [ ] Scaffold template
+- [ ] Wire routes
+- [ ] Add lint/typecheck scripts
+- [ ] Ensure UI text is English
+
+Phase 6/6: Review (cvf-reviewer)
+────────────────────────────────────────────────────────
+Checklist:
+- [ ] Typecheck/build pass
+- [ ] UI text English-only
+- [ ] Accessibility basics present
+- [ ] Tests (if provided) pass
+
+═══════════════════════════════════════════════════════
+  Workflow Complete ✓
+  Duration: ~15-25 minutes
+═══════════════════════════════════════════════════════
+```
 
 ## Example: Feature Workflow
 
