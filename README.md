@@ -12,7 +12,7 @@ A lightweight framework for [Claude Code](https://github.com/anthropics/claude-c
 - **10 Specialized Agents**: cvf-orchestrator, cvf-planner, cvf-applier, cvf-reviewer, cvf-debugger, cvf-architect, cvf-security, cvf-performance, cvf-researcher, cvf-ui-ux
 - **5 Essential Commands**: /cvf:plan, /cvf:review, /cvf:ship, /cvf:check, /cvf:workflow
 - **7 Tiered Skills**: Progressive loading skills (Discovery→Overview→Specific→Generate) for api-design, database-schema-designer, test-automator, security-scanning, prompt-caching, rag-retrieval, verify-before-commit
-- **Pre-commit Verification**: Diagnostics + tests + TODOs checked before commit
+- **4 Auto-Triggered Hooks**: Agent recommendation, pre-commit verification, checkpoint reminders, UI English check
 - **Vibe Coding Support**: Natural language to shipped product with cvf-orchestrator
 - **Safety Nets**: Branch guard, pre-commit gate, TODO stop, checkpoint system
 
@@ -109,13 +109,15 @@ your-project/
 │   │   ├── prompt-caching/      # Prompt optimization
 │   │   ├── rag-retrieval/       # RAG implementation
 │   │   └── verify-before-commit/    # Pre-commit verification
-│   ├── scripts/                 # Safety net scripts
-│   │   ├── branch-guard.sh      # Protect main branch
-│   │   ├── pre-commit-gate.sh   # Verify before commit
-│   │   ├── todo-stop.sh         # Block commits with open TODOs
+│   ├── scripts/                 # Hook & safety net scripts
+│   │   ├── agent-recommender.sh # Auto-recommend CVF agents
+│   │   ├── checkpoint-reminder.sh # Checkpoint before major edits
+│   │   ├── detect-test-framework.sh # Detect test framework
+│   │   ├── git-guard.sh         # Pre-commit verification gate
 │   │   ├── load-context.sh      # Load session context
-│   │   └── run-tests.sh         # Run tests
-│   └── hooks.json               # SessionStart hook
+│   │   ├── run-tests.sh         # Run tests
+│   │   └── ui-english-check.sh  # Check UI text is English
+│   └── hooks.json               # 4 hook events configuration
 ├── .github/
 │   ├── ISSUE_TEMPLATE/          # Issue templates
 │   └── workflows/
@@ -246,6 +248,62 @@ src/
 ### Checkpoint System
 - Use `/rewind` (ESC ESC) or `git stash` to create checkpoints
 - Safe rollback when experiments go wrong
+
+## Hooks (Auto-Triggered)
+
+CVF uses Claude Code hooks to automate workflows at key lifecycle events.
+
+### Hook Events
+
+| Event | Script | Purpose |
+|-------|--------|---------|
+| **SessionStart** | `load-context.sh` | Load project context at session start |
+| **UserPromptSubmit** | `agent-recommender.sh` | Auto-recommend CVF agents based on keywords |
+| **PreToolUse (Bash)** | `git-guard.sh` | Verify before git commit/push |
+| **PreToolUse (Edit)** | `checkpoint-reminder.sh` | Remind to create checkpoint before major edits |
+| **PostToolUse (Edit)** | `ui-english-check.sh` | Detect Korean text in UI components |
+
+### Agent Auto-Recommendation
+
+When you type natural language, CVF automatically suggests the appropriate agent:
+
+```
+"앱 만들어줘" → 💡 cvf-orchestrator recommended
+"버그 있어"   → 💡 cvf-debugger recommended
+"이걸로 해줘" → 💡 cvf-applier recommended
+```
+
+### Pre-commit Verification
+
+Before `git commit`, CVF automatically runs:
+1. **TypeScript typecheck** - Catch type errors
+2. **Tests** - Ensure tests pass
+3. **Lint** - Code style check
+
+```bash
+# Bypass verification (not recommended)
+ALLOW_UNSAFE=1 git commit -m "message"
+```
+
+### Checkpoint Reminders
+
+CVF reminds you to create checkpoints before editing:
+- Config files (package.json, tsconfig.json)
+- Core logic (src/core/*)
+- API layer (src/api/*)
+- Type definitions (src/types/*)
+- Large files (100+ lines)
+
+### UI English Check
+
+CVF Rule: **UI text must be in English only.**
+
+After editing component files, CVF detects Korean text and suggests corrections:
+```
+⚠️  Korean UI text detected
+  ❌ "저장" → ✅ "Save"
+  ❌ "취소" → ✅ "Cancel"
+```
 
 ## Running Tests (Optional)
 

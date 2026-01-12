@@ -12,7 +12,7 @@
 - **10개의 전문 에이전트**: cvf-orchestrator, cvf-planner, cvf-applier, cvf-reviewer, cvf-debugger, cvf-architect, cvf-security, cvf-performance, cvf-researcher, cvf-ui-ux
 - **5개의 필수 명령어**: /cvf:plan, /cvf:review, /cvf:ship, /cvf:check, /cvf:workflow
 - **7개의 티어드 스킬**: 프로그레시브 로딩 스킬 (Discovery→Overview→Specific→Generate) - api-design, database-schema-designer, test-automator, security-scanning, prompt-caching, rag-retrieval, verify-before-commit
-- **커밋 전 검증**: 진단 + 테스트 + TODO 확인
+- **4개의 자동 훅**: 에이전트 추천, 커밋 전 검증, 체크포인트 알림, UI 영어 확인
 - **바이브 코딩 지원**: cvf-orchestrator로 자연어를 완성된 프로덕트로
 - **안전망**: 브랜치 가드, 사전 커밋 게이트, TODO 스톱, 체크포인트 시스템
 
@@ -109,13 +109,15 @@ your-project/
 │   │   ├── prompt-caching/      # 프롬프트 최적화
 │   │   ├── rag-retrieval/       # RAG 구현
 │   │   └── verify-before-commit/    # 커밋 전 검증
-│   ├── scripts/                 # 안전망 스크립트
-│   │   ├── branch-guard.sh      # 메인 브랜치 보호
-│   │   ├── pre-commit-gate.sh   # 커밋 전 검증
-│   │   ├── todo-stop.sh         # 열린 TODO가 있으면 커밋 차단
+│   ├── scripts/                 # 훅 & 안전망 스크립트
+│   │   ├── agent-recommender.sh # CVF 에이전트 자동 추천
+│   │   ├── checkpoint-reminder.sh # 대규모 편집 전 체크포인트
+│   │   ├── detect-test-framework.sh # 테스트 프레임워크 감지
+│   │   ├── git-guard.sh         # 커밋 전 검증 게이트
 │   │   ├── load-context.sh      # 세션 컨텍스트 로드
-│   │   └── run-tests.sh         # 테스트 실행
-│   └── hooks.json               # SessionStart 훅
+│   │   ├── run-tests.sh         # 테스트 실행
+│   │   └── ui-english-check.sh  # UI 텍스트 영어 확인
+│   └── hooks.json               # 4개 훅 이벤트 설정
 ├── .github/
 │   ├── ISSUE_TEMPLATE/          # 이슈 템플릿
 │   └── workflows/
@@ -246,6 +248,62 @@ src/
 ### 체크포인트 시스템
 - `/rewind` (ESC ESC) 또는 `git stash`로 체크포인트 생성
 - 실험이 잘못될 경우 안전한 롤백
+
+## 훅 (자동 트리거)
+
+CVF는 Claude Code 훅을 사용하여 주요 라이프사이클 이벤트에서 워크플로우를 자동화합니다.
+
+### 훅 이벤트
+
+| 이벤트 | 스크립트 | 용도 |
+|-------|----------|------|
+| **SessionStart** | `load-context.sh` | 세션 시작 시 프로젝트 컨텍스트 로드 |
+| **UserPromptSubmit** | `agent-recommender.sh` | 키워드 기반 CVF 에이전트 자동 추천 |
+| **PreToolUse (Bash)** | `git-guard.sh` | git commit/push 전 검증 |
+| **PreToolUse (Edit)** | `checkpoint-reminder.sh` | 대규모 편집 전 체크포인트 알림 |
+| **PostToolUse (Edit)** | `ui-english-check.sh` | UI 컴포넌트 한글 텍스트 감지 |
+
+### 에이전트 자동 추천
+
+자연어를 입력하면 CVF가 자동으로 적절한 에이전트를 추천합니다:
+
+```
+"앱 만들어줘" → 💡 cvf-orchestrator 추천
+"버그 있어"   → 💡 cvf-debugger 추천
+"이걸로 해줘" → 💡 cvf-applier 추천
+```
+
+### 커밋 전 검증
+
+`git commit` 전에 CVF가 자동으로 실행:
+1. **TypeScript 타입체크** - 타입 에러 감지
+2. **테스트** - 테스트 통과 확인
+3. **린트** - 코드 스타일 검사
+
+```bash
+# 검증 우회 (권장하지 않음)
+ALLOW_UNSAFE=1 git commit -m "message"
+```
+
+### 체크포인트 알림
+
+CVF가 다음 파일 편집 전 체크포인트 생성을 알립니다:
+- 설정 파일 (package.json, tsconfig.json)
+- 코어 로직 (src/core/*)
+- API 레이어 (src/api/*)
+- 타입 정의 (src/types/*)
+- 대용량 파일 (100줄 이상)
+
+### UI 영어 확인
+
+CVF 규칙: **UI 텍스트는 영어만 사용해야 합니다.**
+
+컴포넌트 파일 편집 후 CVF가 한글 텍스트를 감지하고 수정을 제안합니다:
+```
+⚠️  한글 UI 텍스트 감지됨
+  ❌ "저장" → ✅ "Save"
+  ❌ "취소" → ✅ "Cancel"
+```
 
 ## 테스트 실행 (선택)
 
