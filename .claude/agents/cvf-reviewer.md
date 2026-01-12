@@ -76,6 +76,32 @@ Be helpful, not pedantic. Focus on what matters.
 - Naming clarity?
 (Skip if project has linter)
 
+#### 1.6 SSOT Compliance (CRITICAL)
+
+**Single Source of Truth 원칙 위반 검사:**
+
+| Check | Location | Command |
+|-------|----------|---------|
+| Validation in components? | `src/components/` | `grep -rn "validate\|isValid\|regex" src/components/` |
+| API calls in components? | `src/components/` | `grep -rn "fetch\|axios\|\.post\|\.get" src/components/` |
+| Inline types in components? | `src/components/` | `grep -rn "^type \|^interface " src/components/` |
+| Duplicated logic? | Everywhere | `grep -rn "[pattern]" src/` |
+
+**SSOT 위반 = Critical Issue:**
+- 컴포넌트 내 validation 로직 → `src/core/<domain>/validation.ts`로 추출 필요
+- 컴포넌트 내 API 호출 → `src/api/<domain>.ts`로 추출 필요
+- 컴포넌트 내 inline 타입 → `src/types/<domain>.ts`로 이동 필요
+- 동일 로직 2곳 이상 → SSOT 위치로 통합 필요
+
+**올바른 구조 확인:**
+```
+src/
+  core/<domain>/validation.ts  ← 모든 validation 로직
+  api/<domain>.ts              ← 모든 API 호출
+  types/<domain>.ts            ← 모든 타입 정의
+  components/<Feature>/        ← UI만 (import from above)
+```
+
 ---
 
 ### Step 2: RCI Self-Review Loop (NEW)
@@ -109,6 +135,7 @@ After initial review, apply RCI to YOUR OWN review:
 | Can the developer act on my feedback? | Add specific code suggestions |
 | Did I flag style issues covered by linter? | Remove those items |
 | Did I miss positive observations? | Add at least one "Looks Good" |
+| **Did I check SSOT compliance?** | Run grep commands, flag violations as Critical |
 
 ---
 
@@ -132,11 +159,21 @@ After initial review, apply RCI to YOUR OWN review:
 
 ---
 
+### SSOT Compliance
+| Check | Status | Location |
+|-------|--------|----------|
+| No validation in components | ✅/❌ | [file:line if found] |
+| No API calls in components | ✅/❌ | [file:line if found] |
+| No inline types in components | ✅/❌ | [file:line if found] |
+| No duplicated logic | ✅/❌ | [files if found] |
+| Imports from SSOT locations | ✅/❌ | [core/, api/, types/] |
+
 ### RCI Self-Check
 - [x] Security implications reviewed
 - [x] All Critical issues are truly blocking
 - [x] Suggestions are actionable with code examples
 - [x] No linter-covered style issues flagged
+- [x] **SSOT compliance verified**
 
 **Overall**: [APPROVE / REQUEST CHANGES / COMMENT]
 ```
@@ -155,6 +192,11 @@ After initial review, apply RCI to YOUR OWN review:
 | Magic numbers | Unclear meaning | Named constants |
 | `eval()` | Code injection risk | Use safe alternatives |
 | `innerHTML =` | XSS vulnerability | Use textContent or sanitize |
+| **Validation in component** | SSOT violation, hard to maintain | Extract to `src/core/<domain>/validation.ts` |
+| **API call in component** | SSOT violation, duplicates easily | Extract to `src/api/<domain>.ts` |
+| **Inline type in component** | SSOT violation, inconsistent types | Move to `src/types/<domain>.ts` |
+| **Duplicated logic** | Maintenance nightmare, bugs multiply | Extract to single SSOT location |
+| **Hardcoded URL/config** | SSOT violation | Move to `src/constants/` |
 
 ---
 
@@ -171,9 +213,9 @@ After initial review, apply RCI to YOUR OWN review:
 
 | Severity | Criteria | Examples |
 |----------|----------|----------|
-| **Critical** | Blocks ship, security/correctness issue | SQL injection, auth bypass, data loss |
-| **Important** | Should fix before ship, quality issue | N+1 query, missing error handling |
-| **Suggestion** | Nice to have, not blocking | Better naming, refactoring idea |
+| **Critical** | Blocks ship, security/correctness issue | SQL injection, auth bypass, data loss, **SSOT violation (validation/API in component)** |
+| **Important** | Should fix before ship, quality issue | N+1 query, missing error handling, **inline types in component** |
+| **Suggestion** | Nice to have, not blocking | Better naming, refactoring idea, minor duplication |
 
 **Rule**: If unsure between Critical/Important → Important. Don't over-escalate.
 
