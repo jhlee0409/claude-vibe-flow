@@ -175,6 +175,59 @@ your-project/
 - **Specific**: 상세 가이드 (요청 시 로드)
 - **Generate**: 스크립트 및 템플릿 (요청 시 로드)
 
+## SSOT 원칙 (Single Source of Truth)
+
+> **"처음부터 잘 짜서, 나중에 수정이 쉽게."**
+
+Claude Vibe Flow는 사용자가 변경을 요청할 때 사이드 이펙트를 최소화하기 위해 SSOT 아키텍처를 강제합니다.
+
+### 왜 SSOT인가?
+
+```
+Week 1: "로그인 만들어줘" → CVF가 SSOT 구조로 생성
+Week 2: "회원가입 추가해줘" → 기존 validation 재사용
+Week 3: "비밀번호 규칙 변경해줘" → 파일 1개만 수정, 모든 폼 자동 업데이트
+Week 4: "2FA 추가해줘" → 기존 로직 확장, 사이드 이펙트 없음
+```
+
+**SSOT 없이**: 변경하면 여러 파일이 깨지고, 사용자 스트레스.
+**SSOT 있으면**: 한 곳만 변경, 모든 게 작동.
+
+### 파일 구조
+
+```
+src/
+  core/<domain>/           ← 비즈니스 로직 (SSOT)
+    validation.ts          ← 모든 검증 규칙
+    logic.ts               ← 모든 도메인 로직
+  api/<domain>.ts          ← 모든 API 호출 (SSOT)
+  types/<domain>.ts        ← 모든 타입 정의 (SSOT)
+  constants/<domain>.ts    ← 모든 상수 (SSOT)
+  components/<Feature>/    ← UI만 (비즈니스 로직 금지)
+  hooks/use<Domain>.ts     ← 상태 관리만
+  utils/                   ← 순수 함수만
+```
+
+### SSOT 규칙 (강제)
+
+| 코드 유형 | SSOT 위치 | 절대 금지 위치 |
+|-----------|---------------|--------------|
+| Validation/비즈니스 규칙 | `src/core/<domain>/` | Components, Hooks |
+| API 호출 | `src/api/<domain>.ts` | Components |
+| 타입 정의 | `src/types/<domain>.ts` | 컴포넌트 내 인라인 |
+| 상수/설정 | `src/constants/` | 하드코딩 |
+
+### 에이전트별 역할
+
+| 에이전트 | SSOT 역할 |
+|-------|-----------|
+| `cvf-planner` | SSOT 파일 구조 계획 |
+| `cvf-architect` | SSOT 원칙으로 설계 |
+| `cvf-applier` | SSOT 위치에 구현 + 검증 |
+| `cvf-reviewer` | SSOT 위반을 Critical로 차단 |
+
+**SSOT 위반은 Critical 이슈로 처리되어 커밋이 차단됩니다.**
+
 ## 안전망
 
 ### 브랜치 가드

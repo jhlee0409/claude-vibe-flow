@@ -175,6 +175,59 @@ Each skill has 4 tiers:
 - **Specific**: Detailed guides (loaded on demand)
 - **Generate**: Scripts and templates (loaded on demand)
 
+## SSOT Principles (Single Source of Truth)
+
+> **"Build it right the first time, so modifications are easy later."**
+
+Claude Vibe Flow enforces SSOT architecture to minimize side effects when users request changes.
+
+### Why SSOT?
+
+```
+Week 1: "Build login" → CVF creates SSOT structure
+Week 2: "Add signup" → Reuses existing validation
+Week 3: "Change password rules" → Update ONE file, all forms updated
+Week 4: "Add 2FA" → Extend existing logic, no side effects
+```
+
+**Without SSOT**: Change breaks multiple files, user frustrated.
+**With SSOT**: Change in one place, everything works.
+
+### File Structure
+
+```
+src/
+  core/<domain>/           ← Business logic (SSOT)
+    validation.ts          ← All validation rules
+    logic.ts               ← All domain logic
+  api/<domain>.ts          ← All API calls (SSOT)
+  types/<domain>.ts        ← All type definitions (SSOT)
+  constants/<domain>.ts    ← All constants (SSOT)
+  components/<Feature>/    ← UI only (NO business logic)
+  hooks/use<Domain>.ts     ← State management only
+  utils/                   ← Pure functions only
+```
+
+### SSOT Rules (Enforced)
+
+| Code Type | SSOT Location | Never Put In |
+|-----------|---------------|--------------|
+| Validation/Business rules | `src/core/<domain>/` | Components, Hooks |
+| API calls | `src/api/<domain>.ts` | Components |
+| Type definitions | `src/types/<domain>.ts` | Inline in components |
+| Constants/Config | `src/constants/` | Hardcoded anywhere |
+
+### Agent Enforcement
+
+| Agent | SSOT Role |
+|-------|-----------|
+| `cvf-planner` | Plans SSOT file structure |
+| `cvf-architect` | Designs with SSOT principles |
+| `cvf-applier` | Implements in SSOT locations + verifies |
+| `cvf-reviewer` | Blocks SSOT violations as Critical |
+
+**SSOT violations are treated as Critical issues and block commits.**
+
 ## Safety Nets
 
 ### Branch Guard
