@@ -11,6 +11,30 @@
           }
         ]
       }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/scripts/agent-recommender.sh \"$PROMPT\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/scripts/git-guard.sh \"$COMMAND\"",
+            "timeout": 60
+          }
+        ]
+      }
     ]
   }
 }

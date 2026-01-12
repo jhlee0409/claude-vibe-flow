@@ -88,14 +88,16 @@ describe('Plugin Structure Validation', () => {
   });
 
   describe('Scripts', () => {
-    it('should have scripts directory with 3 scripts', () => {
+    it('should have scripts directory with 5 scripts', () => {
       const scriptsDir = path.join(claudeDir, 'scripts');
       expect(fs.existsSync(scriptsDir)).toBe(true);
 
       const scripts = fs.readdirSync(scriptsDir).filter((f) => f.endsWith('.sh'));
-      expect(scripts.length).toBe(3);
+      expect(scripts.length).toBe(5);
       expect(scripts.sort()).toEqual([
+        'agent-recommender.sh',
         'detect-test-framework.sh',
+        'git-guard.sh',
         'load-context.sh',
         'run-tests.sh',
       ]);
