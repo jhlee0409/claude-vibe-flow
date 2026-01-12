@@ -19,6 +19,7 @@ interface HooksConfig {
     SessionStart?: HookMatcher[];
     UserPromptSubmit?: HookMatcher[];
     PreToolUse?: HookMatcher[];
+    PostToolUse?: HookMatcher[];
   };
 }
 
@@ -53,9 +54,9 @@ describe('Hooks System Validation', () => {
       }
     });
 
-    it('should have 3 hook events (SessionStart, UserPromptSubmit, PreToolUse)', () => {
+    it('should have 4 hook events (SessionStart, UserPromptSubmit, PreToolUse, PostToolUse)', () => {
       const events = Object.keys(hooksConfig.hooks);
-      expect(events.sort()).toEqual(['PreToolUse', 'SessionStart', 'UserPromptSubmit']);
+      expect(events.sort()).toEqual(['PostToolUse', 'PreToolUse', 'SessionStart', 'UserPromptSubmit']);
     });
   });
 

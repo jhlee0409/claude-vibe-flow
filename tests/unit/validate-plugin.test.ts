@@ -88,18 +88,20 @@ describe('Plugin Structure Validation', () => {
   });
 
   describe('Scripts', () => {
-    it('should have scripts directory with 5 scripts', () => {
+    it('should have scripts directory with 7 scripts', () => {
       const scriptsDir = path.join(claudeDir, 'scripts');
       expect(fs.existsSync(scriptsDir)).toBe(true);
 
       const scripts = fs.readdirSync(scriptsDir).filter((f) => f.endsWith('.sh'));
-      expect(scripts.length).toBe(5);
+      expect(scripts.length).toBe(7);
       expect(scripts.sort()).toEqual([
         'agent-recommender.sh',
+        'checkpoint-reminder.sh',
         'detect-test-framework.sh',
         'git-guard.sh',
         'load-context.sh',
         'run-tests.sh',
+        'ui-english-check.sh',
       ]);
     });
   });

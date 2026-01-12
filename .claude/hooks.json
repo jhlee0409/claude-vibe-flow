@@ -34,6 +34,28 @@
             "timeout": 60
           }
         ]
+      },
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/scripts/checkpoint-reminder.sh \"$FILE_PATH\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/scripts/ui-english-check.sh \"$FILE_PATH\"",
+            "timeout": 5
+          }
+        ]
       }
     ]
   }
