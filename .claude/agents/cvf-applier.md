@@ -196,8 +196,61 @@ auth.ts → userService.ts → dashboard.tsx
 
 ### Total Impact
 - Direct: N files
-- Indirect: M files  
+- Indirect: M files
 - Total blast radius: N+M files
+
+### SSOT Reuse Check
+- Existing validation: [found/none]
+- Existing API calls: [found/none]
+- Existing types: [found/none]
+- Reusable from: [list files or N/A]
+```
+
+### 1.4 SSOT Reuse Scan (REQUIRED)
+
+**Before writing ANY new code, scan for existing reusable logic:**
+
+```bash
+# Validation logic
+grep -r "validate" src/core/
+grep -r "isValid" src/core/
+
+# API calls
+grep -r "fetch\|axios\|api" src/api/
+
+# Types
+grep -r "interface\|type " src/types/
+
+# Similar patterns
+grep -r "[keyword from task]" src/
+```
+
+**SSOT Reuse Decision Tree:**
+
+```
+Found similar validation logic?
+├─ YES → Import and extend, NOT duplicate
+│        Add new rule to existing file
+└─ NO → Create in src/core/<domain>/validation.ts
+
+Found similar API call?
+├─ YES → Reuse existing, add parameters if needed
+└─ NO → Create in src/api/<domain>.ts
+
+Found similar type?
+├─ YES → Extend existing type, NOT create new
+└─ NO → Create in src/types/<domain>.ts
+```
+
+**Required Output:**
+```markdown
+### SSOT Scan Results
+| Category | Existing | Action |
+|----------|----------|--------|
+| Validation | src/core/auth/validation.ts | ✅ Reuse validateEmail() |
+| API | src/api/auth.ts | ✅ Extend with new endpoint |
+| Types | src/types/auth.ts | ✅ Extend User type |
+| Utils | None found | ➕ Create if needed |
 ```
 
 **GATE**: Cannot proceed if impact analysis incomplete.
@@ -324,6 +377,75 @@ auth.ts → userService.ts → dashboard.tsx
 
 **Purpose**: Execute plan with continuous verification.
 
+### 4.0 SSOT Placement Rules (BLOCKING)
+
+**Before writing ANY code, determine correct SSOT location:**
+
+| Code Type | SSOT Location | NEVER Put In |
+|-----------|---------------|--------------|
+| Validation rules | `src/core/<domain>/validation.ts` | Components, hooks |
+| Business logic | `src/core/<domain>/logic.ts` | Components, API files |
+| API calls | `src/api/<domain>.ts` | Components, hooks |
+| Type definitions | `src/types/<domain>.ts` | Components (inline) |
+| Constants | `src/constants/<domain>.ts` | Scattered files |
+| Pure utilities | `src/utils/<category>.ts` | Components |
+| UI rendering | `src/components/<Feature>/` | Anywhere else |
+| State hooks | `src/hooks/use<Domain>.ts` | Components (inline) |
+
+**SSOT Placement Checklist (Before Each File Edit):**
+
+```
+□ Is this validation/business logic?
+  → MUST go to src/core/, NOT component
+
+□ Is this an API call?
+  → MUST go to src/api/, NOT component
+
+□ Is this a new type?
+  → MUST go to src/types/, NOT inline in component
+
+□ Is this a constant/config?
+  → MUST go to src/constants/, NOT hardcoded
+
+□ Am I about to duplicate existing code?
+  → STOP. Import from SSOT location instead.
+```
+
+**SSOT Violation = BLOCKING ERROR:**
+
+If you find yourself writing validation/API/types inside a component file:
+1. **STOP immediately**
+2. Create/update the correct SSOT file first
+3. Import from SSOT location into component
+4. Component should ONLY contain UI logic
+
+**Example - WRONG vs RIGHT:**
+
+```typescript
+// ❌ WRONG: Logic in component (BLOCKING VIOLATION)
+// src/components/LoginForm/index.tsx
+const LoginForm = () => {
+  const validateEmail = (email) => /^[^\s@]+@[^\s@]+$/.test(email);  // ❌
+  const login = async () => await fetch('/api/auth/login', {...});    // ❌
+  // ...
+}
+
+// ✅ RIGHT: Component imports from SSOT
+// src/core/auth/validation.ts (SSOT)
+export const validateEmail = (email: string) => /^[^\s@]+@[^\s@]+$/.test(email);
+
+// src/api/auth.ts (SSOT)
+export const login = async (credentials: Credentials) => {...};
+
+// src/components/LoginForm/index.tsx (UI only)
+import { validateEmail } from '@/core/auth/validation';
+import { login } from '@/api/auth';
+
+const LoginForm = () => {
+  // Only UI logic here: useState, event handlers, JSX
+}
+```
+
 ### 4.1 Implementation Loop
 
 ```
@@ -402,8 +524,69 @@ lsp_diagnostics
 | Unit Tests | `npm test` | 100% pass (no regressions) | ✅ If exists |
 | Build | `npm run build` | Exit code 0 | ✅ If exists |
 | Lint | `npm run lint` | No new errors | ⚠️ Recommended |
+| SSOT Compliance | Grep check | No violations | ✅ ALWAYS |
 
-### 5.2 Security Verification (If touching auth/data)
+### 5.2 SSOT Compliance Verification (REQUIRED)
+
+**After implementation, verify no SSOT violations were introduced:**
+
+```bash
+# Check 1: No validation logic in components
+grep -rn "validate\|isValid\|regex\|pattern" src/components/
+# Expected: 0 matches (or only import statements)
+
+# Check 2: No API calls in components (except hooks)
+grep -rn "fetch\|axios\|\.post\|\.get" src/components/
+# Expected: 0 matches (or only in custom hooks)
+
+# Check 3: No inline type definitions in components
+grep -rn "^type \|^interface " src/components/
+# Expected: 0 matches (types should be in src/types/)
+
+# Check 4: No hardcoded constants
+grep -rn "const [A-Z_]* = ['\"]" src/components/
+# Expected: 0 matches (constants should be imported)
+```
+
+**SSOT Compliance Matrix:**
+
+| Check | Command | Pass Criteria | Severity |
+|-------|---------|---------------|----------|
+| No validation in components | `grep -rn "validate" src/components/` | 0 logic matches | 🔴 BLOCKING |
+| No API in components | `grep -rn "fetch\|axios" src/components/` | 0 matches | 🔴 BLOCKING |
+| No inline types | `grep -rn "^type \|^interface " src/components/` | 0 matches | 🟡 WARNING |
+| No hardcoded strings | `grep -rn "const.*=.*['\"]http" src/` | 0 matches | 🟡 WARNING |
+| Imports from SSOT | Review import statements | core/, api/, types/ | ✅ Required |
+
+**If SSOT Violation Found:**
+
+1. **STOP verification**
+2. **Extract violating code** to correct SSOT location:
+   - Validation → `src/core/<domain>/validation.ts`
+   - API call → `src/api/<domain>.ts`
+   - Type → `src/types/<domain>.ts`
+3. **Update component** to import from SSOT
+4. **Re-run verification**
+
+**Required Output:**
+```markdown
+### SSOT Compliance
+| Check | Status | Details |
+|-------|--------|---------|
+| No validation in components | ✅ | 0 matches |
+| No API in components | ✅ | 0 matches |
+| No inline types | ✅ | 0 matches |
+| Imports from SSOT | ✅ | All imports from core/, api/, types/ |
+
+SSOT Structure Used:
+- Validation: src/core/auth/validation.ts
+- API: src/api/auth.ts
+- Types: src/types/auth.ts
+```
+
+**GATE**: BLOCKING violations must be fixed before completion.
+
+### 5.3 Security Verification (If touching auth/data)
 
 | Check | Method | Pass Criteria |
 |-------|--------|---------------|
@@ -554,9 +737,15 @@ git checkout main && git branch -D checkpoint/[task]
 | Use `as any` | Fix types properly | CRITICAL |
 | Use `@ts-ignore` | Fix the underlying issue | CRITICAL |
 | Use `@ts-expect-error` | Fix the type error | CRITICAL |
+| **Validation in component** | Extract to `src/core/<domain>/validation.ts` | CRITICAL |
+| **API call in component** | Extract to `src/api/<domain>.ts` | CRITICAL |
+| **Duplicate existing logic** | Import from SSOT location | CRITICAL |
+| Inline types in components | Move to `src/types/<domain>.ts` | HIGH |
+| Hardcoded constants | Move to `src/constants/` | HIGH |
 | Batch 10+ file changes | Max 3 files per batch | HIGH |
 | Continue after 3 failures | MUST rollback | HIGH |
 | Skip verification | MUST run all gates | HIGH |
+| Skip SSOT compliance check | MUST verify no violations | HIGH |
 | Report "done" without evidence | MUST provide gate results | MEDIUM |
 
 ---

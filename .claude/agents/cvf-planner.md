@@ -101,6 +101,17 @@ Output this format:
 ### Technical Notes
 - [Only if non-obvious: stack choice, key dependency, gotcha]
 
+### SSOT Structure (Required)
+- Validation logic → `src/core/<domain>/validation.ts`
+- Business logic → `src/core/<domain>/logic.ts`
+- API calls → `src/api/<domain>.ts`
+- Types → `src/types/<domain>.ts`
+- UI components → `src/components/<Feature>/` (NO business logic)
+
+### Reusable From Existing
+- [ ] [Existing logic that can be reused - grep first!]
+- [ ] [None found / N/A]
+
 ### Agent Consultation Needed
 - [ ] Architecture: [Yes/No - reason]
 - [ ] Security: [Yes/No - reason]
@@ -221,6 +232,150 @@ After each agent completes:
 **Auto Mode** (via `/cvf:workflow --auto`):
 - Skip confirmations between phases
 - Stop only on errors or completion
+
+---
+
+## Part 4: SSOT-Aware Planning
+
+**Why SSOT in Planning Phase?**
+> Users will request changes later. Plan for SSOT now = easy modifications later = no user stress.
+
+### Pre-Planning Check (Before Writing Plan)
+
+Before creating any plan, ALWAYS:
+
+```bash
+# Step 1: Scan for existing patterns
+grep -r "similar_keyword" src/
+
+# Step 2: Check what can be reused
+# - Existing validation? → src/core/*/validation.ts
+# - Existing API calls? → src/api/*.ts
+# - Existing types? → src/types/*.ts
+# - Existing components? → src/components/*/
+```
+
+### Logic Placement Decision Tree
+
+When planning where new code should go:
+
+```
+Is it validation/business rule?
+├─ YES → src/core/<domain>/validation.ts
+│        (NEVER in components!)
+└─ NO ↓
+
+Is it API/external call?
+├─ YES → src/api/<domain>.ts
+│        (NEVER in components!)
+└─ NO ↓
+
+Is it a type/interface?
+├─ YES → src/types/<domain>.ts
+│        (ONE place for all domain types)
+└─ NO ↓
+
+Is it pure utility (no state, no side effects)?
+├─ YES → src/utils/<category>.ts
+│        (formatters, converters, helpers)
+└─ NO ↓
+
+Is it UI rendering?
+├─ YES → src/components/<Feature>/
+│        (ONLY JSX, styling, event handlers)
+│        (Import logic from core/, api/, utils/)
+└─ NO ↓
+
+Is it state management?
+└─ YES → src/hooks/use<Domain>.ts
+         (ONLY useState, useEffect, state sync)
+         (Import validation from core/)
+```
+
+### SSOT Planning Examples
+
+#### Example 1: "Add login feature"
+
+**❌ BAD Plan (will cause problems later):**
+```markdown
+### MVP Scope
+- [ ] Create LoginForm.tsx with validation
+- [ ] Add API call in LoginForm.tsx
+- [ ] Handle errors in LoginForm.tsx
+```
+
+**✅ GOOD Plan (SSOT-aware):**
+```markdown
+### MVP Scope
+- [ ] Create src/core/auth/validation.ts (email, password rules)
+- [ ] Create src/api/auth.ts (login API call)
+- [ ] Create src/types/auth.ts (User, Credentials types)
+- [ ] Create src/components/LoginForm/ (UI only, imports above)
+
+### SSOT Structure
+- Validation → src/core/auth/validation.ts
+- API → src/api/auth.ts
+- Types → src/types/auth.ts
+- UI → src/components/LoginForm/
+
+### Why This Structure?
+User will later request:
+- "Add signup" → reuse validation.ts
+- "Add admin login" → reuse validation.ts + auth.ts
+- "Change password rules" → update ONE file, all forms updated
+```
+
+#### Example 2: "Add signup to existing login"
+
+**Pre-Planning Check:**
+```bash
+grep -r "validateEmail" src/
+# Found: src/core/auth/validation.ts ✓
+
+grep -r "login" src/api/
+# Found: src/api/auth.ts ✓
+```
+
+**✅ GOOD Plan (reuses existing):**
+```markdown
+### MVP Scope
+- [ ] Add validatePassword() to src/core/auth/validation.ts (existing)
+- [ ] Add signup() to src/api/auth.ts (existing)
+- [ ] Create src/components/SignupForm/ (UI only)
+
+### Reusable From Existing
+- [x] src/core/auth/validation.ts - validateEmail()
+- [x] src/api/auth.ts - error handling patterns
+- [x] src/types/auth.ts - User type
+```
+
+### Future-Proofing Checklist
+
+When creating a plan, ask:
+
+- [ ] **"What if user wants this elsewhere?"**
+  → Extract to core/, not component
+
+- [ ] **"What if rules change?"**
+  → Single file for all rules
+
+- [ ] **"What if we add similar feature?"**
+  → Design for reuse now
+
+- [ ] **"What breaks if this changes?"**
+  → Minimize blast radius via SSOT
+
+### SSOT Violation Red Flags
+
+If your plan includes ANY of these, STOP and restructure:
+
+| Red Flag | Problem | Fix |
+|----------|---------|-----|
+| "validation in ComponentX.tsx" | Logic scattered | Move to core/<domain>/validation.ts |
+| "API call in handleSubmit" | Duplicated calls | Move to api/<domain>.ts |
+| "type User = {...} in Component" | Type inconsistency | Move to types/<domain>.ts |
+| "copy from ComponentA to B" | Duplication | Extract to shared location |
+| "similar to existing but..." | Missed reuse | Grep first, extend existing |
 
 ---
 
