@@ -11,6 +11,17 @@ const REPO = "jhlee0409/claude-vibe-flow";
 const BRANCH = "main";
 const TARBALL_URL = `https://github.com/${REPO}/archive/${BRANCH}.tar.gz`;
 
+// Package.json 경로: 컴파일된 dist/src 또는 소스 src 모두 지원
+function getPackageJson() {
+  // 컴파일: dist/src/cli.js → ../../package.json
+  // 소스(ts-node): src/cli.ts → ../package.json
+  const isCompiled = __dirname.includes("dist");
+  const pkgPath = isCompiled
+    ? path.join(__dirname, "..", "..", "package.json")
+    : path.join(__dirname, "..", "package.json");
+  return require(pkgPath);
+}
+
 const MIN_NODE_VERSION = 20;
 const RECOMMENDED_NODE_VERSION = 22;
 
@@ -124,7 +135,7 @@ Environment:
 }
 
 function showVersion(): void {
-  const pkg = require("../package.json");
+  const pkg = getPackageJson();
   console.log(`v${pkg.version}`);
 }
 
@@ -300,7 +311,7 @@ function generateClaudeMdFile(cwd: string, projectType: "existing" | "new"): voi
 // [NEW] Generate CVF_CORE.md
 function generateCoreFile(cwd: string): void {
   const corePath = path.join(cwd, ".claude", "CVF_CORE.md");
-  const pkg = require("../package.json");
+  const pkg = getPackageJson();
   const content = generateCvfCoreMd(pkg.version);
   
   // Ensure .claude exists
@@ -315,7 +326,7 @@ function generateCoreFile(cwd: string): void {
 // [NEW] Generate Version File
 function generateVersionFile(cwd: string): void {
   const versionPath = path.join(cwd, ".claude", ".cvf-version");
-  const pkg = require("../package.json");
+  const pkg = getPackageJson();
   const content = JSON.stringify({
     version: pkg.version,
     installedAt: new Date().toISOString()
@@ -415,7 +426,7 @@ async function runInstall(): Promise<void> {
   cleanupTempDir(tempDir);
 
   console.log(`
-✨ Done! Framework updated to v${require("../package.json").version}
+✨ Done! Framework updated to v${getPackageJson().version}
 
 Next steps:
   1. Run Claude Code:  claude
